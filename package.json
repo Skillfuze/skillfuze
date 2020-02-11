@@ -1,12 +1,48 @@
 {
-  "name": "skillfuse",
+  "name": "skillfuze",
   "description": "Online learning platform, learn everything about anything.",
   "private": true,
   "version": "0.0.0",
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
+    "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
+    "clean": "./scripts/clean.sh"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "lerna run test"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "npm run format",
+      "npm run lint -- --fix",
+      "git add"
+    ]
+  },
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^3.0.9",
+    "lerna": "^3.16.4",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.19.1",
+    "ts-node": "^8.5.0",
+    "typescript": "^3.7.2"
   }
 }
