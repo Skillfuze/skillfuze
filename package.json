@@ -4,19 +4,23 @@
   "private": true,
   "version": "0.0.0",
   "workspaces": {
-    "packages": ["packages/*"]
+    "packages": [
+      "packages/*"
+    ]
   },
   "scripts": {
     "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
     "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
-    "clean": "./scripts/clean.sh"
+    "clean": "./scripts/clean.sh",
+    "commit": "git-cz"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "lerna run test"
+      "pre-push": "lerna run test",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
     }
   },
   "lint-staged": {
@@ -31,6 +35,7 @@
     "@commitlint/config-conventional": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
+    "cz-conventional-changelog": "3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",
@@ -46,5 +51,10 @@
     "prettier": "^1.19.1",
     "ts-node": "^8.5.0",
     "typescript": "^3.7.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
