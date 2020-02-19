@@ -12,4 +12,14 @@ export class UserRepository {
 
     return user;
   }
+
+  public findOne(options: any): User {
+    if (options.email === 'test@gmail.com') {
+      return new User();
+    }
+    return undefined;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public save(): void {}
 }
