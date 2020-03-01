@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "es6",
     "module": "commonjs",
     "allowJs": true,
@@ -17,7 +18,7 @@
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
     // "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
     // "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
-
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
