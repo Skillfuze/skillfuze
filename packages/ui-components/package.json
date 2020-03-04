@@ -1,0 +1,49 @@
+{
+  "name": "@skillfuze/ui-components",
+  "version": "0.0.1",
+  "description": "Skillfuze UI Components Library",
+  "author": "Khaled Mohamed <Khal3d.Mohamed@gmail.com>",
+  "homepage": "https://github.com/SkillFuze/skillfuze#readme",
+  "license": "MIT",
+  "main": "lib/ui-components.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkillFuze/skillfuze.git"
+  },
+  "scripts": {
+    "start": "styleguidist server",
+    "build": "./node_modules/.bin/webpack"
+  },
+  "bugs": {
+    "url": "https://github.com/SkillFuze/skillfuze/issues"
+  },
+  "peerDependencies": {
+    "@emotion/core": "^10.x",
+    "@emotion/styled": "^10.x",
+    "react": "^16.x",
+    "react-dom": "^16.x"
+  },
+  "devDependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@types/react": "^16.9.23",
+    "react": "^16.13.0",
+    "react-docgen-typescript": "^1.16.2",
+    "react-dom": "^16.13.0",
+    "react-styleguidist": "^10.6.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
