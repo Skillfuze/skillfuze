@@ -34,5 +34,7 @@ module.exports = {
     '@typescript-eslint/no-useless-constructor': 'error',
     'class-methods-use-this': 'off',
     'react/jsx-filename-extension': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/destructuring-assignment': 'off',
   },
 };

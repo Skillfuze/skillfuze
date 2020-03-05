@@ -1,5 +1,7 @@
-# React component example:
+# Button
 
-```js
-<Button size="large">Push Me</Button>
+```jsx
+import Button from './Button';
+
+<Button text="Submit" />
 ```
