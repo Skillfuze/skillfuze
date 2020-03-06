@@ -26,7 +26,7 @@ export class AuthController {
   @Post('login')
   public async login(@Body() userLoginDTO: UserLoginDTO): Promise<string> {
     const user = await this.userService.findByEmail(userLoginDTO.email);
-    if (!user) {
+    if (!user || userLoginDTO.password !== user.password) {
       throw new InvalidEmailOrPasswordException();
     }
     const token = await this.authService.generateToken(user);
