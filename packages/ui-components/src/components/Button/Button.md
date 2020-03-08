@@ -1,6 +1,6 @@
 ## Examples
 
-### Style Variants
+### Basic Usage
 
 ```jsx
 <div className="container">

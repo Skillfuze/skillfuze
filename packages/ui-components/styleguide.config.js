@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 module.exports = {
+  title: 'Skillfuze UI Components Style Guide',
   require: [
     './src/assets/css/tailwind.css',
     './src/assets/css/styleguidist.css'
@@ -23,6 +24,7 @@ module.exports = {
       base: '"Open Sans"'
     }
   },
+  pagePerSection: true,
   components: () => {
     return glob.sync("src/components/**/*.tsx").filter(file => {
       if (file.match(/connect.tsx$/)) {
