@@ -58,7 +58,7 @@ describe('Auth Controller', () => {
       expect(user).toBeInstanceOf(User);
     });
 
-    it('should remove password, emptyPassword fields and add id field', async () => {
+    it('should remove password, confirmPassword fields and add id field', async () => {
       const user = await controller.register(payload);
 
       expect(user).toHaveProperty('id');
