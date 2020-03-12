@@ -24,12 +24,12 @@ export class AuthController {
   }
 
   @Post('login')
-  public async login(@Body() userLoginDTO: UserLoginDTO): Promise<string> {
+  public async login(@Body() userLoginDTO: UserLoginDTO): Promise<object> {
     const user = await this.userService.findByEmail(userLoginDTO.email);
     if (!user || userLoginDTO.password !== user.password) {
       throw new InvalidEmailOrPasswordException();
     }
     const token = await this.authService.generateToken(user);
-    return token;
+    return { token };
   }
 }

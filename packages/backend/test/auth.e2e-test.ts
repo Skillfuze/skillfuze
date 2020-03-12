@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidationPipe, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-
 import { AuthController } from '../src/api/auth/auth.controller';
 import { UserService } from '../src/api/users/user.service';
 import { UserRepository } from '../src/api/users/user.repository';
@@ -120,6 +118,14 @@ describe('AuthController (e2e)', () => {
         .send({ ...payload, password: '123567' });
 
       expect(res.status).toBe(400);
+    });
+
+    it('should return 400 and error message on empty fields', async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ ...payload, password: '' });
+      expect(res.status).toBe(400);
+      expect(res.body.message.length).toBe(1);
     });
   });
 

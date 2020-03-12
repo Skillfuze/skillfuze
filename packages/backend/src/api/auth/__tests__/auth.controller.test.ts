@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { InvalidEmailOrPasswordException } from '../../../common/exceptions/invalid-email-or-password-exception';
 import { AuthService } from '../auth.service';
-
 import { EmailAlreadyExistsException } from '../../../common/exceptions/email-already-exists.exception';
 import { AuthController } from '../auth.controller';
 import { User } from '../../users/user.entity';
@@ -67,7 +66,7 @@ describe('Auth Controller', () => {
       expect(user).toBeInstanceOf(User);
     });
 
-    it('should remove password, emptyPassword fields and add id field', async () => {
+    it('should remove password, confirmPassword fields and add id field', async () => {
       const user = await controller.register(payload);
 
       expect(user).toHaveProperty('id');
@@ -81,6 +80,7 @@ describe('Auth Controller', () => {
       );
     });
   });
+
   describe('login', () => {
     let generateTokenSpy: jest.SpyInstance;
     let findByEmailSpy: jest.SpyInstance;
