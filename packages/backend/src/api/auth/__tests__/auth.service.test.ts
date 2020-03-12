@@ -31,18 +31,18 @@ describe('Auth Service', () => {
   describe('GenerateToken', () => {
     const user = {
       id: 1,
-      firstName: 'Khaled',
-      lastName: 'Mohamed',
-      email: 'khaled@skillfuze.com',
+      firstName: 'Karim',
+      lastName: 'Elsayed',
+      email: 'karim@skillfuze.com',
       password: '123456789',
     };
     it('should generate token successfully', async () => {
       const res = authService.generateToken(user);
       expect(res).toHaveProperty('id');
       expect(res).toHaveProperty('email');
+      expect(res).toHaveProperty('lastName');
+      expect(res).toHaveProperty('firstName');
       expect(res).not.toHaveProperty('password');
-      expect(res).not.toHaveProperty('firstName');
-      expect(res).not.toHaveProperty('lastName');
     });
     it('should call jwt.sign', async () => {
       await authService.generateToken(user);

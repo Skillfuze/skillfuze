@@ -88,7 +88,7 @@ describe('Auth Controller', () => {
 
     const payload = {
       email: 'duplicate@gmail.com',
-      password: '1234567',
+      password: '123456789',
     };
 
     beforeEach(() => {
@@ -100,9 +100,10 @@ describe('Auth Controller', () => {
         if (email === 'duplicate@gmail.com') {
           return {
             id: 1,
-            firstName: 'Khaled',
-            lastName: 'Mohamed',
-            email: 'khaled@skillfuze.com',
+            firstName: 'Karim',
+            lastName: 'Elsayed',
+            email: 'karim@skillfuze.com',
+            password: '123456789',
           };
         }
         return undefined;
@@ -126,7 +127,7 @@ describe('Auth Controller', () => {
 
     it('should return token successfully', async () => {
       const token = await controller.login(payload);
-      expect(token).toMatch('token');
+      expect(token).toMatchObject({ token: 'token' });
     });
 
     it('should throw InvalidEmailOrPasswordException when user is undefined', async () => {
