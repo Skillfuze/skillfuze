@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Button } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
@@ -11,12 +10,12 @@ export const Header = () => {
     router.push('/register');
   };
   return (
-    <div className="flex flex-auto flex-row items-center">
-      <div className="flex flex-auto">
+    <div className="flex flex-auto flex-row items-center p-2">
+      <div className="flex-grow">
         <SkillFuze />
       </div>
-      <div>
-        <Button onClick={handleOnClick} className="w-48 mr-12" variant="outlined">
+      <div className="mr-12 w-1/6">
+        <Button className="w-full" onClick={handleOnClick} variant="outlined">
           Register
         </Button>
       </div>

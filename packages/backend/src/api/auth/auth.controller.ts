@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { InvalidEmailOrPasswordException } from '../../common/exceptions/invalid-email-or-password-exception';
 import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
 import { User } from '../users/user.entity';
@@ -23,7 +23,8 @@ export class AuthController {
     return createdUser;
   }
 
-  @Post('login')
+  @Post('/login')
+  @HttpCode(200)
   public async login(@Body() userLoginDTO: UserLoginDTO): Promise<object> {
     const user = await this.userService.findByEmail(userLoginDTO.email);
     if (!user || userLoginDTO.password !== user.password) {

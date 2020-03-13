@@ -28,7 +28,7 @@ describe('Auth Service', () => {
     });
   });
 
-  describe('GenerateToken', () => {
+  describe('generateToken', () => {
     const user = {
       id: 1,
       firstName: 'Karim',
@@ -38,15 +38,12 @@ describe('Auth Service', () => {
     };
     it('should generate token successfully', async () => {
       const res = authService.generateToken(user);
-      expect(res).toHaveProperty('id');
-      expect(res).toHaveProperty('email');
-      expect(res).toHaveProperty('lastName');
-      expect(res).toHaveProperty('firstName');
-      expect(res).not.toHaveProperty('password');
+      expect(res).toMatchObject({ id: 1, firstName: 'Karim', lastName: 'Elsayed', email: 'karim@skillfuze.com' });
     });
     it('should call jwt.sign', async () => {
       await authService.generateToken(user);
       expect(signSpy).toBeCalled();
+      expect(signSpy).toBeCalledWith({ id: 1, firstName: 'Karim', lastName: 'Elsayed', email: 'karim@skillfuze.com' });
     });
   });
 });

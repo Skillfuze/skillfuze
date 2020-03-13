@@ -2,13 +2,16 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
-class AuthService {
-  public user: null;
+export default class AuthService {
+  public user: undefined;
 
   private static _instance: AuthService;
 
-  public static get instance(): AuthService {
-    if (this._instance === undefined) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
+  public static getInstance(): AuthService {
+    if (!this._instance) {
       this._instance = new AuthService();
     }
     return this._instance;
@@ -16,7 +19,7 @@ class AuthService {
 
   async login(payload: any): Promise<any> {
     try {
-      const res = await axios.post('http://localhost:3000/api/v1/auth/login', payload);
+      const res = await axios.post('/api/v1/auth/login', payload);
       return res.data;
     } catch (err) {
       return err;
@@ -30,5 +33,12 @@ class AuthService {
       return err;
     }
   }
+
+  setItem(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getItem(key: string): string {
+    return localStorage.getItem(key);
+  }
 }
-export default new AuthService();

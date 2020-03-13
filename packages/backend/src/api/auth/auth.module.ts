@@ -13,11 +13,11 @@ import { UsersModule } from '../users/users.module';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: config.jwtSecret,
-      signOptions: { expiresIn: config.jwtExpiryDate },
+      secret: config.jwt.secret,
+      signOptions: config.jwt.signOptions,
     }),
   ],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  exports: [],
 })
 export class AuthModule {}
