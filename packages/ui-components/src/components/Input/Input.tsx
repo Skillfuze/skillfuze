@@ -7,6 +7,7 @@ interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   error?: string;
   onChange?: (value: any) => void;
   label?: string;
+  type?: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
@@ -33,6 +34,7 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
 
 Input.defaultProps = {
   error: '',
+  type: 'text',
 };
 
 export default Input;

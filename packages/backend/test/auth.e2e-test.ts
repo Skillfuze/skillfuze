@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidationPipe, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AuthController } from '../src/api/auth/auth.controller';
 import { UserService } from '../src/api/users/user.service';
 import { UserRepository } from '../src/api/users/user.repository';
 import { AuthModule } from '../src/api/auth/auth.module';
@@ -12,7 +12,7 @@ describe('AuthController (e2e)', () => {
   let app: INestApplication;
   const ormConfig: TypeOrmModuleOptions = {
     type: 'mysql',
-    url: 'mysql://root:root@localhost/skillfuze-test',
+    url: 'mysql://root:karim3214@localhost/skillfuze-test',
     database: 'skillfuze-test',
     synchronize: true,
     logging: false,
@@ -74,6 +74,58 @@ describe('AuthController (e2e)', () => {
         .send(payload);
 
       expect(res.status).toBe(400);
+    });
+  });
+
+  describe('POST /api/v1/auth/login', () => {
+    const url = '/api/v1/auth/login';
+    let authController: AuthController;
+    const payload = {
+      email: 'karim@skillfuze.com',
+      password: '123456789',
+    };
+    const registerPayload = {
+      firstName: 'karim',
+      lastName: 'Elsayed',
+      email: 'karim@skillfuze.com',
+      password: '123456789',
+      confirmPassword: '123456789',
+    };
+
+    beforeAll(() => {
+      authController = moduleFixture.get<AuthController>(AuthController);
+      authController.register(registerPayload);
+    });
+    it('should login the user and return 201', async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload);
+
+      expect(res.status).toBe(201);
+    });
+
+    it('should return 400 on empty values', async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ ...payload, firstName: '' });
+
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 on wrong password', async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ ...payload, password: '123567' });
+
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 and error message on empty fields', async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ ...payload, password: '' });
+      expect(res.status).toBe(400);
+      expect(res.body.message.length).toBe(1);
     });
   });
 
