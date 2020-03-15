@@ -9,21 +9,22 @@ import AuthService from '../../services/auth.service';
 const LoginPage = () => {
   const authService = AuthService.getInstance();
   const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const token = authService.getItem('token');
-    if (token) {
+    if (authService.user) {
       router.push('/');
     }
   }, []);
+
   const handleSubmit = async event => {
     event.preventDefault();
     const { token } = await authService.login({ email, password });
     if (token) {
       router.push('/');
-      authService.setItem(token);
+      authService.setToken(token);
       const decodedUser = authService.decodeJWT(token);
       authService.user = decodedUser;
     }
@@ -36,13 +37,11 @@ const LoginPage = () => {
           <LoginSVG />
         </div>
         <div className="flex flex-col w-1/4">
-          <div className="mt-16">
-            <p className="text-2xl font-bold text-left">
-              <strong>Hello,</strong>
-              <br />
-              <strong>Welcome back</strong>
-            </p>
-          </div>
+          <p className="mt-16 text-2xl font-bold text-left">
+            Hello,
+            <br />
+            Welcome back
+          </p>
           <Input className="mt-8 w-full" type="email" placeholder="Email" onChange={setEmail} />
           <Input className="mt-2 w-full" type="password" placeholder="Password" onChange={setPassword} />
           <p className="text-xs text-primary text-right mt-4">Forgot password?</p>

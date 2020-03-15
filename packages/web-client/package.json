@@ -12,6 +12,7 @@
     "@svgr/webpack": "^5.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
+    "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "next": "9.2.2",
     "postcss-cli": "^7.1.0",

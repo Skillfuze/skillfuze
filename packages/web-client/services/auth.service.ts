@@ -1,8 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import Cookie from 'js-cookie';
+import { useRouter } from 'next/router';
 
 export default class AuthService {
+  router = useRouter();
+
   public user: undefined;
 
   private static _instance: AuthService;
@@ -34,11 +38,16 @@ export default class AuthService {
     }
   }
 
-  setItem(token: string): void {
-    localStorage.setItem('token', token);
+  setToken(token: string): void {
+    Cookie.set('token', token, { expires: 1 });
   }
 
-  getItem(key: string): string {
-    return localStorage.getItem(key);
+  getToken(): string {
+    return Cookie.get('token');
   }
+
+  logout = () => {
+    Cookie.remove('token');
+    this.router.push('/login');
+  };
 }
