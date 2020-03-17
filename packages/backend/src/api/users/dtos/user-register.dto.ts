@@ -1,21 +1,27 @@
-import { IsEmail, IsNotEmpty, ValidateIf, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { ValidateIf } from '../../../utils/validation/ValidateIf';
 
 export class UserRegisterDTO {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'First Name should not be empty' })
   public firstName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Last Name should not be empty' })
   public lastName: string;
 
-  @IsNotEmpty()
-  @IsEmail()
+  @IsEmail({}, { message: 'Email should be in a valid format' })
+  @IsNotEmpty({ message: 'Email should not be empty' })
   public email: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(6, { message: 'Password should be at least 6 characters' })
+  @IsNotEmpty({ message: 'Password should not be empty' })
   public password: string;
 
-  @IsNotEmpty()
-  @ValidateIf(payload => payload.password === payload.confirmPassword)
+  @ValidateIf(
+    payload => {
+      return payload.confirmPassword === payload.password;
+    },
+    { message: 'Passwords do not match' },
+  )
+  @IsNotEmpty({ message: 'Confirm password should not be empty' })
   public confirmPassword: string;
 }

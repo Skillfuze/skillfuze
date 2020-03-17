@@ -13,7 +13,7 @@ type Config = {
 const config: Config = {
   db: {
     type: 'mysql',
-    url: 'mysql://root:karim3214@localhost/skillfuze-dev',
+    url: 'mysql://root:root@localhost/skillfuze-dev',
     database: 'skillfuze-dev',
     synchronize: process.env.NODE_ENV !== 'production',
     logging: process.env.NODE_ENV !== 'production',
