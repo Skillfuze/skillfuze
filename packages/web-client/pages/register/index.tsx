@@ -29,9 +29,12 @@ const RegisterPage = () => {
         confirmPassword,
       });
       router.push('/login');
-      alert.show('Success');
+      alert.show('Welcome to Skillfuze');
     } catch (err) {
       setError(err);
+      if (err.general) {
+        setError(prev => ({ ...prev, email: err.general }));
+      }
     }
   };
 
