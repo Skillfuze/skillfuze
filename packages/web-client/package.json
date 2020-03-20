@@ -3,17 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next -p 3001",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@skillfuze/ui-components": "^0.0.1",
+    "@svgr/webpack": "^5.2.0",
+    "autoprefixer": "^9.7.4",
+    "axios": "^0.19.2",
+    "js-cookie": "^2.2.1",
+    "jwt-decode": "^2.2.0",
     "next": "9.2.2",
+    "next-cookies": "^2.0.3",
+    "postcss-cli": "^7.1.0",
+    "postcss-import": "^12.0.1",
     "react": "16.13.0",
-    "react-dom": "16.13.0"
+    "react-alert": "^7.0.0",
+    "react-alert-template-basic": "^1.0.0",
+    "react-dom": "16.13.0",
+    "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^5.2.0",
     "@types/react": "^16.9.23"
-  }
+  },
+  "nohoist": [
+    "tailwindcss"
+  ]
 }

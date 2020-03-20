@@ -1,23 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from '../auth.service';
 import { EmailAlreadyExistsException } from '../../../common/exceptions/email-already-exists.exception';
 import { AuthController } from '../auth.controller';
 import { User } from '../../users/user.entity';
 import { UserService } from '../../users/user.service';
 
 jest.mock('../../users/user.service');
+jest.mock('@nestjs/jwt');
 
 describe('Auth Controller', () => {
   let controller: AuthController;
   let userService: UserService;
+  let authService: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [UserService],
+      providers: [UserService, AuthService, JwtService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
     userService = module.get<UserService>(UserService);
+    authService = module.get<AuthService>(AuthService);
   });
 
   describe('register', () => {
@@ -70,6 +75,45 @@ describe('Auth Controller', () => {
       await expect(controller.register({ ...payload, email: 'duplicate@gmail.com' })).rejects.toThrow(
         EmailAlreadyExistsException,
       );
+    });
+  });
+
+  describe('login', () => {
+    let generateTokenSpy: jest.SpyInstance;
+    let findByEmailSpy: jest.SpyInstance;
+
+    const payload = {
+      username: 'duplicate@gmail.com',
+      password: '123456789',
+    };
+
+    beforeEach(() => {
+      generateTokenSpy = jest.spyOn(authService, 'generateToken');
+      findByEmailSpy = jest.spyOn(userService, 'findByEmail');
+
+      findByEmailSpy.mockImplementation((email: string) => {
+        if (email === 'duplicate@gmail.com') {
+          const user = new User();
+          user.id = 1;
+          user.firstName = 'Karim';
+          user.lastName = 'Elsayed';
+          user.email = 'karim@skillfuze.com';
+          user.password = '123456789';
+          return user;
+        }
+        return undefined;
+      });
+
+      generateTokenSpy.mockImplementation((p: object) => {
+        if (p) return 'token';
+        return undefined;
+      });
+    });
+
+    it('should call authService.generateToken', async () => {
+      const res = await controller.login({ user: payload });
+      expect(generateTokenSpy).toBeCalled();
+      expect(res).toMatchObject({ token: 'token' });
     });
   });
 });

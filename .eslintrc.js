@@ -38,5 +38,6 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/destructuring-assignment': 'off',
+    'react/button-has-type': 'off',
   },
 };
