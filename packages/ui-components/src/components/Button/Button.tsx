@@ -7,6 +7,7 @@ import { baseButtonStyle, primaryButtonStyle, outlinedButtonStyle } from './styl
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outlined';
   color?: Color;
+  type?: 'button' | 'reset' | 'submit';
 }
 
 const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
@@ -19,7 +20,7 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
   );
 
   return (
-    <button type="button" {...props} className={className}>
+    <button {...props} className={className}>
       {props.children}
     </button>
   );
@@ -28,6 +29,7 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
 Button.defaultProps = {
   variant: 'primary',
   color: 'primary',
+  type: 'button',
 };
 
 export default Button;

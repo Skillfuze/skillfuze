@@ -3,6 +3,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import Cookie from 'js-cookie';
 import Router from 'next/router';
+import { parseError } from '../utils/parseError';
 
 export default class AuthService {
   public user: undefined;
@@ -32,6 +33,15 @@ export default class AuthService {
       return res.data;
     } catch (err) {
       return err;
+    }
+  }
+
+  async register(payload: any): Promise<any> {
+    try {
+      const res = await axios.post('/api/v1/auth/register', payload);
+      return res.data;
+    } catch (err) {
+      throw parseError(err.response.data);
     }
   }
 
