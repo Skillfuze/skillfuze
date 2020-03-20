@@ -13,13 +13,6 @@ export default class AuthService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  // public static getInstance(): AuthService {
-  //   if (!this._instance) {
-  //     this._instance = new AuthService();
-  //   }
-  //   return this._instance;
-  // }
-
   static get instance(): AuthService {
     if (!this._instance) {
       this._instance = new AuthService();
@@ -32,7 +25,7 @@ export default class AuthService {
       const res = await axios.post('/api/v1/auth/login', payload);
       return res.data;
     } catch (err) {
-      return err;
+      throw err.response;
     }
   }
 
@@ -57,7 +50,7 @@ export default class AuthService {
     return Cookie.get('token');
   }
 
-  logout = () => {
+  logout = (): void => {
     Cookie.remove('token');
     Router.push('/login');
   };
