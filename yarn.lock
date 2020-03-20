@@ -2454,10 +2454,10 @@
     "@types/jsonwebtoken" "7.2.8"
     jsonwebtoken "8.4.0"
 
-"@nestjs/passport@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-6.1.1.tgz#991b8736c0ebffabb85a6455f0288055e5b52755"
-  integrity sha512-wMhvi3Ru965nftCLUhFUqWNwyzSxVDmGgTEYVyWbOOmHFjNg5US47jzV2NresuUP2vjgg8J8S6DviKTVuLfkRw==
+"@nestjs/passport@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-7.0.0.tgz#c59617779b7e5888a0c72039a6980e28fd659518"
+  integrity sha512-ZJk08zqLxSXY1rXIt9dAK7tcCos3DETQ88Nn/UGmA136SHMG5P0sbw+PU1zfLQyEsU5uHyr7MTD+/S+aOxXS6w==
 
 "@nestjs/platform-express@^6.7.2":
   version "6.10.14"
@@ -2909,6 +2909,15 @@
   dependencies:
     "@types/express" "*"
     "@types/jsonwebtoken" "*"
+    "@types/passport-strategy" "*"
+
+"@types/passport-local@^1.0.33":
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/@types/passport-local/-/passport-local-1.0.33.tgz#d245b60c5b801cb3aeca1ffab557d5fe1534260d"
+  integrity sha512-+rn6ZIxje0jZ2+DAiWFI8vGG7ZFKB0hXx2cUdMmudSWsigSq6ES7Emso46r4HJk0qCgrZVfI8sJiM7HIYf4SbA==
+  dependencies:
+    "@types/express" "*"
+    "@types/passport" "*"
     "@types/passport-strategy" "*"
 
 "@types/passport-strategy@*":
@@ -11560,6 +11569,13 @@ passport-jwt@^4.0.0:
   dependencies:
     jsonwebtoken "^8.2.0"
     passport-strategy "^1.0.0"
+
+passport-local@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-local/-/passport-local-1.0.0.tgz#1fe63268c92e75606626437e3b906662c15ba6ee"
+  integrity sha1-H+YyaMkudWBmJkN+O5BmYsFbpu4=
+  dependencies:
+    passport-strategy "1.x.x"
 
 passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
