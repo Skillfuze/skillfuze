@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import cookies from 'next-cookies';
 import { Button, Input } from '@skillfuze/ui-components';
 import LoginSVG from '../../assets/icons/login.svg';
 import { Header } from '../../components/Header';
@@ -7,21 +8,14 @@ import { Footer } from '../../components/Footer';
 import AuthService from '../../services/auth.service';
 
 const LoginPage = () => {
-  const authService = AuthService.getInstance();
+  const authService = AuthService.instance;
   const router = useRouter();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    if (authService.user) {
-      router.push('/');
-    }
-  }, []);
-
   const handleSubmit = async event => {
     event.preventDefault();
-    const { token } = await authService.login({ email, password });
+    const { token } = await authService.login({ username: email, password });
     if (token) {
       router.push('/');
       authService.setToken(token);
@@ -57,4 +51,10 @@ const LoginPage = () => {
   );
 };
 
+LoginPage.getInitialProps = async ctx => {
+  const { token } = cookies(ctx);
+  const authService = AuthService.instance;
+  authService.user = authService.decodeJWT(token);
+  return { user: authService.user };
+};
 export default LoginPage;

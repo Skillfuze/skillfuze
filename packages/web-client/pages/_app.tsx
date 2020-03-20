@@ -5,15 +5,17 @@ import '../assets/css/openSans.css';
 
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import AuthService from '../services/auth.service';
+import Router from 'next/router';
 
 const MyApp = ({ Component, pageProps }) => {
   axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-  const authService = AuthService.getInstance();
   useEffect(() => {
-    const token = authService.getToken();
-    authService.user = authService.decodeJWT(token);
+    console.log(pageProps.user);
+    if (pageProps.user) {
+      Router.push('/');
+    }
   }, []);
   return <Component {...pageProps} />;
 };
+
 export default MyApp;

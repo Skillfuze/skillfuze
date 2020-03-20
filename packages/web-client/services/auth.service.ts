@@ -2,11 +2,9 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import Cookie from 'js-cookie';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 
 export default class AuthService {
-  router = useRouter();
-
   public user: undefined;
 
   private static _instance: AuthService;
@@ -14,7 +12,14 @@ export default class AuthService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static getInstance(): AuthService {
+  // public static getInstance(): AuthService {
+  //   if (!this._instance) {
+  //     this._instance = new AuthService();
+  //   }
+  //   return this._instance;
+  // }
+
+  static get instance(): AuthService {
     if (!this._instance) {
       this._instance = new AuthService();
     }
@@ -48,6 +53,6 @@ export default class AuthService {
 
   logout = () => {
     Cookie.remove('token');
-    this.router.push('/login');
+    Router.push('/login');
   };
 }
