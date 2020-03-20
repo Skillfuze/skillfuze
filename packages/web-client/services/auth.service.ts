@@ -36,11 +36,7 @@ export default class AuthService {
   }
 
   decodeJWT(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (err) {
-      return err;
-    }
+    return jwtDecode(token);
   }
 
   setToken(token: string): void {

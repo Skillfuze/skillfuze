@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import cookies from 'next-cookies';
 import { Button, Input } from '@skillfuze/ui-components';
+
 import LoginSVG from '../../assets/icons/login.svg';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 import AuthService from '../../services/auth.service';
+import withAuth from '../../utils/withAuth/withAuth';
 
 const LoginPage = () => {
   const authService = AuthService.instance;
@@ -23,6 +24,7 @@ const LoginPage = () => {
       authService.user = decodedUser;
     }
   };
+
   return (
     <div className="flex flex-col w-full h-screen">
       <Header />
@@ -51,10 +53,6 @@ const LoginPage = () => {
   );
 };
 
-LoginPage.getInitialProps = async ctx => {
-  const { token } = cookies(ctx);
-  const authService = AuthService.instance;
-  authService.user = authService.decodeJWT(token);
-  return { user: authService.user };
-};
-export default LoginPage;
+export default withAuth({
+  redirectOnAuthSuccess: '/',
+})(LoginPage);
