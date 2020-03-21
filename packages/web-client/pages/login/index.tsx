@@ -4,7 +4,6 @@ import { Button, Input } from '@skillfuze/ui-components';
 import Link from 'next/link';
 import { useAlert } from 'react-alert';
 import LoginSVG from '../../assets/icons/login.svg';
-import { Footer } from '../../components/Footer';
 import AuthService from '../../services/auth.service';
 import withAuth from '../../utils/withAuth/withAuth';
 import Layout from '../../components/Layout';
@@ -75,9 +74,6 @@ const LoginPage = () => {
             login
           </Button>
         </div>
-      </div>
-      <div className="flex flex-row w-full h-12 bg-primary items-center ">
-        <Footer />
       </div>
     </Layout>
   );
