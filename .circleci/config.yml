@@ -70,7 +70,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_HOST: 127.0.0.1
-          MYSQL_USER: root
+          MYSQL_USER: circleci
           MYSQL_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
     steps:
