@@ -1,0 +1,9 @@
+coverage:
+  range: "85...100"
+  status:
+    target: 85
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false
