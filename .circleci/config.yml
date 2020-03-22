@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  checkout:
+  node-checkout:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
@@ -11,7 +11,9 @@ jobs:
         key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
         name: install-deps
-        command: yarn && npx lerna bootstrap
+        command: |
+          yarn
+          npx lerna bootstrap
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
@@ -52,10 +54,10 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - checkout
+      - node-checkout
       - build:
         - requires:
-          - checkout
+          - node-checkout
       - lint:
         - requires:
           - build
