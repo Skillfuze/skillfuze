@@ -1,0 +1,67 @@
+version: 2.1
+
+jobs:
+  checkout:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+        name: install-deps
+        command: yarn && npx lerna bootstrap
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
+  build:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      name: build-packages
+      command: yarn build
+
+  lint:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      name: lint-packages
+      command: yarn lint
+
+  test:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      name: test-backend
+      command: cd packages/backend && yarn test:cov
+
+  test-e2e:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      name: test-backend
+      command: cd packages/backend && yarn test:e2e
+
+workflows:
+  build-and-test:
+    jobs:
+      - checkout
+      - build:
+        - requires:
+          - checkout
+      - lint:
+        - requires:
+          - build
+      - test:
+        - requires:
+          - build
+      - test-e2e:
+        - requires:
+          - test
