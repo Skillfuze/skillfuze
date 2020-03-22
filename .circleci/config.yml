@@ -62,6 +62,8 @@ jobs:
             JEST_JUNIT_OUTPUT_NAME: unit-results.xml
       - store_test_results:
           path: packages/backend/test-results
+      - store_artifacts:
+          path: packages/backend/coverage
 
   test-e2e:
     working_directory: ~/skillfuze
@@ -69,8 +71,7 @@ jobs:
       - image: circleci/node:lts
       - image: circleci/mysql:5.7
         environment:
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_USER: circleci
+          MYSQL_ROOT_HOST: 127.0.0.1
           MYSQL_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
     steps:
