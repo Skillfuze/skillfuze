@@ -14,12 +14,13 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            yarn
+            yarn install --frozen-lockfile
             yarn bootstrap
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+            - ~/.cache/yarn
       - persist_to_workspace:
           root: ~/skillfuze
           paths:
@@ -72,7 +73,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ROOT_HOST: 127.0.0.1
-          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
     steps:
       - attach_workspace:
