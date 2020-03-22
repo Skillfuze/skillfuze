@@ -10,7 +10,7 @@ jobs:
       - restore_cache:
         key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-        name: install-deps
+        name: Install Dependencies
         command: |
           yarn
           npx lerna bootstrap
@@ -24,32 +24,36 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
-      name: build-packages
-      command: yarn build
+      - run:
+        name: Build Packages
+        command: yarn build
 
   lint:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
     steps:
-      name: lint-packages
-      command: yarn lint
+      - run:
+        name: Lint Packages
+        command: yarn lint
 
   test:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
     steps:
-      name: test-backend
-      command: cd packages/backend && yarn test:cov
+      run:
+        name: Test Backend
+        command: cd packages/backend && yarn test:cov
 
   test-e2e:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
     steps:
-      name: test-backend
-      command: cd packages/backend && yarn test:e2e
+      run:
+        name: Test Backend E2E
+        command: cd packages/backend && yarn test:e2e
 
 workflows:
   build-and-test:
