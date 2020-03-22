@@ -61,18 +61,18 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: test-results
             JEST_JUNIT_OUTPUT_NAME: unit-results.xml
       - store_test_results:
-          path: test-results
+          path: packages/backend/test-results
 
   test-e2e:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
-      - image: circleci/mysql:8.0.12
+      - image: circleci/mysql:5.7
         environment:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: skillfuze-test
+          MYSQL_HOST: 127.0.0.1
           MYSQL_USER: root
           MYSQL_PASSWORD: root
+          MYSQL_DATABASE: skillfuze-test
     steps:
       - attach_workspace:
           at: ~/skillfuze
@@ -83,7 +83,7 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: test-results
             JEST_JUNIT_OUTPUT_NAME: e2e-results.xml
       - store_test_results:
-          path: test-results
+          path: packages/backend/test-results
 
 workflows:
   build-and-test:
