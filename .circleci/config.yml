@@ -13,7 +13,7 @@ jobs:
           name: Install Dependencies
           command: |
             yarn
-            'npx lerna bootstrap'
+            yarn bootstrap
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
