@@ -21,7 +21,7 @@ jobs:
       - persist_to_workspace:
           root: ~/skillfuze
           paths:
-            - ~/skillfuze/*
+            - ./*
 
   build:
     working_directory: ~/skillfuze
