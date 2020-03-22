@@ -13,7 +13,7 @@ jobs:
         name: Install Dependencies
         command: |
           yarn
-          npx lerna bootstrap
+          'npx lerna bootstrap'
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
@@ -42,7 +42,7 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
-      run:
+      - run:
         name: Test Backend
         command: cd packages/backend && yarn test:cov
 
@@ -51,7 +51,7 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
-      run:
+      - run:
         name: Test Backend E2E
         command: cd packages/backend && yarn test:e2e
 
@@ -60,14 +60,14 @@ workflows:
     jobs:
       - node-checkout
       - build:
-        - requires:
+        requires:
           - node-checkout
       - lint:
-        - requires:
+        requires:
           - build
       - test:
-        - requires:
+        requires:
           - build
       - test-e2e:
-        - requires:
+        requires:
           - test
