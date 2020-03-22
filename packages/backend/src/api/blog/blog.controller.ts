@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards, Request } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody, CreateManyDto } from '@nestjsx/crud';
 
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Crud({
   model: {
@@ -17,6 +18,7 @@ export class BlogController implements CrudController<Blog> {
     return this;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Override()
   createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog): Promise<Blog> {
     return this.base.createOneBase(req, dto);
