@@ -62,6 +62,10 @@ jobs:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
+      - image: circleci/mysql:8.0.4
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: skillfuze-test
     steps:
       - attach_workspace:
           at: ~/skillfuze
