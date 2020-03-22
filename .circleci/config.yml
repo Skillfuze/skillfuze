@@ -18,12 +18,18 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - ~/skillfuze/*
 
   build:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
     steps:
+      - attach_workspace:
+          at: ~/skillfuze
       - run:
           name: Build Packages
           command: yarn build
@@ -33,6 +39,8 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
+      - attach_workspace:
+          at: ~/skillfuze
       - run:
           name: Lint Packages
           command: yarn lint
@@ -42,6 +50,8 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
+      - attach_workspace:
+          at: ~/skillfuze
       - run:
           name: Test Backend
           command: cd packages/backend && yarn test:cov
@@ -51,6 +61,8 @@ jobs:
     docker:
       - image: circleci/node:lts
     steps:
+      - attach_workspace:
+          at: ~/skillfuze
       - run:
           name: Test Backend E2E
           command: cd packages/backend && yarn test:e2e
