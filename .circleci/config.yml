@@ -56,22 +56,34 @@ jobs:
           at: ~/skillfuze
       - run:
           name: Test Backend
-          command: cd packages/backend && yarn test:cov
+          command: cd packages/backend && yarn test:cov --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test-results
+            JEST_JUNIT_OUTPUT_NAME: unit-results.xml
+      - store_test_results:
+          path: test-results
 
   test-e2e:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mysql:8.0.12
         environment:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
     steps:
       - attach_workspace:
           at: ~/skillfuze
       - run:
           name: Test Backend E2E
-          command: cd packages/backend && yarn test:e2e
+          command: cd packages/backend && yarn test:e2e --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test-results
+            JEST_JUNIT_OUTPUT_NAME: e2e-results.xml
+      - store_test_results:
+          path: test-results
 
 workflows:
   build-and-test:
