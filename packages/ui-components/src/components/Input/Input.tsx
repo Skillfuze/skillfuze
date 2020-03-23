@@ -7,6 +7,8 @@ interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   error?: string;
   onChange?: (value: any) => void;
   label?: string;
+  type?: string;
+  value?: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
@@ -23,7 +25,7 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col">
       {Boolean(props.label?.length) && <p className={cx(labelType, 'mb-1')}>{props.label}</p>}
       <input {...props} className={className} onChange={onChange} />
       {Boolean(error?.length) && <p className={cx(errorType, 'mt-1')}>{error}</p>}
@@ -33,6 +35,8 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
 
 Input.defaultProps = {
   error: '',
+  type: 'text',
+  value: '',
 };
 
 export default Input;
