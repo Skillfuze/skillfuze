@@ -16,10 +16,6 @@ export class UserRegisterDTO {
   @IsNotEmpty({ message: 'Password should not be empty' })
   public password: string;
 
-<<<<<<< HEAD
-  @IsNotEmpty()
-  @ValidateIf(/* istanbul ignore next */ payload => payload.password === payload.confirmPassword)
-=======
   @ValidateIf(
     payload => {
       return payload.confirmPassword === payload.password;
@@ -27,6 +23,5 @@ export class UserRegisterDTO {
     { message: 'Passwords do not match' },
   )
   @IsNotEmpty({ message: 'Confirm password should not be empty' })
->>>>>>> 7b0ac2b39076ba80362ca2641ecf6f82ce89e621
   public confirmPassword: string;
 }
