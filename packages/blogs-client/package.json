@@ -12,9 +12,13 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "autoprefixer": "^9.7.5",
     "gatsby": "^2.19.7",
+    "gatsby-plugin-postcss": "^2.2.1",
+    "gatsby-plugin-typescript": "^2.3.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "tailwindcss": "^1.2.0"
   },
   "repository": {
     "type": "git",
