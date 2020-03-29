@@ -4,10 +4,15 @@ import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody,
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CreateBlogDTO } from './dtos/create-blog.dto';
 
 @Crud({
   model: {
     type: Blog,
+  },
+  query: {
+    alwaysPaginate: true,
+    limit: 10,
   },
 })
 @Controller('blogs')
@@ -20,8 +25,18 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
-  createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog): Promise<Blog> {
-    return this.base.createOneBase(req, dto);
+  createOne(
+    @ParsedRequest() req: CrudRequest,
+    @ParsedBody() dto: CreateBlogDTO,
+    @Request() nestRequest,
+  ): Promise<Blog> {
+    const parsedDTO = {
+      ...dto,
+      user: {
+        id: nestRequest.user.id,
+      },
+    };
+    return this.base.createOneBase(req, parsedDTO as Blog);
   }
 
   @Override()

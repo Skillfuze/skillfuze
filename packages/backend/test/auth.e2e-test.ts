@@ -123,7 +123,7 @@ describe('AuthController (e2e)', () => {
 
   afterEach(async () => {
     const userRepo = moduleFixture.get<UserRepository>(UserRepository);
-    await userRepo.clear();
+    await userRepo.delete({});
   });
 
   afterAll(async () => {
