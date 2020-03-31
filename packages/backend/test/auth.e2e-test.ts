@@ -81,7 +81,7 @@ describe('AuthController (e2e)', () => {
     const url = '/api/v1/auth/login';
     let authController: AuthController;
     const payload = {
-      email: 'karim@skillfuze.com',
+      username: 'karim@skillfuze.com',
       password: '123456789',
     };
     const registerPayload = {
@@ -92,9 +92,9 @@ describe('AuthController (e2e)', () => {
       confirmPassword: '123456789',
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       authController = moduleFixture.get<AuthController>(AuthController);
-      authController.register(registerPayload);
+      await authController.register(registerPayload);
     });
     it('should login the user and return 200', async () => {
       const res = await request(app.getHttpServer())
@@ -104,14 +104,12 @@ describe('AuthController (e2e)', () => {
       expect(res.status).toBe(200);
     });
 
-    it('should return 400 and error message on empty values', async () => {
+    it('should return 401 on empty values', async () => {
       const res = await request(app.getHttpServer())
         .post(url)
-        .send({ ...payload, email: '' });
+        .send({ ...payload, username: '' });
 
-      expect(res.status).toBe(400);
-      expect(res.body.message.length).toBe(1);
-      expect(res.body.message[0].constraints.isNotEmpty).toBe('email should not be empty');
+      expect(res.status).toBe(401);
     });
 
     it('should return 400 on wrong password', async () => {
