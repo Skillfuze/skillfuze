@@ -10,6 +10,9 @@ import { CreateBlogDTO } from './dtos/create-blog.dto';
   model: {
     type: Blog,
   },
+  routes: {
+    only: ['getOneBase', 'getManyBase', 'createOneBase', 'updateOneBase', 'deleteOneBase'],
+  },
   query: {
     alwaysPaginate: true,
     limit: 10,
@@ -39,19 +42,10 @@ export class BlogController implements CrudController<Blog> {
     return this.base.createOneBase(req, parsedDTO as Blog);
   }
 
-  @Override()
-  createMany(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: CreateManyDto<Blog>): Promise<Blog[]> {
-    return this.base.createManyBase(req, dto);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Override()
   updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog): Promise<Blog> {
     return this.base.updateOneBase(req, dto);
-  }
-
-  @Override()
-  replaceOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog): Promise<Blog> {
-    return this.base.replaceOneBase(req, dto);
   }
 
   @Override()

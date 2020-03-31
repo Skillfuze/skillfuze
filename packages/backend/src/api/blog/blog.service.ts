@@ -6,6 +6,7 @@ import { BlogRepository } from './blog.repository';
 
 @Injectable()
 export class BlogService extends TypeOrmCrudService<Blog> {
+  /* istanbul ignore next */
   constructor(private readonly repository: BlogRepository) {
     super(repository);
   }

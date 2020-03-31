@@ -7,7 +7,7 @@ export class CreateBlogDTO {
 
   @IsString()
   @IsOptional()
-  public description: string;
+  public description?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -15,11 +15,11 @@ export class CreateBlogDTO {
 
   @IsOptional()
   @IsUrl()
-  public thumbnailURL: string;
+  public thumbnailURL?: string;
 
-  public user: { id: number };
+  public user?: { id: number };
 
   @IsOptional()
   @IsArray()
-  public tags: string[];
+  public tags?: string[];
 }

@@ -35,7 +35,7 @@ export class Blog {
   @Column({ type: 'timestamp', nullable: true })
   public publishedAt: Date;
 
-  @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
   public user: User;
 
