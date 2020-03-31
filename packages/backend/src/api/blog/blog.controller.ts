@@ -1,5 +1,5 @@
-import { Controller, UseGuards, Request } from '@nestjs/common';
-import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody, CreateManyDto } from '@nestjsx/crud';
+import { Controller, UseGuards, Request, ForbiddenException } from '@nestjs/common';
+import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
@@ -28,7 +28,7 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
-  createOne(
+  async createOne(
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: CreateBlogDTO,
     @Request() nestRequest,
@@ -44,12 +44,35 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
-  updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog): Promise<Blog> {
+  async updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog, @Request() nestRequest): Promise<Blog> {
+    const blog = await this.service.findOne(
+      { id: nestRequest.params.id },
+      {
+        relations: ['user'],
+      },
+    );
+
+    if (blog && blog.user.id !== nestRequest.user.id) {
+      throw new ForbiddenException();
+    }
+
     return this.base.updateOneBase(req, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Override()
-  async deleteOne(@ParsedRequest() req: CrudRequest): Promise<void | Blog> {
+  async deleteOne(@ParsedRequest() req: CrudRequest, @Request() nestRequest): Promise<void | Blog> {
+    const blog = await this.service.findOne(
+      { id: nestRequest.params.id },
+      {
+        relations: ['user'],
+      },
+    );
+
+    if (blog && blog.user.id !== nestRequest.user.id) {
+      throw new ForbiddenException();
+    }
+
     return this.base.deleteOneBase(req);
   }
 }

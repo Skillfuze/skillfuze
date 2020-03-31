@@ -149,7 +149,66 @@ describe('Blogs (e2e)', () => {
         .expect(404);
     });
 
-    it('should return 403 on trying to edit another user blog', () => {});
+    it('should return 403 on trying to edit another user blog', async () => {
+      const newContent = 'test content changed.';
+      const otherUserToken =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJLaGFsZWQiLCJsYXN0TmFtZSI6Ik1vaGFtZWQiLCJlbWFpbCI6ImtoYWxlZDEyM0Bza2lsbGZ1emUuY29tIiwiaWQiOi0xLCJpYXQiOjE1ODU2ODc3NDh9.MC08RjbFFgGCYcBDNPGYVx_1Aevo7r7E1kU1dT3qif4';
+
+      await request(app.getHttpServer())
+        .patch(`${url}/${blog.id}`)
+        .send({ content: newContent })
+        .set('Authorization', otherUserToken)
+        .expect(403);
+    });
+  });
+
+  describe('DELETE /api/v1/blogs/:id', () => {
+    const url = '/api/v1/blogs';
+    let blog: Blog;
+
+    beforeEach(async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ title: 'Test Blog', content: 'test content.' })
+        .set('Authorization', token);
+
+      blog = res.body;
+    });
+
+    it('should delete the blog successfully', async () => {
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .set('Authorization', token)
+        .expect(200);
+
+      const newBlog = await blogService.findOne({ id: blog.id });
+      expect(newBlog).toBe(undefined);
+    });
+
+    it('should return 401 on unauthorized access', async () => {
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .expect(401);
+    });
+
+    it('should return 404 on invalid blog id', async () => {
+      const invalidId = 4;
+
+      await request(app.getHttpServer())
+        .delete(`${url}/${invalidId}`)
+        .set('Authorization', token)
+        .expect(404);
+    });
+
+    it('should return 403 on trying to edit another user blog', async () => {
+      const otherUserToken =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJLaGFsZWQiLCJsYXN0TmFtZSI6Ik1vaGFtZWQiLCJlbWFpbCI6ImtoYWxlZDEyM0Bza2lsbGZ1emUuY29tIiwiaWQiOi0xLCJpYXQiOjE1ODU2ODc3NDh9.MC08RjbFFgGCYcBDNPGYVx_1Aevo7r7E1kU1dT3qif4';
+
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .set('Authorization', otherUserToken)
+        .expect(403);
+    });
   });
 
   afterEach(async () => {
