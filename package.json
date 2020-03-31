@@ -10,6 +10,8 @@
   },
   "scripts": {
     "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap",
     "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
