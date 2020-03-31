@@ -43,12 +43,12 @@ const LoginPage = () => {
   );
   return (
     <Layout navControls={navControls}>
-      <div className="flex flex-grow px-12 items-center h-full">
+      <div className="flex flex-grow px-40 items-center justify-center h-full">
         <div className="flex w-2/3">
           <LoginSVG />
         </div>
 
-        <div className="self-start w-1/4 mt-6">
+        <div className="w-1/3">
           <h1 className="text-2xl font-bold text-left">
             Hello,
             <br />
@@ -65,7 +65,7 @@ const LoginPage = () => {
           {error && <p className="text-xs text-warning text-right mt-1">{error}</p>}
           <div className="text-right mt-3">
             <Link href="/register">
-              <Button className="text-xs" variant="link">
+              <Button className="text-xs font-light" variant="link">
                 Forgot password?
               </Button>
             </Link>
