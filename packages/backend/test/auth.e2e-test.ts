@@ -12,7 +12,7 @@ describe('AuthController (e2e)', () => {
   let app: INestApplication;
   const ormConfig: TypeOrmModuleOptions = {
     type: 'mysql',
-    url: 'mysql://root:root@localhost/skillfuze-test',
+    url: 'mysql://root:karim3214@localhost/skillfuze-test',
     database: 'skillfuze-test',
     synchronize: true,
     logging: false,
