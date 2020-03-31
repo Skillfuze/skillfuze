@@ -4,7 +4,6 @@ import { Button, Input } from '@skillfuze/ui-components';
 import Link from 'next/link';
 import { useAlert } from 'react-alert';
 import LoginSVG from '../../assets/icons/login.svg';
-import { Footer } from '../../components/Footer';
 import AuthService from '../../services/auth.service';
 import withAuth from '../../utils/withAuth/withAuth';
 import Layout from '../../components/Layout';
@@ -44,12 +43,12 @@ const LoginPage = () => {
   );
   return (
     <Layout navControls={navControls}>
-      <div className="flex flex-grow px-12 items-center h-full">
+      <div className="flex flex-grow px-40 items-center justify-center h-full">
         <div className="flex w-2/3">
           <LoginSVG />
         </div>
 
-        <div className="self-start w-1/4 mt-6">
+        <div className="w-1/3">
           <h1 className="text-2xl font-bold text-left">
             Hello,
             <br />
@@ -75,9 +74,6 @@ const LoginPage = () => {
             login
           </Button>
         </div>
-      </div>
-      <div className="flex flex-row w-full h-12 bg-primary items-center ">
-        <Footer />
       </div>
     </Layout>
   );
