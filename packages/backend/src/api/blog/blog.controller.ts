@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, ForbiddenException } from '@nestjs/common';
+import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
 import { Blog } from './blog.entity';
@@ -74,5 +74,12 @@ export class BlogController implements CrudController<Blog> {
     }
 
     return this.base.deleteOneBase(req);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/:id/publish')
+  @HttpCode(200)
+  async publish(@Request() req): Promise<Blog> {
+    return this.service.publish(req.params.id, req.user.id);
   }
 }

@@ -169,4 +169,20 @@ describe('BlogController', () => {
       expect(blogServiceFindOneSpy).toBeCalledWith({ id: payload.id }, { relations: ['user'] });
     });
   });
+
+  describe('publish', () => {
+    let servicePublishSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      servicePublishSpy = jest.spyOn(service, 'publish');
+    });
+    it('should call and return service.publish', async () => {
+      const userId = 1;
+      const blogId = 1;
+      const res = await controller.publish({ user: { id: userId }, params: { id: blogId } });
+      expect(servicePublishSpy).toBeCalledWith(blogId, userId);
+      const serviceRes = service.publish(blogId, userId);
+      expect(serviceRes).toBe(res);
+    });
+  });
 });

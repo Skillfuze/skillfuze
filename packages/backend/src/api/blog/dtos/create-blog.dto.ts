@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
 
 export class CreateBlogDTO {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Title should not be empty' })
   @IsString()
   public title: string;
 
@@ -9,12 +9,12 @@ export class CreateBlogDTO {
   @IsOptional()
   public description?: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Content should not be empty' })
   @IsString()
   public content: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({}, { message: 'Thumbnail URL should be valid URL' })
   public thumbnailURL?: string;
 
   public user?: { id: number };

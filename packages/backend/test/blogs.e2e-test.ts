@@ -211,6 +211,36 @@ describe('Blogs (e2e)', () => {
     });
   });
 
+  describe('POST /api/v1/blogs/:id/publish', () => {
+    const url = '/api/v1/blogs';
+    let blog: Blog;
+
+    beforeEach(async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send({ title: 'Test Blog', content: 'test content.' })
+        .set('Authorization', token);
+
+      blog = res.body;
+    });
+
+    it('should publish the blog successfully', async () => {
+      await request(app.getHttpServer())
+        .post(`${url}/${blog.id}/publish`)
+        .set('Authorization', token)
+        .expect(200);
+
+      const newBlog = await blogService.findOne({ id: blog.id });
+      expect(newBlog.publishedAt).not.toBe(undefined);
+    });
+
+    it('should return 401 on unauthorized access', async () => {
+      await request(app.getHttpServer())
+        .post(`${url}/${blog.id}/publish`)
+        .expect(401);
+    });
+  });
+
   afterEach(async () => {
     const blogRepo = module.get<BlogRepository>(BlogRepository);
     await blogRepo.delete({});
