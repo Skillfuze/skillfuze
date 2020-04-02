@@ -1,6 +1,6 @@
 import { TestingModule, Test } from '@nestjs/testing';
 import { InvalidEmailOrPasswordException } from '../../../common/exceptions/invalid-email-or-password-exception';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { User } from '../../users/user.entity';
 import { LocalStrategy } from '../strategies/local.strategy';
 

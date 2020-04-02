@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^6.7.2",
     "@nestjs/typeorm": "^6.2.0",
     "@types/passport-jwt": "^3.0.3",
+    "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
@@ -65,6 +66,11 @@
       "json",
       "ts"
     ],
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!main.ts",
+      "!api/**/*.module.ts"
+      ],
     "rootDir": "src",
     "testRegex": ".test.ts$",
     "transform": {
