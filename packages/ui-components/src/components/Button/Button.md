@@ -24,3 +24,14 @@
   <Button variant="outlined" color="warning">Warning</Button>
 </div>
 ```
+
+### Size Variants
+
+```jsx
+<div className="container">
+  <Button size="small">Small</Button>
+  <Button size="medium">Medium</Button>
+   <Button size="regular">Regular</Button>
+  <Button size="large">Large</Button>
+</div>
+```

@@ -1,9 +1,9 @@
-import { css } from 'emotion';
+import { css, cx } from 'emotion';
+import { ButtonSize } from '../../types/button-size.type';
 import { Color } from '../../types/colors.type';
 
 export const baseButtonStyle = css`
   border-radius: 4px;
-  font-size: 14px;
   font-weight: bold;
   color: var(--color-white);
   text-transform: uppercase;
@@ -43,4 +43,25 @@ export const outlinedButtonStyle = (color: Color) => {
       color: var(--color-white);
     }
   `;
+};
+
+export const buttonSize = (size: ButtonSize) => {
+  const sizeMap = {
+    small: '0.5rem',
+    medium: '0.6rem',
+    regular: '0.7rem',
+    large: '1rem',
+  };
+  const paddingMap = {
+    small: 'px-4 py-1',
+    medium: 'px-4 py-2',
+    regular: 'px-4 py-2',
+    large: 'px-4 py-2',
+  };
+  return cx(
+    css`
+      font-size: ${sizeMap[size]};
+    `,
+    paddingMap[size],
+  );
 };
