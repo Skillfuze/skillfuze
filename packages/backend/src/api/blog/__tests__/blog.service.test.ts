@@ -1,9 +1,14 @@
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import * as slugify from 'slugify';
+import * as shortid from 'shortid';
+
 import { BlogService } from '../blog.service';
 import { BlogRepository } from '../blog.repository';
 
 jest.mock('../blog.repository');
 jest.mock('@nestjsx/crud-typeorm');
+jest.mock('shortid');
+jest.mock('slugify');
 
 describe('BlogService', () => {
   let updateSpy: jest.SpyInstance;
@@ -16,6 +21,14 @@ describe('BlogService', () => {
     const nowDate = Date.now();
     jest.spyOn(Date, 'now').mockImplementation(() => {
       return nowDate;
+    });
+
+    jest.spyOn(slugify, 'default').mockImplementation(() => {
+      return 'title';
+    });
+
+    jest.spyOn(shortid, 'generate').mockImplementation(() => {
+      return 'randomID';
     });
   });
 
@@ -37,6 +50,13 @@ describe('BlogService', () => {
     it('should throw NotFound on trying to publish non existing blog', async () => {
       const wrongBlogId = 2;
       await expect(service.publish(wrongBlogId, userId)).rejects.toThrow(NotFoundException);
+    });
+
+    it('should create the correct url for the blog', async () => {
+      const expectUrl = 'title-randomID';
+
+      const res = await service.publish(blogId, userId);
+      expect(res.url).toBe(expectUrl);
     });
   });
 });

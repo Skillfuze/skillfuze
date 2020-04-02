@@ -14,6 +14,9 @@ export class Blog {
   @PrimaryGeneratedColumn()
   public id: number;
 
+  @Column({ unique: true, nullable: true })
+  public url: string;
+
   @Column({ type: 'text' })
   public title: string;
 

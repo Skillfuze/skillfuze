@@ -232,6 +232,7 @@ describe('Blogs (e2e)', () => {
 
       const newBlog = await blogService.findOne({ id: blog.id });
       expect(newBlog.publishedAt).not.toBe(undefined);
+      expect(newBlog.url).not.toBe(undefined);
     });
 
     it('should return 401 on unauthorized access', async () => {

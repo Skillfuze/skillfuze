@@ -17,8 +17,6 @@ export class CreateBlogDTO {
   @IsUrl({}, { message: 'Thumbnail URL should be valid URL' })
   public thumbnailURL?: string;
 
-  public user?: { id: number };
-
   @IsOptional()
   @IsArray()
   public tags?: string[];

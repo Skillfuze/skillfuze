@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import slugify from 'slugify';
+import * as shortid from 'shortid';
 
 import { Blog } from './blog.entity';
 import { BlogRepository } from './blog.repository';
@@ -27,7 +29,17 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       throw new ForbiddenException();
     }
 
-    const res = await this.repository.update({ id: blogId }, { publishedAt: new Date(Date.now()) });
+    const res = await this.repository.update(
+      { id: blogId },
+      {
+        publishedAt: new Date(Date.now()),
+        url: this.generateUrl(blog.title),
+      },
+    );
     return res.generatedMaps[0] as Blog;
+  }
+
+  private generateUrl(title: string): string {
+    return `${slugify(title)}-${shortid.generate()}`;
   }
 }

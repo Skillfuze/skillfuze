@@ -1,7 +1,7 @@
 export class BlogRepository {
   public async update(criteria: any, updatePayload: any): Promise<any> {
     if (criteria.id === 1) {
-      return { generatedMaps: [{ publishedAt: updatePayload.publishedAt }], affected: 1 };
+      return { generatedMaps: [{ ...updatePayload }], affected: 1 };
     }
     return { affected: 0 };
   }
