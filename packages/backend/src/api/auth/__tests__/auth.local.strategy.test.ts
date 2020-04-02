@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../../users/user.entity';
 import { LocalStrategy } from '../strategies/local.strategy';
 
-jest.mock('../auth.service');
+jest.mock('../services/auth.service');
 
 describe('JwtStrategy', () => {
   let localStrategy: LocalStrategy;

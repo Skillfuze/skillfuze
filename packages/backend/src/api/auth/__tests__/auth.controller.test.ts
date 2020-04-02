@@ -14,7 +14,6 @@ describe('Auth Controller', () => {
   let controller: AuthController;
   let userService: UserService;
   let authService: AuthService;
-  let hashingService: HashingService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,13 +24,11 @@ describe('Auth Controller', () => {
     controller = module.get<AuthController>(AuthController);
     userService = module.get<UserService>(UserService);
     authService = module.get<AuthService>(AuthService);
-    hashingService = module.get<HashingService>(HashingService);
   });
 
   describe('register', () => {
     let registerSpy: jest.SpyInstance;
     let findByEmailSpy: jest.SpyInstance;
-    let hashPassword: jest.SpyInstance;
     const payload = {
       firstName: 'Khaled',
       lastName: 'Mohamed',
@@ -43,7 +40,6 @@ describe('Auth Controller', () => {
     beforeEach(() => {
       registerSpy = jest.spyOn(userService, 'register');
       findByEmailSpy = jest.spyOn(userService, 'findByEmail');
-      hashPassword = jest.spyOn(hashingService, 'hashPassword');
 
       findByEmailSpy.mockImplementation((email: string) => {
         if (email === 'duplicate@gmail.com') {
@@ -61,11 +57,6 @@ describe('Auth Controller', () => {
     it('should call userService.findByEmail', async () => {
       await controller.register(payload);
       expect(findByEmailSpy).toBeCalled();
-    });
-
-    it('should call hashingService.hashPassword', async () => {
-      await controller.register(payload);
-      expect(hashPassword).toBeCalled();
     });
 
     it('should register the user successfully', async () => {

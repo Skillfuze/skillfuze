@@ -20,6 +20,6 @@ import { UsersModule } from '../users/users.module';
     }),
   ],
   providers: [AuthService, JwtStrategy, LocalStrategy, HashingService],
-  exports: [],
+  exports: [HashingService],
 })
 export class AuthModule {}

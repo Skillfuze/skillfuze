@@ -17,7 +17,7 @@ describe('Auth Service', () => {
   let jwtService: JwtService;
   let findByEmailSpy: jest.SpyInstance;
   let signSpy: jest.SpyInstance;
-  let matchingPassword: jest.SpyInstance;
+  let matchingPasswordSpy: jest.SpyInstance;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,14 +25,14 @@ describe('Auth Service', () => {
     }).compile();
     jwtService = module.get<JwtService>(JwtService);
     hashingService = module.get<HashingService>(HashingService);
-    userService = new UserService(new UserRepository());
+    userService = new UserService(new UserRepository(), hashingService);
     authService = new AuthService(userService, hashingService, jwtService);
   });
 
   beforeEach(async () => {
     signSpy = jest.spyOn(jwtService, 'sign');
     findByEmailSpy = jest.spyOn(userService, 'findByEmail');
-    matchingPassword = jest.spyOn(hashingService, 'matchingPassword');
+    matchingPasswordSpy = jest.spyOn(hashingService, 'matchingPassword');
 
     findByEmailSpy.mockImplementation((email: string) => {
       if (email === 'duplicate@gmail.com') {
@@ -46,7 +46,8 @@ describe('Auth Service', () => {
       }
       return undefined;
     });
-    matchingPassword.mockImplementation((payload: object) => {
+
+    matchingPasswordSpy.mockImplementation((payload: object) => {
       return payload;
     });
 
@@ -82,7 +83,7 @@ describe('Auth Service', () => {
 
     it('should call hashingService.matchingPassword', async () => {
       await authService.validateUser('duplicate@gmail.com', payload.password);
-      expect(matchingPassword).toBeCalled();
+      expect(matchingPasswordSpy).toBeCalled();
     });
 
     it('should return user on valid email', async () => {
