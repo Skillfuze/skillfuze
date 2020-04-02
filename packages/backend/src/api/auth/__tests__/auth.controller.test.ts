@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
-import { InvalidEmailOrPasswordException } from '../../../common/exceptions/invalid-email-or-password-exception';
 import { AuthService } from '../auth.service';
 import { EmailAlreadyExistsException } from '../../../common/exceptions/email-already-exists.exception';
 import { AuthController } from '../auth.controller';
@@ -14,7 +13,6 @@ describe('Auth Controller', () => {
   let controller: AuthController;
   let userService: UserService;
   let authService: AuthService;
-  let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +23,6 @@ describe('Auth Controller', () => {
     controller = module.get<AuthController>(AuthController);
     userService = module.get<UserService>(UserService);
     authService = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
   });
 
   describe('register', () => {
@@ -84,56 +81,39 @@ describe('Auth Controller', () => {
   describe('login', () => {
     let generateTokenSpy: jest.SpyInstance;
     let findByEmailSpy: jest.SpyInstance;
-    let jwtSignSpy: jest.SpyInstance;
 
     const payload = {
-      email: 'duplicate@gmail.com',
+      username: 'duplicate@gmail.com',
       password: '123456789',
     };
 
     beforeEach(() => {
       generateTokenSpy = jest.spyOn(authService, 'generateToken');
       findByEmailSpy = jest.spyOn(userService, 'findByEmail');
-      jwtSignSpy = jest.spyOn(jwtService, 'sign');
 
       findByEmailSpy.mockImplementation((email: string) => {
         if (email === 'duplicate@gmail.com') {
-          return {
-            id: 1,
-            firstName: 'Karim',
-            lastName: 'Elsayed',
-            email: 'karim@skillfuze.com',
-            password: '123456789',
-          };
+          const user = new User();
+          user.id = 1;
+          user.firstName = 'Karim';
+          user.lastName = 'Elsayed';
+          user.email = 'karim@skillfuze.com';
+          user.password = '123456789';
+          return user;
         }
         return undefined;
       });
 
-      jwtSignSpy.mockImplementation((p: object) => {
+      generateTokenSpy.mockImplementation((p: object) => {
         if (p) return 'token';
         return undefined;
       });
     });
 
     it('should call authService.generateToken', async () => {
-      await controller.login(payload);
+      const res = await controller.login({ user: payload });
       expect(generateTokenSpy).toBeCalled();
-    });
-
-    it('should call userService.findByEmail', async () => {
-      await controller.login(payload);
-      expect(findByEmailSpy).toBeCalled();
-    });
-
-    it('should return token successfully', async () => {
-      const token = await controller.login(payload);
-      expect(token).toMatchObject({ token: 'token' });
-    });
-
-    it('should throw InvalidEmailOrPasswordException when user is undefined', async () => {
-      await expect(controller.login({ ...payload, email: 'not.duplicate@gmail.com' })).rejects.toThrow(
-        InvalidEmailOrPasswordException,
-      );
+      expect(res).toMatchObject({ token: 'token' });
     });
   });
 });

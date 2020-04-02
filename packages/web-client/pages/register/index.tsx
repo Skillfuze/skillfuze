@@ -21,7 +21,7 @@ const RegisterPage = () => {
     event.preventDefault();
 
     try {
-      await AuthService.getInstance().register({
+      await AuthService.instance.register({
         firstName,
         lastName,
         email,

@@ -44,3 +44,14 @@ export const outlinedButtonStyle = (color: Color) => {
     }
   `;
 };
+
+export const linkButtonStyle = (color: Color) => {
+  const bgColor = `--color-${color}`;
+
+  return css`
+    border: none;
+    color: var(${bgColor});
+    text-transform: none;
+    padding: 0;
+  `;
+};
