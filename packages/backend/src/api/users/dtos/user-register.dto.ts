@@ -17,6 +17,7 @@ export class UserRegisterDTO {
   public password: string;
 
   @ValidateIf(
+    /* istanbul ignore next */
     payload => {
       return payload.confirmPassword === payload.password;
     },

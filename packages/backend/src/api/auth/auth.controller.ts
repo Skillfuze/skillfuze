@@ -1,10 +1,10 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
-import { InvalidEmailOrPasswordException } from '../../common/exceptions/invalid-email-or-password-exception';
+import { Controller, Post, Body, HttpCode, UseGuards, Request } from '@nestjs/common';
 import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
 import { User } from '../users/user.entity';
-import { UserRegisterDTO, UserLoginDTO } from '../users/dtos';
+import { UserRegisterDTO } from '../users/dtos';
 import { AuthService } from './auth.service';
 import { UserService } from '../users/user.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -23,14 +23,10 @@ export class AuthController {
     return createdUser;
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
   @HttpCode(200)
-  public async login(@Body() userLoginDTO: UserLoginDTO): Promise<object> {
-    const user = await this.userService.findByEmail(userLoginDTO.email);
-    if (!user || userLoginDTO.password !== user.password) {
-      throw new InvalidEmailOrPasswordException();
-    }
-    const token = await this.authService.generateToken(user);
-    return { token };
+  public async login(@Request() req): Promise<object> {
+    return { token: this.authService.generateToken(req.user) };
   }
 }
