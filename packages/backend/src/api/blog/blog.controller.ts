@@ -16,6 +16,12 @@ import { CreateBlogDTO } from './dtos/create-blog.dto';
   query: {
     alwaysPaginate: true,
     limit: 10,
+    join: {
+      user: {
+        eager: true,
+        exclude: ['password'],
+      },
+    },
   },
 })
 @Controller('blogs')

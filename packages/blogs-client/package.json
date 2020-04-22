@@ -15,6 +15,7 @@
     "@skillfuze/ui-components": "^0.0.1",
     "@svgr/webpack": "^5.3.0",
     "autoprefixer": "^9.7.5",
+    "axios": "^0.19.2",
     "gatsby": "^2.19.7",
     "gatsby-plugin-postcss": "^2.2.1",
     "gatsby-plugin-react-svg": "^3.0.0",

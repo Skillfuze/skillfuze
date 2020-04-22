@@ -30,11 +30,11 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }) => {
       <p className="flex text-left mt-8 w-1/2 font-bold text-xl">{blog.title}</p>
       <p className="flex text-left mt-6 w-1/2 text-xs text-darkGrey">{blog.desc}</p>
       <div className="flex flex-row mt-6 w-1/2 h-16 items-center ">
-        <Avatar URL={blog.author.avatar} alt="user photo" />
+        <Avatar URL={blog.user.avatar} alt="user photo" />
         <div className="ml-4 flex-col flex-auto">
           <div className="flex flex-row items-center">
             <div className="flex flex-row flex-grow">
-              <p className="text-sm self-center inline-block ">{blog.author.name}</p>
+              <p className="text-sm self-center inline-block ">{`${blog.user.firstName} ${blog.user.lastName}`}</p>
               <Button className="ml-4" size="small" variant="outlined">
                 Follow
               </Button>
