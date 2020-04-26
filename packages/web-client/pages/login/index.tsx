@@ -65,7 +65,7 @@ const LoginPage = () => {
           {error && <p className="text-xs text-warning text-right mt-1">{error}</p>}
           <div className="text-right mt-3">
             <Link href="/register">
-              <Button className="text-xs font-light" variant="link">
+              <Button className="text-xs" variant="link">
                 Forgot password?
               </Button>
             </Link>
