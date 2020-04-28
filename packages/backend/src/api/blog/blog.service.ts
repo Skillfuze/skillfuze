@@ -28,14 +28,15 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       throw new ForbiddenException();
     }
 
-    const res = await this.repository.update(
+    await this.repository.update(
       { id: blogId },
       {
         publishedAt: new Date(Date.now()),
         url: this.generateUrl(blog.title, blog.id),
       },
     );
-    return res.generatedMaps[0] as Blog;
+
+    return this.repository.findOne(blogId);
   }
 
   private generateUrl(title: string, blogId: string): string {
