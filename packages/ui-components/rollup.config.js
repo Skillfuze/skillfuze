@@ -27,12 +27,12 @@ export default {
     typescript({
       rollupCommonJSResolveHack: true,
       exclude: [
-        '**/__tests__/**'
+        '**/__tests__/**',
       ],
       clean: true
     }),
     commonjs({
-      include: ['node_modules/**'],
+      include: [/node_modules/],
       namedExports: {
         'node_modules/react/react.js': [
           'Children',

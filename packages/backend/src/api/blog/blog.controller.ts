@@ -17,6 +17,13 @@ import { CreateBlogDTO } from './dtos/create-blog.dto';
     alwaysPaginate: true,
     limit: 10,
   },
+  params: {
+    id: {
+      field: 'id',
+      type: 'string',
+      primary: true,
+    },
+  },
 })
 @Controller('blogs')
 export class BlogController implements CrudController<Blog> {
@@ -51,7 +58,6 @@ export class BlogController implements CrudController<Blog> {
         relations: ['user'],
       },
     );
-
     if (blog && blog.user.id !== nestRequest.user.id) {
       throw new ForbiddenException();
     }

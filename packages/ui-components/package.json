@@ -35,6 +35,7 @@
   "devDependencies": {
     "@emotion/styled": "^10.0.27",
     "@types/react": "^16.9.23",
+    "autoprefixer": "^9.7.4",
     "emotion": "^10.0.27",
     "postcss-loader": "^3.0.0",
     "react": "^16.13.0",
@@ -50,10 +51,10 @@
     "tailwind-css-variables": "^2.0.3",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
-    "webpack": "^4.42.0",
-    "autoprefixer": "^9.7.4"
+    "webpack": "^4.42.0"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.28",
     "tailwindcss": "^1.2.0"
   }
 }

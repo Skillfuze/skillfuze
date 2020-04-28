@@ -37,3 +37,7 @@ export const labelType = css`
   color: var(--color-black);
   font-size: 14px;
 `;
+
+export const borderless = css`
+  border: 0;
+`;

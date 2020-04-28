@@ -78,7 +78,7 @@ describe('BlogController', () => {
 
     it('should call updateOneBase with the correct params', async () => {
       const payload = {
-        id: 1,
+        id: '1',
         title: 'Updated Title',
       };
 
@@ -93,7 +93,7 @@ describe('BlogController', () => {
 
     it('should throw error when updating a blog with incorrect user', async () => {
       const payload = {
-        id: 1,
+        id: '1',
         title: 'Updated Title',
       };
 
@@ -178,7 +178,7 @@ describe('BlogController', () => {
     });
     it('should call and return service.publish', async () => {
       const userId = 1;
-      const blogId = 1;
+      const blogId = '1';
       const res = await controller.publish({ user: { id: userId }, params: { id: blogId } });
       expect(servicePublishSpy).toBeCalledWith(blogId, userId);
       const serviceRes = service.publish(blogId, userId);

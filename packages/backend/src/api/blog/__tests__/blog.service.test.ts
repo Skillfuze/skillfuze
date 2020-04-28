@@ -34,7 +34,7 @@ describe('BlogService', () => {
 
   describe('publish', () => {
     const userId = 1;
-    const blogId = 1;
+    const blogId = '1';
 
     it('should set publish date to now', async () => {
       const blog = await service.publish(blogId, userId);
@@ -48,12 +48,12 @@ describe('BlogService', () => {
     });
 
     it('should throw NotFound on trying to publish non existing blog', async () => {
-      const wrongBlogId = 2;
+      const wrongBlogId = '2';
       await expect(service.publish(wrongBlogId, userId)).rejects.toThrow(NotFoundException);
     });
 
     it('should create the correct url for the blog', async () => {
-      const expectUrl = 'title-randomID';
+      const expectUrl = 'title-1';
 
       const res = await service.publish(blogId, userId);
       expect(res.url).toBe(expectUrl);

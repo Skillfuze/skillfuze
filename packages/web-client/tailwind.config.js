@@ -1,5 +1,6 @@
 /* eslint-disable */
 module.exports = {
+  important: true,
   theme: {
     colors: {
       primary: {
@@ -19,7 +20,10 @@ module.exports = {
       },
       white: '#fdfffc',
       black: '#191919',
-      grey: '#bfbfbf'
+      grey: {
+        default: '#bfbfbf',
+        dark: '#707070',
+      },
     },
   },
   plugins: [

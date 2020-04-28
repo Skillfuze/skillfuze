@@ -6,6 +6,8 @@
 <div className="container">
   <Input label="Email" type="text" placeholder="example@gmail.com"/>
   <Input type="text" placeholder="Email"/>
+
+  <Input type="text" placeholder="borderless@gmail.com" borderless={true} />
 </div>
 ```
 
