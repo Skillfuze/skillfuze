@@ -17,6 +17,12 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
   query: {
     alwaysPaginate: true,
     limit: 10,
+    join: {
+      user: {
+        eager: true,
+        exclude: ['password'],
+      },
+    },
   },
 })
 @Controller('blogs')
