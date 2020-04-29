@@ -11,7 +11,6 @@ describe('BlogController', () => {
   let controller: BlogController;
   let service: BlogService;
   let emitter: BlogsEventEmitter;
-
   let emitSpy: jest.SpyInstance;
 
   beforeEach(async () => {
@@ -23,7 +22,6 @@ describe('BlogController', () => {
     controller = module.get<BlogController>(BlogController);
     service = module.get<BlogService>(BlogService);
     emitter = module.get<BlogsEventEmitter>(BlogsEventEmitter);
-
     emitSpy = jest.spyOn(emitter, 'emit');
   });
 
