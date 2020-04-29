@@ -8,6 +8,9 @@ type Config = {
   db: ConnectionOptions;
   jwt: JwtModuleOptions;
   corsOptions: CorsOptions;
+  gatsby: {
+    buildHookURL: string;
+  };
 };
 
 const config: Config = {
@@ -27,6 +30,9 @@ const config: Config = {
     origin: ['http://localhost:3001'],
     allowedHeaders: ['Authroization', 'Content-Type'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  },
+  gatsby: {
+    buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
 };
 

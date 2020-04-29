@@ -5,6 +5,7 @@ import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateBlogDTO } from './dtos/create-blog.dto';
+import { BlogsEventEmitter } from './blogs.eventemitter';
 
 @Crud({
   model: {
@@ -26,7 +27,7 @@ import { CreateBlogDTO } from './dtos/create-blog.dto';
 })
 @Controller('blogs')
 export class BlogController implements CrudController<Blog> {
-  public constructor(public service: BlogService) {}
+  public constructor(public service: BlogService, private readonly emitter: BlogsEventEmitter) {}
 
   get base(): CrudController<Blog> {
     return this;
@@ -62,7 +63,9 @@ export class BlogController implements CrudController<Blog> {
       throw new ForbiddenException();
     }
 
-    return this.base.updateOneBase(req, dto);
+    const res = await this.base.updateOneBase(req, dto);
+    this.emitter.emit('update', res);
+    return res;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -79,13 +82,17 @@ export class BlogController implements CrudController<Blog> {
       throw new ForbiddenException();
     }
 
-    return this.base.deleteOneBase(req);
+    const res = await this.base.deleteOneBase(req);
+    this.emitter.emit('delete', res);
+    return res;
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('/:id/publish')
   @HttpCode(200)
   async publish(@Request() req): Promise<Blog> {
-    return this.service.publish(req.params.id, req.user.id);
+    const res = await this.service.publish(req.params.id, req.user.id);
+    this.emitter.emit('publish', res);
+    return res;
   }
 }
