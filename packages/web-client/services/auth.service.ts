@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import Cookie from 'js-cookie';
+import Router from 'next/router';
 import { parseError } from '../utils/parseError';
 
 export default class AuthService {
@@ -11,7 +13,7 @@ export default class AuthService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static getInstance(): AuthService {
+  static get instance(): AuthService {
     if (!this._instance) {
       this._instance = new AuthService();
     }
@@ -23,7 +25,7 @@ export default class AuthService {
       const res = await axios.post('/api/v1/auth/login', payload);
       return res.data;
     } catch (err) {
-      return err;
+      throw err.response;
     }
   }
 
@@ -37,18 +39,19 @@ export default class AuthService {
   }
 
   decodeJWT(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (err) {
-      return err;
-    }
+    return jwtDecode(token);
   }
 
-  setItem(token: string): void {
-    localStorage.setItem('token', token);
+  setToken(token: string): void {
+    Cookie.set('token', token, { expires: 1 });
   }
 
-  getItem(key: string): string {
-    return localStorage.getItem(key);
+  getToken(): string {
+    return Cookie.get('token');
   }
+
+  logout = (): void => {
+    Cookie.remove('token');
+    Router.push('/login');
+  };
 }

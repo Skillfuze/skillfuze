@@ -1,0 +1,114 @@
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.0.2
+
+jobs:
+  checkout:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "yarn.lock" }}
+            - dependency-cache-
+      - run:
+          name: Install Dependencies
+          command: |
+            yarn install --frozen-lockfile
+            yarn bootstrap
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: ~/skillfuze
+          paths:
+            - ./*
+
+  build:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - attach_workspace:
+          at: ~/skillfuze
+      - run:
+          name: Build Packages
+          command: yarn build
+      - persist_to_workspace:
+          root: ~/skillfuze
+          paths:
+            - ./*
+
+  lint:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - attach_workspace:
+          at: ~/skillfuze
+      - run:
+          name: Lint Packages
+          command: yarn lint
+
+  test:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - attach_workspace:
+          at: ~/skillfuze
+      - run:
+          name: Test Backend
+          command: cd packages/backend && yarn test:cov --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test-results
+            JEST_JUNIT_OUTPUT_NAME: unit-results.xml
+      - codecov/upload:
+          file: packages/backend/coverage/clover.xml
+      - store_test_results:
+          path: packages/backend/test-results
+      - store_artifacts:
+          path: packages/backend/coverage
+
+  test-e2e:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ROOT_HOST: 127.0.0.1
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: skillfuze-test
+    steps:
+      - attach_workspace:
+          at: ~/skillfuze
+      - run:
+          name: Test Backend E2E
+          command: cd packages/backend && yarn test:e2e --ci --reporters=default --reporters=jest-junit --runInBand
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test-results
+            JEST_JUNIT_OUTPUT_NAME: e2e-results.xml
+      - store_test_results:
+          path: packages/backend/test-results
+
+workflows:
+  build-and-test:
+    jobs:
+      - checkout
+      - build:
+          requires:
+            - checkout
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - test-e2e:
+          requires:
+            - test

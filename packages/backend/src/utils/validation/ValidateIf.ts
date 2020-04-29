@@ -1,5 +1,6 @@
 import { registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator';
 
+/* istanbul ignore next */
 export function ValidateIf(condition: (value: any) => boolean, validationOptions?: ValidationOptions) {
   return (object: object, propertyName: string) => {
     registerDecorator({
