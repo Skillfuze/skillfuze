@@ -44,6 +44,7 @@ describe('User Service', () => {
 
     it('should call hashingService.hashPassword', async () => {
       const res = await service.register(payload);
+      expect(hashPasswordSpy).toBeCalled();
       expect(res.password).toBe(hashedPassword);
     });
   });
