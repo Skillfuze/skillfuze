@@ -1,8 +1,9 @@
 import { Controller, Post, Body, HttpCode, UseGuards, Request } from '@nestjs/common';
-import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
 import { User } from '../users/user.entity';
+import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
+
 import { UserRegisterDTO } from '../users/dtos';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { UserService } from '../users/user.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
