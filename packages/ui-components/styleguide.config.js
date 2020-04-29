@@ -22,7 +22,8 @@ module.exports = {
   theme: {
     fontFamily: {
       base: '"Open Sans"'
-    }
+    },
+   
   },
   pagePerSection: true,
   components: () => {

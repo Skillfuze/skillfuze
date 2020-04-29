@@ -3,21 +3,26 @@ import { ForbiddenException } from '@nestjs/common';
 import { BlogController } from '../blog.controller';
 import { BlogService } from '../blog.service';
 import { Blog } from '../blog.entity';
+import { BlogsEventEmitter } from '../blogs.eventemitter';
 
 jest.mock('../blog.service');
 
 describe('BlogController', () => {
   let controller: BlogController;
   let service: BlogService;
+  let emitter: BlogsEventEmitter;
+  let emitSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [BlogController],
-      providers: [BlogService],
+      providers: [BlogService, BlogsEventEmitter],
     }).compile();
 
     controller = module.get<BlogController>(BlogController);
     service = module.get<BlogService>(BlogService);
+    emitter = module.get<BlogsEventEmitter>(BlogsEventEmitter);
+    emitSpy = jest.spyOn(emitter, 'emit');
   });
 
   describe('createOne', () => {
@@ -108,6 +113,21 @@ describe('BlogController', () => {
 
       expect(blogServiceFindOneSpy).toBeCalledWith({ id: payload.id }, { relations: ['user'] });
     });
+
+    it('should emit update event', async () => {
+      const payload = {
+        id: '1',
+        title: 'Updated Title',
+      };
+
+      const request = {
+        user: { id: correctUserId },
+        params: { id: payload.id },
+      };
+
+      await controller.updateOne(undefined, payload as Blog, request);
+      expect(emitSpy).toBeCalledWith('update', undefined);
+    });
   });
 
   describe('deleteOne', () => {
@@ -168,21 +188,41 @@ describe('BlogController', () => {
 
       expect(blogServiceFindOneSpy).toBeCalledWith({ id: payload.id }, { relations: ['user'] });
     });
+
+    it('should emit delete event', async () => {
+      const payload = {
+        id: 1,
+      };
+
+      const request = {
+        user: { id: correctUserId },
+        params: { id: payload.id },
+      };
+
+      await controller.deleteOne(undefined, request);
+      expect(emitSpy).toBeCalledWith('delete', undefined);
+    });
   });
 
   describe('publish', () => {
+    const userId = 1;
+    const blogId = '1';
     let servicePublishSpy: jest.SpyInstance;
+    let blog: Blog;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      blog = await controller.publish({ user: { id: userId }, params: { id: blogId } });
       servicePublishSpy = jest.spyOn(service, 'publish');
     });
+
     it('should call and return service.publish', async () => {
-      const userId = 1;
-      const blogId = '1';
-      const res = await controller.publish({ user: { id: userId }, params: { id: blogId } });
       expect(servicePublishSpy).toBeCalledWith(blogId, userId);
       const serviceRes = service.publish(blogId, userId);
-      expect(serviceRes).toBe(res);
+      expect(serviceRes).toBe(blog);
+    });
+
+    it('should emit publish event', async () => {
+      expect(emitSpy).toBeCalledWith('publish', undefined);
     });
   });
 });
