@@ -18,8 +18,8 @@ const CreateLiveStream = () => {
   const handleSubmit = async (event): Promise<void> => {
     event.preventDefault();
     try {
-      const { streamK } = await livestreamService.create({ title, description, thumbnailURL });
-      setStreamKey(streamK);
+      const stream = await livestreamService.create({ title, description, thumbnailURL });
+      setStreamKey(stream.streamKey);
     } catch (err) {
       setError('Cannot create key');
     }
@@ -27,7 +27,7 @@ const CreateLiveStream = () => {
   return (
     <Layout>
       <div className="flex flex-grow px-40 items-center justify-center h-full">
-        <div className="flex  w-1/2">
+        <div className="flex flex-col items-center w-1/2">
           <form className="flex flex-col w-2/3" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold text-left">New Livestream</h1>
             <Input className="mt-8 w-full" value={title} type="text" placeholder="Title" onChange={setTitle} />

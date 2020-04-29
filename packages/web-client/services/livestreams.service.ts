@@ -18,7 +18,7 @@ export default class LivestreamService {
 
   async create(payload: any): Promise<any> {
     try {
-      const res = await axios.post('/api/v1/livestreams/', payload);
+      const res = await axios.post('/api/v1/livestreams', payload);
       return res.data;
     } catch (err) {
       throw err.response;
