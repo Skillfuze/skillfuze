@@ -21,6 +21,7 @@ describe('User Service', () => {
 
   describe('register', () => {
     let hashPasswordSpy: jest.SpyInstance;
+    const hashedPassword = 'hashed';
     const payload = {
       firstName: 'Khaled',
       lastName: 'Mohamed',
@@ -31,6 +32,9 @@ describe('User Service', () => {
 
     beforeEach(() => {
       hashPasswordSpy = jest.spyOn(hashingService, 'hashPassword');
+      hashPasswordSpy.mockImplementation(() => {
+        return hashedPassword;
+      });
     });
 
     it('should register the user successfully', async () => {
@@ -39,8 +43,8 @@ describe('User Service', () => {
     });
 
     it('should call hashingService.hashPassword', async () => {
-      await service.register(payload);
-      expect(hashPasswordSpy).toBeCalled();
+      const res = await service.register(payload);
+      expect(res.password).toBe(hashedPassword);
     });
   });
 

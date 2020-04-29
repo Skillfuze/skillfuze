@@ -41,12 +41,12 @@ describe('HashingService', () => {
   describe('matchingPassword', () => {
     it('should return true on matched password', async () => {
       const res = await hashingService.matchingPassword('12345', '12345');
-      expect(res).toBeTruthy();
+      expect(res).toBe(true);
     });
 
     it('should return false on un-matched password', async () => {
       const res = await hashingService.matchingPassword('1234', '12345');
-      expect(res).toBeFalsy();
+      expect(res).toBe(false);
     });
   });
 });
