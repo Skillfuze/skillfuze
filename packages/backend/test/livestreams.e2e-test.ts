@@ -7,7 +7,7 @@ import { UserRepository } from '../src/api/users/user.repository';
 import { LivestreamsRepository } from '../src/api/livestreams/livestreams.repository';
 import { User } from '../src/api/users/user.entity';
 import { UserService } from '../src/api/users/user.service';
-import { AuthService } from '../src/api/auth/auth.service';
+import { AuthService } from '../src/api/auth/services/auth.service';
 import { LivestreamsModule } from '../src/api/livestreams/livestreams.module';
 import { AuthModule } from '../src/api/auth/auth.module';
 import { ormConfig } from './config';
