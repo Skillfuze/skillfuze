@@ -4,7 +4,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Blog } from '../src/api/blog/blog.entity';
-import { AuthService } from '../src/api/auth/auth.service';
+import { AuthService } from '../src/api/auth/services/auth.service';
 import { UserRepository } from '../src/api/users/user.repository';
 import { BlogService } from '../src/api/blog/blog.service';
 import { ormConfig } from './config';

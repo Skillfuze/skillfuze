@@ -1,32 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import { HashingService } from '../services/hashing.service';
+
 import { User } from '../../users/user.entity';
 
 import { UserRepository } from '../../users/user.repository';
 import { UserService } from '../../users/user.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 
 jest.mock('@nestjs/jwt');
 
 describe('Auth Service', () => {
   let authService: AuthService;
+  let hashingService: HashingService;
   let userService: UserService;
   let jwtService: JwtService;
   let findByEmailSpy: jest.SpyInstance;
   let signSpy: jest.SpyInstance;
+  let matchingPasswordSpy: jest.SpyInstance;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [JwtService],
+      providers: [JwtService, HashingService],
     }).compile();
     jwtService = module.get<JwtService>(JwtService);
-    userService = new UserService(new UserRepository());
-    authService = new AuthService(userService, jwtService);
+    hashingService = module.get<HashingService>(HashingService);
+    userService = new UserService(new UserRepository(), hashingService);
+    authService = new AuthService(userService, hashingService, jwtService);
   });
 
   beforeEach(async () => {
     signSpy = jest.spyOn(jwtService, 'sign');
     findByEmailSpy = jest.spyOn(userService, 'findByEmail');
+    matchingPasswordSpy = jest.spyOn(hashingService, 'matchingPassword');
 
     findByEmailSpy.mockImplementation((email: string) => {
       if (email === 'duplicate@gmail.com') {
@@ -39,6 +45,10 @@ describe('Auth Service', () => {
         return user;
       }
       return undefined;
+    });
+
+    matchingPasswordSpy.mockImplementation((payload: object) => {
+      return payload;
     });
 
     signSpy.mockImplementation((payload: object) => {
@@ -70,6 +80,12 @@ describe('Auth Service', () => {
       email: 'karim@skillfuze.com',
       password: '123456789',
     };
+
+    it('should call hashingService.matchingPassword', async () => {
+      await authService.validateUser('duplicate@gmail.com', payload.password);
+      expect(matchingPasswordSpy).toBeCalled();
+    });
+
     it('should return user on valid email', async () => {
       const res = await authService.validateUser('duplicate@gmail.com', payload.password);
       expect(res).toBeInstanceOf(User);
