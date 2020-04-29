@@ -18,8 +18,14 @@ export const primaryButtonStyle = (color: Color) => {
 
   return css`
     background-color: var(${bgColor});
+    & svg {
+      fill: var(${bgColor});
+    }
     &:hover {
       background-color: var(${bgColor}-light);
+      & svg {
+        fill: var(${bgColor}-light);
+      }
     }
     &:active {
       background-color: var(${bgColor}-dark);
@@ -34,9 +40,15 @@ export const outlinedButtonStyle = (color: Color) => {
     border: 1px solid;
     border-color: var(${bgColor});
     color: var(${bgColor});
+    & svg {
+      fill: var(${bgColor});
+    }
     &:hover {
       background-color: var(${bgColor}-light);
       color: var(--color-white);
+      & svg {
+        fill: var(--color-white);
+      }
     }
     &:active {
       background-color: var(${bgColor}-dark);

@@ -7,6 +7,7 @@ import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import createLinkPlugin from 'draft-js-anchor-plugin';
 import createDividerPlugin from 'draft-js-divider-plugin';
 import createImagePlugin from 'draft-js-image-plugin';
+import createVideoPlugin from 'draft-js-video-plugin';
 import {
   ItalicButton,
   BoldButton,
@@ -16,6 +17,7 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from 'draft-js-buttons';
+import AddImageButton from './buttons/AddImageButton';
 
 import NoSSR from '../NoSSR';
 
@@ -30,8 +32,9 @@ const { DividerButton } = dividerPlugin;
 
 const linkPlugin = createLinkPlugin({});
 const imagePlugin = createImagePlugin();
+const videoPlugin = createVideoPlugin();
 
-const plugins = [sideToolbarPlugin, inlineToolbarPlugin, linkPlugin, dividerPlugin, imagePlugin];
+const plugins = [sideToolbarPlugin, inlineToolbarPlugin, linkPlugin, dividerPlugin, imagePlugin, videoPlugin];
 
 interface EditorProps {
   editorState: EditorState;
@@ -53,6 +56,20 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   return (
     <NoSSR>
+      <div className="flex justify-end mb-2">
+        <AddImageButton
+          editorState={props.editorState}
+          onChange={props.onChange}
+          modifier={imagePlugin.addImage}
+          type="image"
+        />
+        <AddImageButton
+          editorState={props.editorState}
+          onChange={props.onChange}
+          modifier={videoPlugin.addVideo}
+          type="video"
+        />
+      </div>
       <DraftEditor
         plugins={plugins}
         editorState={props.editorState}

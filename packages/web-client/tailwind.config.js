@@ -19,7 +19,10 @@ module.exports = {
         dark: '#B23535'
       },
       white: '#fdfffc',
-      black: '#191919',
+      black: {
+        default: '#191919',
+        light: '#191919',
+      },
       grey: {
         default: '#bfbfbf',
         dark: '#707070',
