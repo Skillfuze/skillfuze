@@ -28,8 +28,8 @@ const config: Config = {
   },
   corsOptions: {
     origin: ['http://localhost:3001'],
-    allowedHeaders: ['Authroization', 'Content-Type'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   },
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,

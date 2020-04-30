@@ -20,6 +20,10 @@ export const baseInputStyle = css`
   }
 `;
 
+export const disabledInputStyle = css`
+  background: var(--color-grey-light);
+`;
+
 export const errorState = css`
   border-color: var(--color-warning);
   &:focus,
@@ -36,4 +40,8 @@ export const errorType = css`
 export const labelType = css`
   color: var(--color-black);
   font-size: 14px;
+`;
+
+export const borderless = css`
+  border: 0;
 `;

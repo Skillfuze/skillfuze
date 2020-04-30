@@ -24,6 +24,13 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
       },
     },
   },
+  params: {
+    id: {
+      field: 'id',
+      type: 'string',
+      primary: true,
+    },
+  },
 })
 @Controller('blogs')
 export class BlogController implements CrudController<Blog> {
@@ -51,19 +58,22 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
-  async updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog, @Request() nestRequest): Promise<Blog> {
+  async updateOne(
+    @ParsedRequest() req: CrudRequest,
+    @ParsedBody() dto: CreateBlogDTO,
+    @Request() nestRequest,
+  ): Promise<Blog> {
     const blog = await this.service.findOne(
       { id: nestRequest.params.id },
       {
         relations: ['user'],
       },
     );
-
     if (blog && blog.user.id !== nestRequest.user.id) {
       throw new ForbiddenException();
     }
 
-    const res = await this.base.updateOneBase(req, dto);
+    const res = await this.base.updateOneBase(req, dto as Blog);
     this.emitter.emit('update', res);
     return res;
   }
