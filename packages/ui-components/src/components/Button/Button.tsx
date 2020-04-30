@@ -2,7 +2,14 @@ import React from 'react';
 import { cx } from 'emotion';
 
 import { Color } from '../../types/colors.type';
-import { baseButtonStyle, primaryButtonStyle, outlinedButtonStyle, buttonSize, linkButtonStyle } from './styles';
+import {
+  baseButtonStyle,
+  primaryButtonStyle,
+  outlinedButtonStyle,
+  buttonSize,
+  linkButtonStyle,
+  disabledButtonStyle,
+} from './styles';
 import { ButtonSize } from '../../types/button-size.type';
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -10,6 +17,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   color?: Color;
   type?: 'button' | 'reset' | 'submit';
   size?: ButtonSize;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
@@ -19,6 +27,7 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
     { [outlinedButtonStyle(props.color as Color)]: props.variant === 'outlined' },
     buttonSize(props.size as ButtonSize),
     { [linkButtonStyle(props.color as Color)]: props.variant === 'link' },
+    { [disabledButtonStyle]: props.disabled },
     'px-4 py-2',
     props.className,
   );
@@ -35,6 +44,7 @@ Button.defaultProps = {
   color: 'primary',
   type: 'button',
   size: 'regular',
+  disabled: false,
 };
 
 export default Button;

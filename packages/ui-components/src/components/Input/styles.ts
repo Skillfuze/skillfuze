@@ -20,6 +20,10 @@ export const baseInputStyle = css`
   }
 `;
 
+export const disabledInputStyle = css`
+  background: var(--color-grey-light);
+`;
+
 export const errorState = css`
   border-color: var(--color-warning);
   &:focus,

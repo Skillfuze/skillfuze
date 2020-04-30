@@ -1,5 +1,5 @@
 import React from 'react';
-import DraftEditor from 'draft-js-plugins-editor';
+import DraftEditor, { composeDecorators } from 'draft-js-plugins-editor';
 import { EditorState } from 'draft-js';
 
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
@@ -8,6 +8,9 @@ import createLinkPlugin from 'draft-js-anchor-plugin';
 import createDividerPlugin from 'draft-js-divider-plugin';
 import createImagePlugin from 'draft-js-image-plugin';
 import createVideoPlugin from 'draft-js-video-plugin';
+import createAlignmentPlugin from 'draft-js-alignment-plugin';
+import createFocusPlugin from 'draft-js-focus-plugin';
+import createResizeablePlugin from 'draft-js-resizeable-plugin';
 import {
   ItalicButton,
   BoldButton,
@@ -17,7 +20,7 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from 'draft-js-buttons';
-import AddImageButton from './buttons/AddImageButton';
+import AddEmbedButton from './buttons/AddEmbedButton';
 
 import NoSSR from '../NoSSR';
 
@@ -31,10 +34,28 @@ const dividerPlugin = createDividerPlugin();
 const { DividerButton } = dividerPlugin;
 
 const linkPlugin = createLinkPlugin({});
-const imagePlugin = createImagePlugin();
-const videoPlugin = createVideoPlugin();
 
-const plugins = [sideToolbarPlugin, inlineToolbarPlugin, linkPlugin, dividerPlugin, imagePlugin, videoPlugin];
+const focusPlugin = createFocusPlugin();
+const alignmentPlugin = createAlignmentPlugin();
+const { AlignmentTool } = alignmentPlugin;
+const resizeablePlugin = createResizeablePlugin();
+
+const decorator = composeDecorators(alignmentPlugin.decorator, resizeablePlugin.decorator, focusPlugin.decorator);
+
+const imagePlugin = createImagePlugin({ decorator });
+const videoPlugin = createVideoPlugin({ decorator });
+
+const plugins = [
+  sideToolbarPlugin,
+  inlineToolbarPlugin,
+  linkPlugin,
+  dividerPlugin,
+  imagePlugin,
+  videoPlugin,
+  focusPlugin,
+  alignmentPlugin,
+  resizeablePlugin,
+];
 
 interface EditorProps {
   editorState: EditorState;
@@ -57,13 +78,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   return (
     <NoSSR>
       <div className="flex justify-end mb-2">
-        <AddImageButton
+        <AddEmbedButton
           editorState={props.editorState}
           onChange={props.onChange}
           modifier={imagePlugin.addImage}
           type="image"
         />
-        <AddImageButton
+        <AddEmbedButton
           editorState={props.editorState}
           onChange={props.onChange}
           modifier={videoPlugin.addVideo}
@@ -77,6 +98,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         blockStyleFn={blockStyleFn}
         placeholder="Tell your story..."
       />
+      <AlignmentTool />
       <SideToolbar>
         {externalProps => (
           <>

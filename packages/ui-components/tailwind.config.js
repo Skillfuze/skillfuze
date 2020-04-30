@@ -22,7 +22,10 @@ module.exports = {
         default: '#191919',
         light: '#191919',
       },
-      grey: '#bfbfbf'
+      grey: {
+        default: '#bfbfbf',
+        light: '#e2e2e2'
+      } 
     },
   },
   plugins: [

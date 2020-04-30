@@ -58,7 +58,11 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
-  async updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Blog, @Request() nestRequest): Promise<Blog> {
+  async updateOne(
+    @ParsedRequest() req: CrudRequest,
+    @ParsedBody() dto: CreateBlogDTO,
+    @Request() nestRequest,
+  ): Promise<Blog> {
     const blog = await this.service.findOne(
       { id: nestRequest.params.id },
       {
@@ -69,7 +73,7 @@ export class BlogController implements CrudController<Blog> {
       throw new ForbiddenException();
     }
 
-    const res = await this.base.updateOneBase(req, dto);
+    const res = await this.base.updateOneBase(req, dto as Blog);
     this.emitter.emit('update', res);
     return res;
   }

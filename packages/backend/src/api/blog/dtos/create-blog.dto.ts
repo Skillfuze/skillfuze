@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
+import { IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
 
 export class CreateBlogDTO {
-  @IsNotEmpty({ message: 'Title should not be empty' })
+  @IsOptional()
   @IsString()
   public title: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   public description?: string;
 
-  @IsNotEmpty({ message: 'Content should not be empty' })
+  @IsOptional()
   @IsString()
   public content: string;
 

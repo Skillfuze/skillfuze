@@ -13,14 +13,17 @@
     "clone-deep": "^4.0.1",
     "deep-eql": "^4.0.0",
     "draft-js": "^0.11.5",
+    "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-anchor-plugin": "^2.0.3",
     "draft-js-buttons": "^2.0.2",
     "draft-js-divider-plugin": "^0.2.1",
     "draft-js-export-html": "^1.4.1",
+    "draft-js-focus-plugin": "^3.0.1",
     "draft-js-image-plugin": "^2.0.7",
     "draft-js-import-html": "^1.4.1",
     "draft-js-inline-toolbar-plugin": "^3.0.1",
     "draft-js-plugins-editor": "^3.0.0",
+    "draft-js-resizeable-plugin": "^2.0.9",
     "draft-js-side-toolbar-plugin": "^3.0.2",
     "draft-js-static-toolbar-plugin": "^3.0.1",
     "draft-js-video-plugin": "^2.0.2",
@@ -41,6 +44,7 @@
     "postcss-import": "^12.0.1"
   },
   "nohoist": [
-    "tailwindcss"
+    "tailwindcss",
+    "draft-js-resizeable-plugin"
   ]
 }

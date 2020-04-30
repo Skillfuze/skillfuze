@@ -11,13 +11,13 @@ export class Blog {
   @Column({ unique: true, nullable: true })
   public url: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   public title: string;
 
   @Column({ type: 'text', nullable: true })
   public description: string;
 
-  @Column({ type: 'longtext' })
+  @Column({ type: 'longtext', nullable: true })
   public content: string;
 
   @Column({ nullable: true })

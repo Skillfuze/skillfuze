@@ -4,6 +4,7 @@ import { BlogController } from '../blog.controller';
 import { BlogService } from '../blog.service';
 import { Blog } from '../blog.entity';
 import { BlogsEventEmitter } from '../blogs.eventemitter';
+import { CreateBlogDTO } from '../dtos/create-blog.dto';
 
 jest.mock('../blog.service');
 
@@ -83,22 +84,20 @@ describe('BlogController', () => {
 
     it('should call updateOneBase with the correct params', async () => {
       const payload = {
-        id: '1',
         title: 'Updated Title',
       };
 
       const request = {
         user: { id: correctUserId },
-        params: { id: payload.id },
+        params: { id: '1' },
       };
 
-      await controller.updateOne(undefined, payload as Blog, request);
+      await controller.updateOne(undefined, payload as CreateBlogDTO, request);
       expect(updateOneBaseSpy).toBeCalledWith(undefined, payload);
     });
 
     it('should throw error when updating a blog with incorrect user', async () => {
       const payload = {
-        id: '1',
         title: 'Updated Title',
       };
 
@@ -106,26 +105,27 @@ describe('BlogController', () => {
 
       const request = {
         user: { id: wrongUserId },
-        params: { id: payload.id },
+        params: { id: '1' },
       };
 
-      await expect(controller.updateOne(undefined, payload as Blog, request)).rejects.toThrow(ForbiddenException);
+      await expect(controller.updateOne(undefined, payload as CreateBlogDTO, request)).rejects.toThrow(
+        ForbiddenException,
+      );
 
-      expect(blogServiceFindOneSpy).toBeCalledWith({ id: payload.id }, { relations: ['user'] });
+      expect(blogServiceFindOneSpy).toBeCalledWith({ id: '1' }, { relations: ['user'] });
     });
 
     it('should emit update event', async () => {
       const payload = {
-        id: '1',
         title: 'Updated Title',
       };
 
       const request = {
         user: { id: correctUserId },
-        params: { id: payload.id },
+        params: { id: '1' },
       };
 
-      await controller.updateOne(undefined, payload as Blog, request);
+      await controller.updateOne(undefined, payload as CreateBlogDTO, request);
       expect(emitSpy).toBeCalledWith('update', undefined);
     });
   });

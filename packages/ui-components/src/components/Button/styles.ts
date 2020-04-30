@@ -57,6 +57,11 @@ export const outlinedButtonStyle = (color: Color) => {
   `;
 };
 
+export const disabledButtonStyle = css`
+  opacity: 0.75;
+  pointer-events: none;
+`;
+
 export const buttonSize = (size: ButtonSize) => {
   const sizeMap = {
     small: '0.5rem',

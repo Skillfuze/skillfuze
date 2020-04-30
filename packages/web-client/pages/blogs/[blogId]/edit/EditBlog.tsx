@@ -2,6 +2,7 @@ import React from 'react';
 import EditorLayout from '../../../../components/BlogsEditor/Layout';
 import NoSSR from '../../../../components/NoSSR';
 import { BlogService, BlogState } from '../../../../services/blogs.service';
+import withAuth from '../../../../utils/withAuth';
 
 interface Props {
   blogState: BlogState;
@@ -22,9 +23,12 @@ EditBlog.getInitialProps = async ctx => {
     description: blog.description,
     thumbnailURL: blog.thumbnailURL,
     tags: blog.tags,
+    url: blog.url,
     editorState: blog.content,
   };
   return { blogState };
 };
 
-export default EditBlog;
+export default withAuth({
+  redirectOnAuthFailure: '/login',
+})(EditBlog);
