@@ -75,14 +75,6 @@ describe('Blogs (e2e)', () => {
         .send(payload)
         .expect(401);
     });
-
-    it('should return 400 on empty title', async () => {
-      await request(app.getHttpServer())
-        .post(url)
-        .send({ ...payload, title: undefined })
-        .set('Authorization', token)
-        .expect(400);
-    });
   });
 
   describe('GET /api/v1/blogs', () => {
