@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import slugify from 'slugify';
-import * as shortid from 'shortid';
 import axios from 'axios';
 
 import { Blog } from './blog.entity';
@@ -25,7 +24,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       });
   }
 
-  public async publish(blogId: number, userId: number): Promise<Blog> {
+  public async publish(blogId: string, userId: number): Promise<Blog> {
     const blog = await this.repository.findOne(
       { id: blogId },
       {
@@ -41,18 +40,19 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       throw new ForbiddenException();
     }
 
-    const res = await this.repository.update(
+    await this.repository.update(
       { id: blogId },
       {
         publishedAt: new Date(Date.now()),
-        url: this.generateUrl(blog.title),
+        url: this.generateUrl(blog.title, blog.id),
       },
     );
-    return res.generatedMaps[0] as Blog;
+
+    return this.repository.findOne(blogId);
   }
 
-  private generateUrl(title: string): string {
-    return `${slugify(title)}-${shortid.generate()}`;
+  private generateUrl(title: string, blogId: string): string {
+    return `${slugify(title)}-${blogId}`;
   }
 
   public async buildGatsby(): Promise<void> {

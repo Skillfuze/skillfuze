@@ -1,29 +1,23 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  UpdateDateColumn,
-  CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import * as shortid from 'shortid';
+
 import { User } from '../users/user.entity';
 
 @Entity()
 export class Blog {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryColumn()
+  public id: string;
 
   @Column({ unique: true, nullable: true })
   public url: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   public title: string;
 
   @Column({ type: 'text', nullable: true })
   public description: string;
 
-  @Column({ type: 'longtext' })
+  @Column({ type: 'longtext', nullable: true })
   public content: string;
 
   @Column({ nullable: true })
@@ -44,4 +38,8 @@ export class Blog {
 
   @Column({ type: 'simple-array', nullable: true })
   public tags: string[];
+
+  public constructor() {
+    this.id = shortid.generate();
+  }
 }
