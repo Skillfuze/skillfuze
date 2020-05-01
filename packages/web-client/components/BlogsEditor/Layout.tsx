@@ -87,12 +87,19 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
   return (
     <PageLayout navControls={navControls}>
       <div className="flex flex-grow flex-col py-16 max-w-screen-md w-full self-center align-center">
-        <Input value={title} onChange={setTitle} placeholder="Title" className="text-3xl font-bold" borderless />
+        <Input
+          value={title}
+          onChange={setTitle}
+          placeholder="Title"
+          className="font-bold"
+          style={{ fontSize: '2.5rem' }}
+          borderless
+        />
         <Input
           value={description}
           onChange={setDescription}
           placeholder="Description"
-          className="mb-2 text-base text-grey-dark"
+          className="mb-2 text-2xl text-grey-dark"
           borderless
         />
         <Input

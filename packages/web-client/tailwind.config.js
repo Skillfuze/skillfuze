@@ -13,6 +13,9 @@ module.exports = {
         light: '#72e3e5',
         dark: '#59b1b2'
       },
+      success: {
+        default: '#3bb54a',
+      },
       warning: {
         default: '#cc3d3d',
         light: '#E54444',
@@ -25,6 +28,7 @@ module.exports = {
       },
       grey: {
         default: '#bfbfbf',
+        light: '#e2e2e2',
         dark: '#707070',
       },
     },
