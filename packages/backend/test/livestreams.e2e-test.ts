@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
+import { Livestream } from '../src/api/livestreams/livestream.entity';
 
 import { UserRepository } from '../src/api/users/user.repository';
 import { LivestreamsRepository } from '../src/api/livestreams/livestreams.repository';
@@ -78,6 +79,33 @@ describe('Livestreams (e2e)', () => {
         .send({ ...payload, title: undefined })
         .set('Authorization', '')
         .expect(401);
+    });
+  });
+
+  describe('POST /api/v1/livestreams/:id', () => {
+    let createdStream: Livestream;
+    const payload = {
+      title: 'Livestream Title',
+    };
+    beforeAll(async () => {
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token)
+        .expect(201);
+
+      createdStream = res.body;
+    });
+
+    it('should get livestream successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}/${createdStream.id}`);
+      expect(res.body.id).toStrictEqual(createdStream.id);
+    });
+
+    it('should return NotFound on invalid streamId', async () => {
+      await request(app.getHttpServer())
+        .get(`${url}/id`)
+        .expect(404);
     });
   });
 

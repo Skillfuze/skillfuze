@@ -1,8 +1,9 @@
+import { NotFoundException } from '@nestjs/common';
 import * as shortid from 'shortid';
+import { Livestream } from '../livestream.entity';
 
 import { LivestreamsService } from '../livestreams.service';
 import { LivestreamsRepository } from '../livestreams.repository';
-import { Livestream } from '../livestream.entity';
 
 jest.mock('shortid');
 jest.mock('../livestreams.repository');
@@ -53,6 +54,32 @@ describe('LivestreamsService', () => {
     it('should call repository.save once', async () => {
       await service.create(userId, payload);
       expect(repoSaveSpy).toBeCalledTimes(1);
+    });
+  });
+
+  describe('getOne', () => {
+    let repoFindOneSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockImplementation((id: string) => {
+        if (id === '1') {
+          const stream = new Livestream();
+          stream.id = '1';
+          return stream;
+        }
+        return undefined;
+      });
+    });
+
+    it('should return livestream data on valid id', async () => {
+      const res = await service.getOne('1');
+      expect(repoFindOneSpy).toBeCalled();
+      expect(res).toBeInstanceOf(Livestream);
+    });
+
+    it('should throw 404 error when id is invalid', async () => {
+      await expect(service.getOne('2')).rejects.toThrow(NotFoundException);
     });
   });
 });

@@ -41,4 +41,21 @@ describe('Livestreams Controller', () => {
       expect(res).toBe(createReturn);
     });
   });
+
+  describe('getOne', () => {
+    const getOneReturn = 'Stream';
+    const streamId = '1';
+    let serviceGetOneSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      serviceGetOneSpy = jest.spyOn(service, 'getOne');
+      serviceGetOneSpy.mockReturnValue(getOneReturn);
+    });
+
+    it('should call and return service.getOne', async () => {
+      const res = await controller.getOne(streamId);
+      expect(serviceGetOneSpy).toBeCalledTimes(1);
+      expect(res).toBe(getOneReturn);
+    });
+  });
 });
