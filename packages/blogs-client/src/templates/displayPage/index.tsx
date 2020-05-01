@@ -42,7 +42,7 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
             </div>
             <More onClick={onClickMore} style={{ cursor: 'pointer' }} />
           </div>
-          <p className="flex text-left text-xs text-darkGrey">{moment(blog.createdAt).format('ll')}</p>
+          <p className="flex text-left text-xs text-darkGrey">{moment(blog.publishedAt).format('ll')}</p>
         </div>
       </div>
       <article
