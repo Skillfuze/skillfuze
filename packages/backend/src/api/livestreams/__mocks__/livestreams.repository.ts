@@ -10,4 +10,8 @@ export class LivestreamsRepository {
   public async create(payload: any) {
     return payload;
   }
+
+  public async findOne(payload: any) {
+    return payload;
+  }
 }
