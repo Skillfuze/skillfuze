@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
 import { LivestreamsRepository } from './livestreams.repository';
 import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
 import { Livestream } from './livestream.entity';
@@ -17,8 +16,10 @@ export class LivestreamsService {
   }
 
   public async getOne(livestreamId: string): Promise<Livestream> {
-    const stream = await this.repository.findOne(livestreamId);
+    const stream = await this.repository.findOne(livestreamId, { relations: ['streamer'] });
     if (!stream) throw new NotFoundException();
+    delete stream.streamer.password;
+    delete stream.streamKey;
     return stream;
   }
 }

@@ -97,12 +97,17 @@ describe('Livestreams (e2e)', () => {
       createdStream = res.body;
     });
 
-    it('should get livestream successfully', async () => {
+    it('should get livestream successfully with streamer data', async () => {
       const res = await request(app.getHttpServer()).get(`${url}/${createdStream.id}`);
       expect(res.body.id).toStrictEqual(createdStream.id);
+      expect(res.body.streamer).toHaveProperty('firstName');
+      expect(res.body.streamer).toHaveProperty('lastName');
+      expect(res.body.streamer).toHaveProperty('email');
+      expect(res.body.streamer).toHaveProperty('id');
+      expect(res.body.streamer).not.toHaveProperty('password');
     });
 
-    it('should return NotFound on invalid streamId', async () => {
+    it('should return NotFoundException on invalid streamId', async () => {
       await request(app.getHttpServer())
         .get(`${url}/id`)
         .expect(404);
