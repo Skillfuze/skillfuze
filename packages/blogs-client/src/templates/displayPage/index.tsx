@@ -1,6 +1,7 @@
 import '../../../assets/css/reset.css';
 import '../../../assets/css/tailwind.css';
 import '../../../assets/css/openSans.css';
+import '../../../assets/css/typography.css';
 
 import React from 'react';
 import { Button, Avatar } from '@skillfuze/ui-components';
@@ -25,8 +26,10 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
   return (
     <article className="flex flex-col w-full h-full items-center">
       <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
-      <p className="flex text-left mt-8 w-1/2 font-bold text-xl">{blog.title}</p>
-      <p className="flex text-left mt-6 w-1/2 text-xs text-darkGrey">{blog.description}</p>
+      <h1 className="flex text-left mt-8 w-1/2 font-bold" style={{ fontSize: '2.5rem' }}>
+        {blog.title}
+      </h1>
+      <h4 className="flex text-left mt-6 w-1/2 text-grey-dark">{blog.description}</h4>
       <div className="flex flex-row mt-6 w-1/2 h-16 items-center ">
         <Avatar URL={blog.user.avatar} alt="user photo" />
         <div className="ml-4 flex-col flex-auto">
@@ -42,11 +45,11 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
             </div>
             <More onClick={onClickMore} style={{ cursor: 'pointer' }} />
           </div>
-          <p className="flex text-left text-xs text-darkGrey">{moment(blog.publishedAt).format('ll')}</p>
+          <p className="text-left text-xs text-grey-dark">{moment(blog.publishedAt).format('ll')}</p>
         </div>
       </div>
       <article
-        className="flex text-left mt-8 w-1/2 "
+        className="text-left mt-8 w-1/2"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />

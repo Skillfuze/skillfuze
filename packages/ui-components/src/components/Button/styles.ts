@@ -64,10 +64,10 @@ export const disabledButtonStyle = css`
 
 export const buttonSize = (size: ButtonSize) => {
   const sizeMap = {
-    small: '0.5rem',
-    medium: '0.6rem',
-    regular: '0.7rem',
-    large: '1rem',
+    small: '0.625rem',
+    medium: '0.75rem',
+    regular: '0.875rem',
+    large: '1.25rem',
   };
   const paddingMap = {
     small: 'px-4 py-1',
@@ -90,6 +90,6 @@ export const linkButtonStyle = (color: Color) => {
     border: none;
     color: var(${bgColor});
     text-transform: none;
-    padding: 0;
+    padding: 0 !important;
   `;
 };
