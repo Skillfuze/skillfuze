@@ -66,10 +66,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   const blockStyleFn = (contentBlock): string => {
     const type = contentBlock.getType();
     if (type === 'header-one') {
-      return 'text-2xl font-semibold';
+      return 'text-4xl font-semibold';
     }
     if (type === 'header-two') {
-      return 'text-xl font-semibold';
+      return 'text-2xl font-semibold';
+    }
+    if (type === 'unstyled') {
+      return 'text-xl';
     }
 
     return '';

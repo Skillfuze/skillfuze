@@ -7,7 +7,8 @@ module.exports = {
   title: 'Skillfuze UI Components Style Guide',
   require: [
     './src/assets/css/tailwind.css',
-    './src/assets/css/styleguidist.css'
+    './src/assets/css/styleguidist.css',
+    './src/assets/css/typography.css',
   ],
   template: {
     head: {
@@ -23,7 +24,7 @@ module.exports = {
     fontFamily: {
       base: '"Open Sans"'
     },
-   
+
   },
   pagePerSection: true,
   components: () => {
