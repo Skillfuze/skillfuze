@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button, TagsView, TagsInput } from '@skillfuze/ui-components';
+import { Avatar, Button, TagsView } from '@skillfuze/ui-components';
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
 import More from '../../../assets/icons/More.svg';
