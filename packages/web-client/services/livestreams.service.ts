@@ -10,4 +10,13 @@ export default class LivestreamService {
       throw parseError(err.response.data);
     }
   }
+
+  async getOne(streamId: string): Promise<any> {
+    try {
+      const res = await axios.get(`/api/v1/livestreams/${streamId}`);
+      return res.data;
+    } catch (err) {
+      throw parseError(err.response.data);
+    }
+  }
 }
