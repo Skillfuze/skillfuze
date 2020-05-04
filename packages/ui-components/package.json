@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "styleguidist server",
+    "build:styleguidist": "styleguidist build",
     "build": "rollup -c"
   },
   "bugs": {
