@@ -1,6 +1,6 @@
 {
   "name": "@skillfuze/web-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next -p 3001",
@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@skillfuze/ui-components": "^0.0.1",
+    "@skillfuze/ui-components": "^0.1.0",
     "axios": "^0.19.2",
     "clone-deep": "^4.0.1",
     "deep-eql": "^4.0.0",

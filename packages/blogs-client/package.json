@@ -2,7 +2,7 @@
   "name": "@skillfuze/blogs-client",
   "private": true,
   "description": "A SSG Template used for the Blogs in Skillfuze",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "build:gatsby": "gatsby build",
@@ -12,7 +12,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@skillfuze/ui-components": "^0.0.1",
+    "@skillfuze/ui-components": "^0.1.0",
     "@svgr/webpack": "^5.3.0",
     "autoprefixer": "^9.7.5",
     "axios": "^0.19.2",
