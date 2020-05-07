@@ -13,8 +13,8 @@ then
 
   docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
   docker build --target skillfuze-backend -t skillfuze-backend .
-  docker tag skillfuze-backend khaledhamam/skillfuze-backend:latest
   docker tag skillfuze-backend khaledhamam/skillfuze-backend:$PACKAGE_VERSION
+  docker tag skillfuze-backend khaledhamam/skillfuze-backend:latest
   docker push khaledhamam/skillfuze-backend
 
   ssh $EC2_USER@$EC2_HOST '
@@ -36,11 +36,11 @@ then
 
   docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
   docker build --target skillfuze-web -t skillfuze-web .
-  docker tag skillfuze-web khaledhamam/skillfuze-web:latest
   docker tag skillfuze-web khaledhamam/skillfuze-web:$PACKAGE_VERSION
+  docker tag skillfuze-web khaledhamam/skillfuze-web:latest
   docker push khaledhamam/skillfuze-web
 
-  ssh $EC2_USER@$EC2_HOST '
+  ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
     docker pull khaledhamam/skillfuze-web
     docker stop skillfuze-web
     docker rm skillfuze-web
