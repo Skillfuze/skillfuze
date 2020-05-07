@@ -16,7 +16,8 @@
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "deploy": "./scripts/deploy.sh"
   },
   "husky": {
     "hooks": {

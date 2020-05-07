@@ -96,6 +96,14 @@ jobs:
       - store_test_results:
           path: packages/backend/test-results
 
+  deploy:
+    working_directory: ~/skillfuze
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: Deploying Changes
+        command: yarn deploy
+
 workflows:
   build-and-test:
     jobs:
@@ -112,3 +120,10 @@ workflows:
       - test-e2e:
           requires:
             - test
+  deploy:
+    jobs:
+      - deploy
+        filters:
+          branches:
+            only:
+              - deployment-test
