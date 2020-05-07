@@ -19,10 +19,10 @@ then
   docker push khaledhamam/skillfuze-backend
 
   ssh $EC2_USER@$EC2_HOST '
-    docker pull khaledhamam/skillfuze-backend
-    docker stop skillfuze-backend
-    docker rm skillfuze-backend
-    docker run --name skillfuze-backend --env-file ./.env.backend -d --restart on-failure skillfuze-backend
+    sudo docker pull khaledhamam/skillfuze-backend
+    sudo docker stop skillfuze-backend
+    sudo docker rm skillfuze-backend
+    sudo docker run --name skillfuze-backend --env-file ./.env.backend -d --restart on-failure skillfuze-backend
   '
 
   echo "@skillfuze/backend deployed.."
@@ -42,10 +42,10 @@ then
   docker push khaledhamam/skillfuze-web
 
   ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
-    docker pull khaledhamam/skillfuze-web
-    docker stop skillfuze-web
-    docker rm skillfuze-web
-    docker run --name skillfuze-web --env-file ./.env.web -d --restart on-failure skillfuze-web
+    sudo docker pull khaledhamam/skillfuze-web
+    sudo docker stop skillfuze-web
+    sudo docker rm skillfuze-web
+    sudo docker run --name skillfuze-web --env-file ./.env.web -d --restart on-failure skillfuze-web
   '
 
   echo "@skillfuze/web-client deployed.."
