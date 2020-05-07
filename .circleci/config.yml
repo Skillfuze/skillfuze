@@ -103,6 +103,10 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - 'fe:5b:b8:54:10:ed:67:d6:7e:23:a7:d4:45:0f:98:43'
+      - run: ssh-keyscan $EC2_HOST >> ~/.ssh/known_hosts
       - run:
           name: Deploying Changes
           command: yarn deploy

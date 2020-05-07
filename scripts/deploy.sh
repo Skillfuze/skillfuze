@@ -8,6 +8,7 @@ npx lerna version --conventional-commits --yes
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
+  ssh $EC2_USER@$EC2_HOST `echo Hello World`
   PACKAGE_VERSION=$(node -pe "require('./packages/backend/package.json').version")
   echo "@skillfuze/backend bumped to v$PACKAGE_VERSION, deploying.."
 
