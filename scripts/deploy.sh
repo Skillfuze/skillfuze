@@ -1,10 +1,10 @@
 #!/bin/bash
 
-CHANGED="$( lerna changed -a)"
-npx lerna version --conventional-commits --yes
-
 git config --global user.email "khal3d.mohamed@gmail.com"
 git config --global user.name "Khaled Mohamed"
+
+CHANGED="$(npx lerna changed -a)"
+npx lerna version --conventional-commits --yes
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
