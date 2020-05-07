@@ -98,6 +98,8 @@ jobs:
 
   deploy:
     working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
     steps:
       - attach_workspace:
           at: ~/skillfuze
