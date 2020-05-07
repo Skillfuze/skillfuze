@@ -1,6 +1,7 @@
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { ConnectionOptions } from 'typeorm';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { winstonOptions as winston } from './winston.config';
 
 require('dotenv').config();
 
@@ -11,6 +12,7 @@ type Config = {
   gatsby: {
     buildHookURL: string;
   };
+  winston: typeof winston;
 };
 
 const config: Config = {
@@ -34,6 +36,7 @@ const config: Config = {
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
+  winston,
 };
 
 export default config;
