@@ -1,14 +1,17 @@
 #!/bin/bash
 
-CHANGED="$(npx lerna changed -a)"
+CHANGED="$( lerna changed -a)"
 npx lerna version --conventional-commits --yes
+
+git config user.email "khal3d.mohamed@gmail.com"
+git config user.name "Khaled Mohamed"
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
   PACKAGE_VERSION=$(node -pe "require('./packages/backend/package.json').version")
   echo "@skillfuze/backend bumped to v$PACKAGE_VERSION, deploying.."
 
-  docker login --username=$DOCKER_HUB_USERNAME --pasword=$DOCKER_HUB_PASSWORD
+  docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
   docker build --target skillfuze-backend -t skillfuze-backend .
   docker tag skillfuze-backend khaled-hamam/skillfuze-backend:latest
   docker tag skillfuze-backend khaled-hamam/skillfuze-backend:$PACKAGE_VERSION
@@ -31,7 +34,7 @@ then
   PACKAGE_VERSION=$(node -pe "require('./packages/web-client/package.json').version")
   echo "@skillfuze/web-client bumped to v$PACKAGE_VERSION, deploying.."
 
-  docker login --username=$DOCKER_HUB_USERNAME --pasword=$DOCKER_HUB_PASSWORD
+  docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
   docker build --target skillfuze-web -t skillfuze-web .
   docker tag skillfuze-web khaled-hamam/skillfuze-web:latest
   docker tag skillfuze-web khaled-hamam/skillfuze-web:$PACKAGE_VERSION
