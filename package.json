@@ -15,7 +15,8 @@
     "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "lerna": "lerna"
   },
   "husky": {
     "hooks": {

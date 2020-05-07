@@ -16,8 +16,8 @@ type Config = {
 const config: Config = {
   db: {
     type: 'mysql',
-    url: 'mysql://root:root@localhost/skillfuze-dev',
-    database: 'skillfuze-dev',
+    url: process.env.MYSQL_URL || 'mysql://root:root@localhost/skillfuze-dev',
+    database: process.env.MYSQL_DB || 'skillfuze-dev',
     synchronize: process.env.NODE_ENV !== 'production',
     logging: process.env.NODE_ENV !== 'production',
     entities: [`${__dirname}/../src/api/**/*.entity.{ts,js}`],
@@ -27,7 +27,7 @@ const config: Config = {
     signOptions: { expiresIn: '86400s' },
   },
   corsOptions: {
-    origin: ['http://localhost:3001'],
+    origin: [process.env.CLIENT_URL || 'http://localhost:3001'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   },
