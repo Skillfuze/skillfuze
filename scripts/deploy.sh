@@ -1,4 +1,4 @@
-#!/bin/bash -eo pipefail
+#!/bin/bash
 
 git config --global user.email "khal3d.mohamed@gmail.com"
 git config --global user.name "Khaled Mohamed"
