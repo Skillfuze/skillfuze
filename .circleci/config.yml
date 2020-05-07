@@ -125,8 +125,8 @@ workflows:
             - test
   deploy:
     jobs:
-      - deploy
-        filters:
-          branches:
-            only:
-              - deployment-test
+      - deploy:
+          filters:
+            branches:
+              only:
+                - deployment-test
