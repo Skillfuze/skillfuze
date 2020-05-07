@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eo pipefail
 
 git config --global user.email "khal3d.mohamed@gmail.com"
 git config --global user.name "Khaled Mohamed"
@@ -8,7 +8,6 @@ npx lerna version --conventional-commits --yes
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
-  ssh $EC2_USER@$EC2_HOST `echo Hello World`
   PACKAGE_VERSION=$(node -pe "require('./packages/backend/package.json').version")
   echo "@skillfuze/backend bumped to v$PACKAGE_VERSION, deploying.."
 
@@ -22,7 +21,7 @@ then
     sudo docker pull khaledhamam/skillfuze-backend
     sudo docker stop skillfuze-backend
     sudo docker rm skillfuze-backend
-    sudo docker run --name skillfuze-backend --env-file ./.env.backend -d --restart on-failure skillfuze-backend
+    sudo docker run --name skillfuze-backend --network="host" --env-file ./.env.backend -d --restart on-failure khaledhamam/skillfuze-backend
   '
 
   echo "@skillfuze/backend deployed.."
@@ -45,10 +44,31 @@ then
     sudo docker pull khaledhamam/skillfuze-web
     sudo docker stop skillfuze-web
     sudo docker rm skillfuze-web
-    sudo docker run --name skillfuze-web --env-file ./.env.web -d --restart on-failure skillfuze-web
+    sudo docker run --name skillfuze-web -p 3001:3001 --env-file ./.env.web -d --restart on-failure khaledhamam/skillfuze-web
   '
 
   echo "@skillfuze/web-client deployed.."
 else
   echo "@skillfuze/web-client has not changed, will not deploy.."
+fi
+
+if [[ $CHANGED =~ "@skillfuze/ui-components" ]]
+then
+  PACKAGE_VERSION=$(node -pe "require('./packages/ui-components/package.json').version")
+  echo "@skillfuze/ui-components bumped to v$PACKAGE_VERSION, deploying.."
+  curl -X POST -d {} https://api.netlify.com/build_hooks/5eb493289f63910cdfab3957
+  echo "@skillfuze/ui-components deployed.."
+else
+  echo "@skillfuze/ui-components has not changed, will not deploy.."
+fi
+
+
+if [[ $CHANGED =~ "@skillfuze/blogs-client" ]]
+then
+  PACKAGE_VERSION=$(node -pe "require('./packages/blogs-client/package.json').version")
+  echo "@skillfuze/blogs-client bumped to v$PACKAGE_VERSION, deploying.."
+  curl -X POST -d {} https://api.netlify.com/build_hooks/5eb4887e1dedb35aa39adae3
+  echo "@skillfuze/blogs-client deployed.."
+else
+  echo "@skillfuze/blogs-client has not changed, will not deploy.."
 fi

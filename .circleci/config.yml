@@ -109,7 +109,9 @@ jobs:
       - run: ssh-keyscan $EC2_HOST >> ~/.ssh/known_hosts
       - run:
           name: Deploying Changes
-          command: yarn deploy
+          command: |
+            set -e
+            yarn deploy
 
 workflows:
   build-and-test:
