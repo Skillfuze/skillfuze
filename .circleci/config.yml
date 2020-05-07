@@ -98,11 +98,14 @@ jobs:
 
   deploy:
     working_directory: ~/skillfuze
-    - setup_remote_docker:
-        docker_layer_caching: true
-    - run:
-        name: Deploying Changes
-        command: yarn deploy
+    steps:
+      - attach_workspace:
+          at: ~/skillfuze
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Deploying Changes
+          command: yarn deploy
 
 workflows:
   build-and-test:
