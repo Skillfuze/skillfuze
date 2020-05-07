@@ -3,8 +3,8 @@
 CHANGED="$( lerna changed -a)"
 npx lerna version --conventional-commits --yes
 
-git config user.email "khal3d.mohamed@gmail.com"
-git config user.name "Khaled Mohamed"
+git config --global user.email "khal3d.mohamed@gmail.com"
+git config --global user.name "Khaled Mohamed"
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
