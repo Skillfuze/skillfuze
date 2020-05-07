@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CHANGED="$(yarn lerna changed -a)"
-yarn lerna version --conventional-commits --yes
+CHANGED="$(npx lerna changed -a)"
+npx lerna version --conventional-commits --yes
 
 if [[ $CHANGED =~ "@skillfuze/backend" ]]
 then
