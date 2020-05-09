@@ -27,7 +27,7 @@ const withAuth = (options: WithAuthOptions) => (Component: any) => {
 
       let user;
       try {
-        user = AuthService.instance.decodeJWT(token);
+        user = new AuthService().decodeJWT(token);
         if (options.redirectOnAuthSuccess) {
           redirect(ctx, options.redirectOnAuthSuccess);
         }

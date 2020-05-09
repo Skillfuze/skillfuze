@@ -6,20 +6,6 @@ import Router from 'next/router';
 import { parseError } from '../utils/parseError';
 
 export default class AuthService {
-  public user: undefined;
-
-  private static _instance: AuthService;
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
-
-  static get instance(): AuthService {
-    if (!this._instance) {
-      this._instance = new AuthService();
-    }
-    return this._instance;
-  }
-
   async login(payload: any): Promise<any> {
     try {
       const res = await axios.post('/api/v1/auth/login', payload);

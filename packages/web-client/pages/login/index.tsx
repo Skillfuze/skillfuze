@@ -9,7 +9,7 @@ import withAuth from '../../utils/withAuth/withAuth';
 import Layout from '../../components/Layout';
 
 const LoginPage = () => {
-  const authService = AuthService.instance;
+  const authService = new AuthService();
   const router = useRouter();
   const alert = useAlert();
   const [email, setEmail] = useState('');
