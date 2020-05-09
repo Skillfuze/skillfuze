@@ -23,8 +23,6 @@ const LoginPage = () => {
       if (token) {
         router.push('/');
         authService.setToken(token);
-        const decodedUser = authService.decodeJWT(token);
-        authService.user = decodedUser;
         alert.show('Welcome to Skillfuze');
       }
     } catch (err) {
