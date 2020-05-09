@@ -1,7 +1,8 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IUserRegisterDTO } from '@skillfuze/types';
 import { ValidateIf } from '../../../utils/validation/ValidateIf';
 
-export class UserRegisterDTO {
+export class UserRegisterDTO implements IUserRegisterDTO {
   @IsNotEmpty({ message: 'First Name should not be empty' })
   public firstName: string;
 

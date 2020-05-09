@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
+import { ICreateLivestreamDTO } from '@skillfuze/types';
 
-export class CreateLivestreamDTO {
+export class CreateLivestreamDTO implements ICreateLivestreamDTO {
   @IsNotEmpty({ message: 'Title should not be empty' })
   @IsString()
   public title: string;

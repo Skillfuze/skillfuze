@@ -1,10 +1,11 @@
 import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import * as shortid from 'shortid';
 
+import { ILivestream } from '@skillfuze/types';
 import { User } from '../users/user.entity';
 
 @Entity()
-export class Livestream {
+export class Livestream implements ILivestream {
   @PrimaryColumn()
   public id: string;
 

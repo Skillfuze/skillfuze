@@ -1,6 +1,7 @@
 {
   "name": "@skillfuze/ui-components",
   "version": "0.0.1",
+  "private": true,
   "description": "Skillfuze UI Components Library",
   "author": "Khaled Mohamed <Khal3d.Mohamed@gmail.com>",
   "homepage": "https://github.com/SkillFuze/skillfuze#readme",
@@ -11,9 +12,6 @@
   "types": "build/index.d.ts",
   "directories": {
     "build": "build"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",

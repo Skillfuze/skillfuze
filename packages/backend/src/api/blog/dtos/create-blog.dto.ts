@@ -1,6 +1,7 @@
 import { IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
+import { ICreateBlogDTO } from '@skillfuze/types';
 
-export class CreateBlogDTO {
+export class CreateBlogDTO implements ICreateBlogDTO {
   @IsOptional()
   @IsString()
   public title: string;

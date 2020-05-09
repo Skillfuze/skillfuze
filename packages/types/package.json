@@ -1,0 +1,28 @@
+{
+  "name": "@skillfuze/types",
+  "version": "0.0.1",
+  "private": true,
+  "description": "package for skillfuze types",
+  "author": "karimelsayed98 <karim.abdelghaffar98@gmail.com>",
+  "homepage": "https://github.com/SkillFuze/skillfuze#readme",
+  "license": "MIT",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "directories": {
+    "build": "build",
+    "models": "build/models"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkillFuze/skillfuze.git"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "bugs": {
+    "url": "https://github.com/SkillFuze/skillfuze/issues"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
