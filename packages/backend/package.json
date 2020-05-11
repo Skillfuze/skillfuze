@@ -21,15 +21,16 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@skillfuze/types": "^0.0.1",
     "@nestjs/common": "^6.7.2",
     "@nestjs/core": "^6.7.2",
     "@nestjs/jwt": "^6.1.1",
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^6.7.2",
+    "@nestjs/swagger": "^4.5.5",
     "@nestjs/typeorm": "^6.2.0",
     "@nestjsx/crud": "^4.4.2",
     "@nestjsx/crud-typeorm": "^4.4.2",
+    "@skillfuze/types": "^0.0.1",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",
@@ -45,6 +46,7 @@
     "rxjs": "^6.5.3",
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
+    "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.22",
     "winston": "^3.2.1"
   },

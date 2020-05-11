@@ -1,6 +1,13 @@
 import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
+import {
+  ApiTags,
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -32,6 +39,7 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
     },
   },
 })
+@ApiTags('blogs')
 @Controller('blogs')
 export class BlogController implements CrudController<Blog> {
   public constructor(public service: BlogService, private readonly emitter: BlogsEventEmitter) {}
@@ -42,6 +50,8 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
   async createOne(
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: CreateBlogDTO,
@@ -58,6 +68,9 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
+  @ApiNotFoundResponse()
   async updateOne(
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: CreateBlogDTO,
@@ -80,6 +93,10 @@ export class BlogController implements CrudController<Blog> {
 
   @UseGuards(JwtAuthGuard)
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   async deleteOne(@ParsedRequest() req: CrudRequest, @Request() nestRequest): Promise<void | Blog> {
     const blog = await this.service.findOne(
       { id: nestRequest.params.id },
@@ -100,6 +117,9 @@ export class BlogController implements CrudController<Blog> {
   @UseGuards(JwtAuthGuard)
   @Post('/:id/publish')
   @HttpCode(200)
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   async publish(@Request() req): Promise<Blog> {
     const res = await this.service.publish(req.params.id, req.user.id);
     this.emitter.emit('publish', res);
