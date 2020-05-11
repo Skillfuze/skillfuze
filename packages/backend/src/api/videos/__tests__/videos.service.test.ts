@@ -13,10 +13,9 @@ describe('VideosService', () => {
   let repository: VideosRepository;
   const shortIdReturn = 'randomID';
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     repository = new VideosRepository();
     service = new VideosService(repository);
-    // jest.clearAllMocks();
     jest.spyOn(shortid, 'generate').mockImplementation(() => {
       return shortIdReturn;
     });
@@ -30,7 +29,8 @@ describe('VideosService', () => {
       title: 'Video Title',
       description: 'Video Description',
     };
-    beforeEach(async () => {
+
+    beforeAll(async () => {
       repoSaveSpy = jest.spyOn(repository, 'save');
       video = await service.create(userId, payload as CreateVideoDTO);
     });
