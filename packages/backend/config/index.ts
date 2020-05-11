@@ -1,8 +1,10 @@
+/* eslint-disable import/first */
+require('dotenv').config();
+
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { ConnectionOptions } from 'typeorm';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-
-require('dotenv').config();
+import { tusConfig } from './tus.config';
 
 type Config = {
   db: ConnectionOptions;
@@ -11,6 +13,7 @@ type Config = {
   gatsby: {
     buildHookURL: string;
   };
+  tus: typeof tusConfig;
 };
 
 const config: Config = {
@@ -34,6 +37,7 @@ const config: Config = {
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
+  tus: tusConfig,
 };
 
 export default config;
