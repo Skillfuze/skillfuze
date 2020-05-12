@@ -4,6 +4,7 @@ import '../assets/css/tailwind.css';
 import '../assets/css/openSans.css';
 import '../assets/css/editor.css';
 import '../assets/css/typography.css';
+import 'video.js/dist/video-js.css';
 
 import React from 'react';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';

@@ -79,10 +79,9 @@ describe('LivestreamsService', () => {
       });
     });
 
-    it('should return livestream data without streamKey on valid id', async () => {
+    it('should return livestream data on valid id', async () => {
       const res = await service.getOne('1');
       expect(res).toBeInstanceOf(Livestream);
-      expect(res).not.toHaveProperty('streamKey');
     });
 
     it('should call findOne, fetch streamer and delete password', async () => {
@@ -93,6 +92,113 @@ describe('LivestreamsService', () => {
 
     it('should throw 404 error when id is invalid', async () => {
       await expect(service.getOne('2')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('isValidKey', () => {
+    const validKey = 'validKey';
+    const nonExistingKey = '404Key';
+    const oldKey = 'oldKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validKey) {
+          return {
+            createdAt: new Date(Date.now()),
+          };
+        }
+        if (payload.streamKey === oldKey) {
+          return {
+            createdAt: new Date(Date.parse('February 18, 2018 12:30 PM')),
+          };
+        }
+
+        return undefined;
+      }) as any);
+    });
+
+    it('should return true on valid key', async () => {
+      expect(await service.isValidKey(validKey)).toBe(true);
+    });
+
+    it('should return false on non-existing key', async () => {
+      expect(await service.isValidKey(nonExistingKey)).toBe(false);
+    });
+
+    it('should return false on key created before 24 hours', async () => {
+      expect(await service.isValidKey(oldKey)).toBe(false);
+    });
+  });
+
+  describe('start', () => {
+    const validStreamKey = 'validStreamKey';
+    const inValidStreamKey = 'inValidStreamKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validStreamKey) {
+          return {
+            createdAt: new Date(Date.now()),
+          };
+        }
+
+        return undefined;
+      }) as any);
+
+      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+    });
+
+    it('should set stream.isLive to true given an existing key', async () => {
+      const stream = await service.start(validStreamKey);
+      expect(stream.isLive).toBe(true);
+    });
+
+    it('should call repository.save given a valid key', async () => {
+      await service.start(validStreamKey);
+      expect(repository.save).toBeCalledTimes(1);
+    });
+
+    it('should throw NotFoundException given a non-existing key', async () => {
+      await expect(service.start(inValidStreamKey)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('stop', () => {
+    const validStreamKey = 'validStreamKey';
+    const inValidStreamKey = 'inValidStreamKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validStreamKey) {
+          return {
+            createdAt: new Date(Date.now()),
+            streamKey: 'I am not undefined',
+          };
+        }
+
+        return undefined;
+      }) as any);
+
+      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+    });
+
+    it('should set stream.isLive to false given an existing key', async () => {
+      const stream = await service.stop(validStreamKey);
+      expect(stream.isLive).toBe(false);
+    });
+
+    it('should remove streamKey given an existing key', async () => {
+      const stream = await service.stop(validStreamKey);
+      expect(stream.streamKey).toBe(null);
+    });
+
+    it('should call repository.save given a valid key', async () => {
+      await service.stop(validStreamKey);
+      expect(repository.save).toBeCalledTimes(1);
+    });
+
+    it('should throw NotFoundException given a non-existing key', async () => {
+      await expect(service.stop(inValidStreamKey)).rejects.toThrow(NotFoundException);
     });
   });
 });

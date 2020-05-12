@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import { HashingService } from '../services/hashing.service';
 
+jest.mock('bcrypt');
+
 describe('HashingService', () => {
   let hashingService: HashingService;
   let genSalt: jest.SpyInstance;
@@ -34,7 +36,7 @@ describe('HashingService', () => {
   describe('hashPassword', () => {
     it('should generate encrypted password', async () => {
       const res = await hashingService.hashPassword('12345678');
-      expect(res).toMatch('hashed');
+      expect(res).toBe('hashed');
     });
   });
 
