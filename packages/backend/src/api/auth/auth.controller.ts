@@ -31,7 +31,7 @@ export class AuthController {
     }
 
     const createdUser = await this.userService.register(userRegisterDTO);
-    // delete createdUser.password;
+    delete createdUser.password;
 
     return createdUser;
   }
