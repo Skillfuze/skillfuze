@@ -7,10 +7,6 @@ export class VideosRepository {
     const uploader = new User();
     video.uploader = uploader;
     video.title = payload.title;
-    console.log(
-      '-------------------------------HEEERRRREEEEE-----------------------------------------------------------------',
-      video,
-    );
     return video;
   }
 
