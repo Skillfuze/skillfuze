@@ -1,10 +1,11 @@
 import * as tus from 'tus-node-server';
 import * as path from 'path';
+import * as shortid from 'shortid';
 
 const namingFunction = req => {
-  const [namePair] = req.headers['upload-metadata'].split(',');
-  const name = Buffer.from(namePair.split(' ').pop(), 'base64').toString('ascii');
-  return `videos/${name}`;
+  const typePair = req.headers['upload-metadata'].split(',').pop();
+  const type = Buffer.from(typePair.split(' ').pop(), 'base64').toString('ascii');
+  return `videos/${shortid.generate()}.${type}`;
 };
 
 const dataStore =
