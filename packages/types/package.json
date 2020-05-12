@@ -9,15 +9,14 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "directories": {
-    "build": "build",
-    "models": "build/models"
+    "build": "build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SkillFuze/skillfuze.git"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf build && tsc"
   },
   "bugs": {
     "url": "https://github.com/SkillFuze/skillfuze/issues"

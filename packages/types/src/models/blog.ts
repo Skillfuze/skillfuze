@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/interface-name-prefix */
-import { IUser } from './IUser';
+import { IUser } from './user';
 
 export interface IBlog {
   id: string;

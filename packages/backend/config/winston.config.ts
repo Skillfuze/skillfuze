@@ -7,8 +7,8 @@ export const winstonOptions = {
     handleExceptions: true,
     maxsize: 5242880,
     maxFiles: 5,
-    json: false,
     tailable: true,
+    format: winston.format.combine(winston.format.uncolorize(), winston.format.json()),
   },
   console: {
     level: 'debug',

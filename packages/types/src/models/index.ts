@@ -1,3 +1,3 @@
-export * from './IUser';
-export * from './IBlog';
-export * from './ILivestream';
+export * from './user';
+export * from './blog';
+export * from './livestream';

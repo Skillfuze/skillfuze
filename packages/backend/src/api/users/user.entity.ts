@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IUser } from '@skillfuze/types';
-import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User implements IUser {
@@ -21,6 +22,8 @@ export class User implements IUser {
   @Column({ unique: true })
   public email: string;
 
+  @ApiHideProperty()
+  @Exclude()
   @Column()
   public password: string;
 }

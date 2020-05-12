@@ -6,7 +6,7 @@ export class CreateBlogDTO implements ICreateBlogDTO {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  public title: string;
+  public title?: string;
 
   @ApiProperty()
   @IsOptional()
@@ -16,7 +16,7 @@ export class CreateBlogDTO implements ICreateBlogDTO {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  public content: string;
+  public content?: string;
 
   @ApiProperty()
   @IsOptional()

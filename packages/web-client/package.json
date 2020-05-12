@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@skillfuze/types": "^0.0.1",
     "@skillfuze/ui-components": "^0.0.1",
     "axios": "^0.19.2",
     "clone-deep": "^4.0.1",
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@svgr/webpack": "^5.2.0",
     "@types/draft-js": "^0.10.38",
+    "@types/jwt-decode": "^2.2.1",
     "@types/react": "^16.9.23",
     "postcss-import": "^12.0.1"
   },

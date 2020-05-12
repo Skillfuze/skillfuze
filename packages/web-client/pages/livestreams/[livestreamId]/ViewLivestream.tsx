@@ -1,11 +1,13 @@
 import React from 'react';
 import { Avatar, Button, TagsView } from '@skillfuze/ui-components';
+import { ILivestream } from '@skillfuze/types';
+
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
 import More from '../../../assets/icons/More.svg';
 
 interface Props {
-  stream: any;
+  stream: ILivestream;
 }
 
 const ViewLivestream = ({ stream }: Props) => {
@@ -24,7 +26,7 @@ const ViewLivestream = ({ stream }: Props) => {
 
         <div className=" text-center bg-gray w-5/6 p-1">
           <div className="flex flex-row h-16 items-center ">
-            <Avatar URL={stream.streamer.avatar} alt="streamer photo" />
+            <Avatar URL={/* TODO: Add Streamer Avatar  */ undefined} alt="streamer photo" />
             <div className="ml-4 flex-col flex-auto">
               <div className="flex flex-row items-center">
                 <div className="flex flex-row flex-grow">
@@ -51,7 +53,7 @@ const ViewLivestream = ({ stream }: Props) => {
 ViewLivestream.getInitialProps = async ctx => {
   const livestreamService = new LivestreamService();
   const stream = await livestreamService.getOne(ctx.query.livestreamId.toString());
-  // DTO
   return { stream };
 };
+
 export default ViewLivestream;
