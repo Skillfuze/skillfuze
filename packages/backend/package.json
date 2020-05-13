@@ -44,6 +44,7 @@
     "rxjs": "^6.5.3",
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
+    "tus-node-server": "^0.3.2",
     "typeorm": "^0.2.22"
   },
   "devDependencies": {

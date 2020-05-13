@@ -11,7 +11,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "exclude": ["node_modules", "dist"]
 }

@@ -82,7 +82,7 @@ describe('Livestreams (e2e)', () => {
     });
   });
 
-  describe('POST /api/v1/livestreams/:id', () => {
+  describe('GET /api/v1/livestreams/:id', () => {
     let createdStream: Livestream;
     const payload = {
       title: 'Livestream Title',

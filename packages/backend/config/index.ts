@@ -1,9 +1,12 @@
+/* eslint-disable import/first */
+require('dotenv').config();
+
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { ConnectionOptions } from 'typeorm';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { streamingServer } from './streaming.config';
 
-require('dotenv').config();
+import { tusConfig } from './tus.config';
+import { streamingServer } from './streaming.config';
 
 type Config = {
   api: {
@@ -15,6 +18,7 @@ type Config = {
   gatsby: {
     buildHookURL: string;
   };
+  tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
 };
 
@@ -42,6 +46,7 @@ const config: Config = {
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
+  tus: tusConfig,
   streamingServer,
 };
 
