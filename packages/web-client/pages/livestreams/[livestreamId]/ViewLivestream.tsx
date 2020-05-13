@@ -5,6 +5,7 @@ import { ILivestream } from '@skillfuze/types';
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
 import More from '../../../assets/icons/More.svg';
+import VideoPlayer from '../../../components/VideoPlayer';
 
 interface Props {
   stream: ILivestream;
@@ -16,12 +17,13 @@ const ViewLivestream = ({ stream }: Props) => {
   };
   return (
     <Layout>
-      <div className="flex flex-col flex-grow h-screen items-center">
-        {/* video player */}
-        <div className="flex flex-grow text-center h-64 w-5/6 bg-black" />
+      <div className="flex flex-col flex-grow items-center px-10">
+        <div className="flex flex-grow text-center w-5/6 mt-3">
+          <VideoPlayer stream={stream} />
+        </div>
 
         <h1 className="flex text-left w-5/6 mt-4">{stream.title}</h1>
-        <p className="text-left  text-warning w-5/6 mt-2 ml-2">Live Now</p>
+        <p className="text-left text-warning w-5/6 mt-2 ml-2">Live Now</p>
         <hr className="flex w-5/6 mt-6 text-grey" />
 
         <div className=" text-center bg-gray w-5/6 p-1">
@@ -40,7 +42,7 @@ const ViewLivestream = ({ stream }: Props) => {
             </div>
           </div>
 
-          <h4 className="flex text-left w-3/5  ml-16 text-grey-dark">{stream.description}</h4>
+          <h5 className="flex text-left w-3/5 ml-16 text-grey-dark">{stream.description}</h5>
           <div className="flex text-left w-3/5 mt-4 ml-16">
             <TagsView tags={stream.tags} />
           </div>

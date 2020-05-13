@@ -4,8 +4,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as morgan from 'morgan';
 
 import config from '../config';
-import { AppModule } from './api/app.module';
 import { stream } from './utils/logger';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -34,6 +34,6 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(3000);
+  await app.listen(config.api.port);
 }
 bootstrap();

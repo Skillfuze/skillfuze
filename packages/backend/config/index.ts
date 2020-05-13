@@ -1,11 +1,18 @@
+/* eslint-disable import/first */
+require('dotenv').config();
+
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { ConnectionOptions } from 'typeorm';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { winstonOptions as winston } from './winston.config';
 
-require('dotenv').config();
+import { tusConfig } from './tus.config';
+import { streamingServer } from './streaming.config';
 
 type Config = {
+  api: {
+    port: number;
+  };
   db: ConnectionOptions;
   jwt: JwtModuleOptions;
   corsOptions: CorsOptions;
@@ -13,9 +20,14 @@ type Config = {
     buildHookURL: string;
   };
   winston: typeof winston;
+  tus: typeof tusConfig;
+  streamingServer: typeof streamingServer;
 };
 
 const config: Config = {
+  api: {
+    port: parseInt(process.env.PORT, 10) || 3000,
+  },
   db: {
     type: 'mysql',
     url: 'mysql://root:root@localhost/skillfuze-dev',
@@ -37,6 +49,8 @@ const config: Config = {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
   winston,
+  tus: tusConfig,
+  streamingServer,
 };
 
 export default config;
