@@ -3,7 +3,7 @@ import { cx } from 'emotion';
 
 import { baseInputStyle, errorState, errorType, labelType, borderless, disabledInputStyle } from './styles';
 
-interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   error?: string;
   onChange?: (value: any) => void;
   label?: string;
@@ -11,6 +11,8 @@ interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   value?: string;
   borderless?: boolean;
   disabled?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
@@ -27,17 +29,21 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
     props.className,
   );
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setError('');
     props.onChange?.(event.target.value);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { borderless: _borderless, ...restInputProps } = props;
+  const { borderless: _borderless, multiline, ...restInputProps } = props;
   return (
     <div className="flex flex-col">
       {Boolean(props.label?.length) && <p className={cx(labelType, 'mb-1')}>{props.label}</p>}
-      <input {...restInputProps} value={props.value} className={className} onChange={onChange} />
+      {!props.multiline ? (
+        <input {...restInputProps} value={props.value} className={className} onChange={onChange} />
+      ) : (
+        <textarea {...restInputProps} value={props.value} className={className} onChange={onChange} />
+      )}
       {Boolean(error?.length) && <p className={cx(errorType, 'mt-1')}>{error}</p>}
     </div>
   );
@@ -49,6 +55,8 @@ Input.defaultProps = {
   value: '',
   borderless: false,
   disabled: false,
+  multiline: false,
+  rows: 4,
 };
 
 export default Input;
