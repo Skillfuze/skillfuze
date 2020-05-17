@@ -25,6 +25,7 @@ const NewVideo = () => {
       setError(err);
     }
   };
+
   const onUploadComplete = ({ successful }) => {
     const [video] = successful;
     if (video) {
@@ -35,12 +36,12 @@ const NewVideo = () => {
   return (
     <Layout>
       <div className="container flex flex-grow mx-auto flex-wrap-reverse">
-        <div className="flex flex-1 flex-col p-6 justify-center">
+        <div className="flex sub-container overflow-auto flex-col p-6 justify-center">
           <NoSSR>
             <VideoUploader onComplete={onUploadComplete} />
           </NoSSR>
         </div>
-        <div className="flex flex-1 flex-col p-6 justify-center space-y-6">
+        <div className="flex sub-container flex-col p-6 justify-center space-y-6">
           <h1 className="font-bold">Upload New Video</h1>
           <Input error={error.title} placeholder="Title" onChange={setTitle} value={title} />
           <Input
@@ -63,6 +64,13 @@ const NewVideo = () => {
           </Button>
         </div>
       </div>
+      <style jsx>
+        {`
+          .sub-container {
+            flex: 1 0 50%;
+          }
+        `}
+      </style>
     </Layout>
   );
 };
