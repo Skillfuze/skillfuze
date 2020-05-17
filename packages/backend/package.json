@@ -30,7 +30,7 @@
     "@nestjs/typeorm": "^6.2.0",
     "@nestjsx/crud": "^4.4.2",
     "@nestjsx/crud-typeorm": "^4.4.2",
-    "@skillfuze/types": "^0.0.1",
+    "@skillfuze/types": "^0.0.0",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",

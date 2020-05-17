@@ -8,8 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@skillfuze/types": "^0.0.1",
-    "@skillfuze/ui-components": "^0.0.1",
+    "@skillfuze/types": "^0.0.0",
+    "@skillfuze/ui-components": "^0.0.0",
     "axios": "^0.19.2",
     "clone-deep": "^4.0.1",
     "deep-eql": "^4.0.0",
