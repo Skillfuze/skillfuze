@@ -1,4 +1,4 @@
-import { Controller, Body, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Body, Request, Post, UseGuards, Get, Param } from '@nestjs/common';
 import { Video } from './video.entity';
 import { CreateVideoDTO } from './dtos/create-video.dto';
 import { VideosService } from './videos.service';
@@ -12,5 +12,10 @@ export class VideosController {
   @Post('/')
   public async createOne(@Request() req, @Body() payload: CreateVideoDTO): Promise<Video> {
     return this.service.create(req.user.id, payload);
+  }
+
+  @Get('/:id')
+  public async getOne(@Param('id') id: string): Promise<Video> {
+    return this.service.getOne(id);
   }
 }
