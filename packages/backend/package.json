@@ -1,7 +1,7 @@
 {
   "name": "@skillfuze/backend",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "SkillFuze Backend",
   "author": "",
   "license": "MIT",
@@ -36,6 +36,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
+    "helmet": "^3.22.0",
     "morgan": "^1.10.0",
     "mysql": "^2.17.1",
     "node-media-server": "^2.1.8",
@@ -48,9 +49,10 @@
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
     "swagger-ui-express": "^4.1.4",
-    "winston": "^3.2.1",
     "tus-node-server": "^0.3.2",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.22",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^6.9.0",

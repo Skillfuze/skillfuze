@@ -6,6 +6,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { LivestreamsService } from './livestreams.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -18,6 +19,7 @@ export class LivestreamsController {
   public constructor(private readonly service: LivestreamsService) {}
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('/')
   @ApiCreatedResponse({ type: Livestream })
   @ApiBadRequestResponse()

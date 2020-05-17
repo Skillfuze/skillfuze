@@ -7,6 +7,7 @@ import {
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
@@ -49,6 +50,7 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
   @ApiBadRequestResponse()
   @ApiUnauthorizedResponse()
@@ -67,6 +69,7 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
   @ApiBadRequestResponse()
   @ApiUnauthorizedResponse()
@@ -92,6 +95,7 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
   @ApiBadRequestResponse()
   @ApiUnauthorizedResponse()
@@ -115,6 +119,7 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('/:id/publish')
   @HttpCode(200)
   @ApiUnauthorizedResponse()

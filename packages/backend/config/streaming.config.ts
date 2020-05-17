@@ -13,7 +13,7 @@ export const streamingServer = {
   http: {
     port: process.env.HTTP_STREAMING_PORT || 8080,
     mediaroot: path.join(process.env.HOME, '.skillfuze/media'),
-    allow_origin: '*',
+    allow_origin: process.env.CLIENT_URL || '*',
   },
   trans: {
     ffmpeg: process.env.FFMPEG_PATH || '/usr/local/bin/ffmpeg',

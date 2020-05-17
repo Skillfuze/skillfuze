@@ -2,7 +2,7 @@
   "name": "@skillfuze/blogs-client",
   "private": true,
   "description": "A SSG Template used for the Blogs in Skillfuze",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "build:gatsby": "gatsby build",

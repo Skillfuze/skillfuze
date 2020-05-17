@@ -1,10 +1,11 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as morgan from 'morgan';
+import morgan from 'morgan';
+import helmet from 'helmet';
 
 import config from '../config';
-import { stream } from './utils/logger';
+import { stream, logger } from './utils/logger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -16,6 +17,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(morgan(isProd ? 'combined' : 'dev', { stream }));
   app.enableCors(config.corsOptions);
+  app.use(helmet());
 
   const options = new DocumentBuilder()
     .setTitle('Skillfuze API')
@@ -26,7 +28,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document, {
-    customJs: 'console.log("here"); $(".authorize").remove()',
     customSiteTitle: 'Skillfuze API Docs',
     swaggerOptions: {
       supportedSubmitMethods: isProd ? [] : undefined,
@@ -37,3 +38,11 @@ async function bootstrap() {
   await app.listen(config.api.port);
 }
 bootstrap();
+
+process.on('uncaughtException', err => {
+  logger.error('uncaught exception', err);
+});
+
+process.on('unhandledRejection', err => {
+  logger.error('unhandled rejection', err);
+});

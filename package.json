@@ -6,7 +6,8 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ]
+    ],
+    "nohoist": ["**/@nestjs/swagger/**", "**/@nestjs/swagger"]
   },
   "scripts": {
     "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
@@ -16,7 +17,8 @@
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",
-    "postinstall": "patch-package --use-yarn"
+    "postinstall": "patch-package --use-yarn",
+    "lerna": "lerna"
   },
   "husky": {
     "hooks": {
