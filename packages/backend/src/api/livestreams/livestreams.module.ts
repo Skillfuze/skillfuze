@@ -9,5 +9,6 @@ import { LivestreamsRepository } from './livestreams.repository';
   imports: [TypeOrmModule.forFeature([LivestreamsRepository])],
   providers: [LivestreamsService],
   controllers: [LivestreamsController],
+  exports: [LivestreamsService],
 })
 export class LivestreamsModule {}

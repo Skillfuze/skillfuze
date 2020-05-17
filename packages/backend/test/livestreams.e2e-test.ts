@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as request from 'supertest';
+import request from 'supertest';
 import { Livestream } from '../src/api/livestreams/livestream.entity';
 
 import { UserRepository } from '../src/api/users/user.repository';
@@ -82,7 +82,7 @@ describe('Livestreams (e2e)', () => {
     });
   });
 
-  describe('POST /api/v1/livestreams/:id', () => {
+  describe('GET /api/v1/livestreams/:id', () => {
     let createdStream: Livestream;
     const payload = {
       title: 'Livestream Title',

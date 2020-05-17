@@ -1,23 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidationPipe, INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import request from 'supertest';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AuthController } from '../src/api/auth/auth.controller';
 import { UserService } from '../src/api/users/user.service';
 import { UserRepository } from '../src/api/users/user.repository';
 import { AuthModule } from '../src/api/auth/auth.module';
+import { ormConfig } from './config';
 
 describe('AuthController (e2e)', () => {
   let moduleFixture: TestingModule;
   let app: INestApplication;
-  const ormConfig: TypeOrmModuleOptions = {
-    type: 'mysql',
-    url: 'mysql://root:root@localhost/skillfuze-test',
-    database: 'skillfuze-test',
-    synchronize: true,
-    logging: false,
-    entities: [`${__dirname}/../src/api/**/*.entity.{ts,js}`],
-  };
 
   beforeAll(async () => {
     moduleFixture = await Test.createTestingModule({
