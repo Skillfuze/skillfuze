@@ -5,6 +5,7 @@ export const baseInputStyle = css`
   border: solid 1px var(--color-grey);
   color: var(--color-black);
   font-size: 14px;
+  resize: none;
 
   &:focus {
     border-color: var(--color-primary);

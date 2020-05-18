@@ -1,12 +1,14 @@
 import * as tus from 'tus-node-server';
 import * as path from 'path';
 import * as shortid from 'shortid';
+import fs from 'fs';
 
-const namingFunction = req => {
-  const typePair = req.headers['upload-metadata'].split(',').pop();
-  const type = Buffer.from(typePair.split(' ').pop(), 'base64').toString('ascii');
-  return `videos/${shortid.generate()}.${type}`;
-};
+const videosDirectory = path.join(process.env.HOME, '.skillfuze/media');
+if (!fs.existsSync(`${videosDirectory}/videos`)) {
+  fs.mkdirSync(`${videosDirectory}/videos`, { recursive: true });
+}
+
+const namingFunction = () => `videos/${shortid.generate()}`;
 
 const dataStore =
   process.env.NODE_ENV === 'production'
@@ -22,7 +24,7 @@ const dataStore =
       })
     : new tus.FileStore({
         path: '/api/v1/videos/upload',
-        directory: path.join(process.env.HOME, '.skillfuze/media'),
+        directory: videosDirectory,
         namingFunction,
       });
 
