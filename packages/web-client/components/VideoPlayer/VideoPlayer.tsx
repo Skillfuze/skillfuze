@@ -3,10 +3,10 @@ import React, { useRef, useEffect } from 'react';
 import { useAlert } from 'react-alert';
 
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js';
-import config from '../../config';
 
 interface Props {
-  stream: any;
+  url: string;
+  videoType: string;
 }
 const VideoPlayer: React.FC<Props> = (props: Props) => {
   const alert = useAlert();
@@ -17,10 +17,11 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
     const videoJsOptions: VideoJsPlayerOptions = {
       autoplay: false,
       controls: true,
+      aspectRatio: '16:9',
       sources: [
         {
-          src: `http://${config.httpStreamingServerURL}/${props.stream.streamKey}/playlist.m3u8`,
-          type: 'application/x-mpegURL',
+          src: props.url,
+          type: props.videoType,
         },
       ],
       fluid: true,
