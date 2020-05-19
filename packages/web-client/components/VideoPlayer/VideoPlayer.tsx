@@ -18,6 +18,7 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
       autoplay: false,
       controls: true,
       aspectRatio: '16:9',
+      liveui: true,
       sources: [
         {
           src: props.url,

@@ -15,7 +15,7 @@ const ViewLivestream = ({ stream }: Props) => {
         isLive
         user={stream.streamer}
         video={stream}
-        url={`http://${config.httpStreamingServerURL}/${stream.streamKey}/playlist.m3u8`}
+        url={`${config.httpStreamingServerURL}/live/${stream.streamKey}/playlist.m3u8`}
         videoType="application/x-mpegURL"
       />
     </Layout>

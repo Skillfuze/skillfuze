@@ -33,7 +33,7 @@ const VideoUploader: React.FC<Props> = ({ onComplete }: Props) => {
   );
 
   useEffect(() => {
-    return uppyRef.current.close;
+    return () => uppyRef.current.close();
   }, []);
 
   return (

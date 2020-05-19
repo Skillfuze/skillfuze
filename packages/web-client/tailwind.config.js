@@ -1,6 +1,10 @@
 /* eslint-disable */
 module.exports = {
   important: true,
+  purge: [
+    './pages/**/*.tsx',
+    './components/**/*.tsx',
+  ],
   theme: {
     colors: {
       primary: {

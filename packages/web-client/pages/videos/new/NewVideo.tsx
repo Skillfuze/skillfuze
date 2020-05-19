@@ -7,20 +7,22 @@ import Layout from '../../../components/Layout';
 import NoSSR from '../../../components/NoSSR';
 import VideoUploader from '../../../components/VideoUploader';
 import { VideosService } from '../../../services/videos.service';
+import config from '../../../config';
+import withAuth from '../../../utils/withAuth';
 
 const NewVideo = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [thumbnailURL, setThumbnailURL] = useState('');
+  const [thumbnailURL, setThumbnailURL] = useState();
   const [tags, setTags] = useState([]);
-  const [videoURL, setVideoURL] = useState<string>(undefined);
+  const [videoURL, setVideoURL] = useState<string>();
   const [error, setError] = useState<any>({});
   const router = useRouter();
 
   const handlePublishVideo = async () => {
     try {
       const video = await VideosService.create({ title, description, thumbnailURL, tags, url: videoURL });
-      router.push('/videos/[id]', `/videos/${video.id}`);
+      router.push('/videos/[videoId]', `/videos/${video.id}`);
     } catch (err) {
       setError(err);
     }
@@ -29,7 +31,9 @@ const NewVideo = () => {
   const onUploadComplete = ({ successful }) => {
     const [video] = successful;
     if (video) {
-      setVideoURL(video.uploadURL);
+      const file = video.uploadURL.split('/').pop();
+      const isProd = process.env.NODE_ENV === 'production';
+      setVideoURL(isProd ? `${config.s3Bucket}/videos/${file}` : `${config.httpStreamingServerURL}/videos/${file}`);
     }
   };
 
@@ -74,4 +78,5 @@ const NewVideo = () => {
     </Layout>
   );
 };
-export default NewVideo;
+
+export default withAuth({ redirectOnAuthFailure: '/login' })(NewVideo);
