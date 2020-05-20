@@ -16,7 +16,7 @@ const ViewLivestream = ({ stream }: Props) => {
     console.log('More');
   };
   return (
-    <Layout>
+    <Layout title={stream.title}>
       <div className="flex flex-col flex-grow items-center px-10">
         <div className="flex flex-grow text-center w-5/6 mt-3">
           <VideoPlayer stream={stream} />

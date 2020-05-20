@@ -24,7 +24,7 @@ const CreateLiveStream = () => {
     }
   };
   return (
-    <Layout>
+    <Layout title="New Livestream">
       <div className="flex flex-grow px-40 items-center justify-center h-full">
         <div className="flex flex-col items-center w-1/2">
           <div className="flex flex-col w-2/3">
@@ -67,7 +67,7 @@ const CreateLiveStream = () => {
             <Input value={streamKey} disabled type="text" />
 
             <h3 className=" mt-6 mb-2 w-full font-semibold text-lg">Server URL</h3>
-            <Input value={serverURL} type="url" />
+            <Input value={serverURL} disabled type="url" />
           </div>
         </div>
       </div>

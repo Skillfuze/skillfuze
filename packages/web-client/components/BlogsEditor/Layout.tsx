@@ -85,7 +85,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
   );
 
   return (
-    <PageLayout navControls={navControls}>
+    <PageLayout navControls={navControls} title={mode === 'edit' ? `Edit Blog` : 'New Blog'}>
       <div className="flex flex-grow flex-col py-16 max-w-screen-md w-full self-center align-center">
         <Input
           value={title}

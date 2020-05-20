@@ -14,6 +14,7 @@ import '@skillfuze/ui-components/build/index.css';
 import React from 'react';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import { Alert } from '@skillfuze/ui-components';
+import Head from 'next/head';
 
 import '../config/axios';
 
@@ -26,9 +27,36 @@ const options = {
 
 const App = ({ Component, pageProps }) => {
   return (
-    <AlertProvider template={Alert} {...options}>
-      <Component {...pageProps} />
-    </AlertProvider>
+    <>
+      <Head>
+        <link
+          rel="preload"
+          as="font"
+          href="/fonts/open-sans-v17-latin-regular.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          href="/fonts/open-sans-v17-latin-700.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          href="/fonts/open-sans-v17-latin-600.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <title>Skillfuze</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <AlertProvider template={Alert} {...options}>
+        <Component {...pageProps} />
+      </AlertProvider>
+    </>
   );
 };
 

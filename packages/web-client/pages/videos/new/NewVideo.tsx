@@ -34,7 +34,7 @@ const NewVideo = () => {
   };
 
   return (
-    <Layout>
+    <Layout title="New Video">
       <div className="container flex flex-grow mx-auto flex-wrap-reverse">
         <div className="flex sub-container overflow-auto flex-col p-6 justify-center">
           <NoSSR>

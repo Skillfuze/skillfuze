@@ -1,17 +1,13 @@
 import React from 'react';
-import Head from 'next/head';
+import InDevelopment from '../components/InDevelopment';
+import Layout from '../components/Layout';
 
-const Home = (): JSX.Element => (
-  <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
-    <main>
-      <h1>Skillfuze Web Client</h1>
-    </main>
-  </div>
-);
+const Home = (): JSX.Element => {
+  return (
+    <Layout title="Home">
+      <InDevelopment />
+    </Layout>
+  );
+};
 
 export default Home;

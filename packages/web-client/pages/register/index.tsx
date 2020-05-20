@@ -49,7 +49,7 @@ const RegisterPage = () => {
   );
 
   return (
-    <Layout navControls={navControls}>
+    <Layout navControls={navControls} title="Register">
       <div className="flex flex-grow px-40 items-center">
         <div className="flex w-2/3">
           <RegisterSVG />
