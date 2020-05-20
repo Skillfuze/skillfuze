@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@emotion/styled": "^10.0.27",
+    "@fullhuman/postcss-purgecss": "^2.2.0",
     "@types/react": "^16.9.23",
     "autoprefixer": "^9.7.4",
     "emotion": "^10.0.27",
@@ -44,6 +45,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-typescript2": "^0.26.0",
     "source-map-loader": "^0.2.4",
     "tailwind-css-variables": "^2.0.3",

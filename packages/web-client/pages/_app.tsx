@@ -9,6 +9,7 @@ import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import '@uppy/screen-capture/dist/style.min.css';
 import '@uppy/webcam/dist/style.min.css';
+import '@skillfuze/ui-components/build/index.css';
 
 import React from 'react';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
@@ -23,7 +24,7 @@ const options = {
   transition: transitions.SCALE,
 };
 
-const MyApp = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }) => {
   return (
     <AlertProvider template={Alert} {...options}>
       <Component {...pageProps} />
@@ -31,4 +32,4 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default App;
