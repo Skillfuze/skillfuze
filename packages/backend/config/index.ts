@@ -42,7 +42,18 @@ const config: Config = {
   },
   corsOptions: {
     origin: ['http://localhost:3001'],
-    allowedHeaders: ['Authorization', 'Content-Type'],
+    allowedHeaders: [
+      'Authorization',
+      'Content-Type',
+      'tus-resumable',
+      'upload-length',
+      'upload-metadata',
+      'upload-offset',
+      'tus-version',
+      'tus-extension',
+      'tus-max-size',
+      'x-http-method-override',
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   },
   gatsby: {

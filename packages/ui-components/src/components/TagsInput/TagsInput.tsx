@@ -49,6 +49,7 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
         ))}
         <li className="flex-grow">
           <Input
+            className="px-1"
             value={input}
             type="text"
             onKeyDown={inputKeyDown}
