@@ -39,7 +39,7 @@ const config: Config = {
     signOptions: { expiresIn: '86400s' },
   },
   corsOptions: {
-    origin: ['http://localhost:3001'],
+    origin: ['http://localhost:3001', 'http://localhost:8000', 'http://localhost:9000'],
     allowedHeaders: [
       'Authorization',
       'Content-Type',

@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode } from '@nestjs/common';
+import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode, Get, Param } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
 import { Blog } from './blog.entity';
@@ -12,7 +12,7 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
     type: Blog,
   },
   routes: {
-    only: ['getOneBase', 'getManyBase', 'createOneBase', 'updateOneBase', 'deleteOneBase'],
+    only: ['getManyBase', 'createOneBase', 'updateOneBase', 'deleteOneBase'],
   },
   query: {
     alwaysPaginate: true,
@@ -30,6 +30,11 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
       type: 'string',
       primary: true,
     },
+    url: {
+      field: 'url',
+      type: 'string',
+      primary: false,
+    },
   },
 })
 @Controller('blogs')
@@ -38,6 +43,11 @@ export class BlogController implements CrudController<Blog> {
 
   get base(): CrudController<Blog> {
     return this;
+  }
+
+  @Get('/:url')
+  async getOne(@Param('url') url: string): Promise<Blog> {
+    return this.service.findOne({ url }, { relations: ['user'] });
   }
 
   @UseGuards(JwtAuthGuard)
