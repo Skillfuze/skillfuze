@@ -1,5 +1,5 @@
 import React from 'react';
-import { ILivestream } from '@skillfuze/types';
+import { Livestream } from '@skillfuze/types';
 
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
@@ -7,7 +7,7 @@ import VideoLayout from '../../../components/VideoLayout';
 import config from '../../../../config';
 
 interface Props {
-  stream: ILivestream;
+  stream: Livestream;
 }
 
 const ViewLivestream = ({ stream }: Props) => {

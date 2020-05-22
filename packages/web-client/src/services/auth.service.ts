@@ -3,30 +3,30 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import Cookie from 'js-cookie';
 import Router from 'next/router';
-import { IUserLoginDTO, ILoginResponseDTO, IUserRegisterDTO, IUser } from '@skillfuze/types';
+import { UserLoginDTO, LoginResponseDTO, UserRegisterDTO, User } from '@skillfuze/types';
 import { parseError } from '../utils/parseError';
 
 export default class AuthService {
-  async login(payload: IUserLoginDTO): Promise<ILoginResponseDTO> {
+  async login(payload: UserLoginDTO): Promise<LoginResponseDTO> {
     try {
-      const res = await axios.post<ILoginResponseDTO>('/api/v1/auth/login', payload);
+      const res = await axios.post<LoginResponseDTO>('/api/v1/auth/login', payload);
       return res.data;
     } catch (err) {
       throw err.response;
     }
   }
 
-  async register(payload: IUserRegisterDTO): Promise<IUser> {
+  async register(payload: UserRegisterDTO): Promise<User> {
     try {
-      const res = await axios.post<IUser>('/api/v1/auth/register', payload);
+      const res = await axios.post<User>('/api/v1/auth/register', payload);
       return res.data;
     } catch (err) {
       throw parseError(err.response.data);
     }
   }
 
-  decodeJWT(token: string): IUser {
-    return jwtDecode<IUser>(token);
+  decodeJWT(token: string): User {
+    return jwtDecode<User>(token);
   }
 
   setToken(token: string): void {
