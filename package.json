@@ -7,7 +7,14 @@
     "packages": [
       "packages/*"
     ],
-    "nohoist": ["**/@nestjs/swagger/**", "**/@nestjs/swagger"]
+    "nohoist": [
+      "**/@nestjs/swagger/**",
+      "**/@nestjs/swagger",
+      "**/@nestjsx/crud/**",
+      "**/@nestjsx/crud",
+      "**/@nestjsx/crud-typeorm/**",
+      "**/@nestjsx/crud-typeorm"
+    ]
   },
   "scripts": {
     "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
