@@ -36,21 +36,21 @@
     "draft-js-video-plugin": "^2.0.2",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
-    "next": "9.2.2",
+    "next": "9.4.2",
     "next-cookies": "^2.0.3",
-    "react": "16.13.0",
-    "react-alert": "^7.0.0",
+    "react": "16.13.1",
+    "react-alert": "^7.0.1",
     "react-alert-template-basic": "^1.0.0",
-    "react-dom": "16.13.0",
-    "tailwindcss": "^1.4.5",
-    "video.js": "^7.7.5"
+    "react-dom": "16.13.1",
+    "tailwindcss": "^1.4.6",
+    "video.js": "^7.7.6"
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.2.0",
-    "@types/draft-js": "^0.10.38",
+    "@svgr/webpack": "^5.4.0",
+    "@types/draft-js": "^0.10.40",
     "@types/jwt-decode": "^2.2.1",
-    "@types/react": "^16.9.23",
-    "@types/video.js": "^7.3.8",
+    "@types/react": "^16.9.35",
+    "@types/video.js": "^7.3.9",
     "postcss-import": "^12.0.1"
   }
 }
