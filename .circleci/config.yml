@@ -10,10 +10,6 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - dependency-cache-{{ checksum "yarn.lock" }}
-            - dependency-cache-
       - run:
           name: Install Dependencies
           command: |
