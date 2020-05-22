@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
-import { IUserRegisterDTO } from '@skillfuze/types';
+import { UserRegisterDTO as IUserRegisterDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { ValidateIf } from '../../../utils/validation/ValidateIf';
 

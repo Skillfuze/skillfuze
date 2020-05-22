@@ -1,3 +1,3 @@
-export interface ILoginResponseDTO {
+export interface LoginResponseDTO {
   token: string;
 }

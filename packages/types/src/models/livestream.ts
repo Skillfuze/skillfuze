@@ -1,13 +1,13 @@
-import { IUser } from './user';
+import { User } from './user';
 
-export interface ILivestream {
+export interface Livestream {
   id: string;
   title: string;
   description: string;
   thumbnailURL: string;
   createdAt: Date;
   updatedAt: Date;
-  streamer: IUser;
+  streamer: User;
   tags: string[];
   streamKey: string;
   isLive: boolean;

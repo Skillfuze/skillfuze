@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
-import { ICreateLivestreamDTO } from '@skillfuze/types';
+import { CreateLivestreamDTO as ICreateLivestreamDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateLivestreamDTO implements ICreateLivestreamDTO {

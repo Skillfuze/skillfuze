@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import * as shortid from 'shortid';
 
-import { ILivestream } from '@skillfuze/types';
+import { Livestream as ILivestream } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../users/user.entity';
 

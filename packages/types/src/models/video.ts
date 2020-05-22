@@ -1,15 +1,13 @@
 import { User } from './user';
 
-export interface Blog {
+export interface Video {
   id: string;
-  url: string;
   title: string;
   description: string;
-  content: string;
   thumbnailURL: string;
+  url: string;
   createdAt: Date;
   updatedAt: Date;
-  publishedAt: Date;
-  user: User;
   tags: string[];
+  uploader: User;
 }

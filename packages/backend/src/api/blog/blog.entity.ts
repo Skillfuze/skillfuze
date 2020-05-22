@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import * as shortid from 'shortid';
-import { IBlog } from '@skillfuze/types';
+import { Blog as IBlog } from '@skillfuze/types';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../users/user.entity';

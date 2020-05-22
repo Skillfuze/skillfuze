@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AuthService from '../services/auth.service';
+import AuthService from '../src/services/auth.service';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 const token = new AuthService().getToken();

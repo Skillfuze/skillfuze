@@ -1,5 +1,5 @@
 import { IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
-import { ICreateBlogDTO } from '@skillfuze/types';
+import { CreateBlogDTO as ICreateBlogDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBlogDTO implements ICreateBlogDTO {

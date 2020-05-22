@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
-import { IUserLoginDTO } from '@skillfuze/types';
+import { UserLoginDTO as IUserLoginDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserLoginDTO implements IUserLoginDTO {

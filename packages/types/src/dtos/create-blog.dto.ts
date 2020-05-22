@@ -1,4 +1,4 @@
-export interface ICreateBlogDTO {
+export interface CreateBlogDTO {
   title?: string;
   description?: string;
   content?: string;
