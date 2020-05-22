@@ -10,4 +10,9 @@ export class VideosService {
       throw parseError(error.response.data);
     }
   }
+
+  public static async getOne(id: string): Promise<any> {
+    const { data: video } = await axios.get(`api/v1/videos/${id}`);
+    return video;
+  }
 }

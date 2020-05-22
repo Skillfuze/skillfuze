@@ -2,6 +2,7 @@ import { VideosController } from '../videos.controller';
 import { VideosService } from '../videos.service';
 import { VideosRepository } from '../videos.repository';
 import { CreateVideoDTO } from '../dtos/create-video.dto';
+import { Video } from '../video.entity';
 
 jest.mock('../videos.repository');
 jest.mock('../videos.service');
@@ -37,6 +38,27 @@ describe('Videos Controller', () => {
 
     it('should  return service.create', async () => {
       expect(res).toBe(createReturn);
+    });
+  });
+
+  describe('getOne', () => {
+    const getOneReturn = 'GET ONE';
+    const validId = '1';
+    let res: Video;
+
+    let serviceGetOneSpy: jest.SpyInstance;
+    beforeEach(async () => {
+      serviceGetOneSpy = jest.spyOn(service, 'getOne');
+      serviceGetOneSpy.mockReturnValue(getOneReturn);
+      res = await controller.getOne(validId);
+    });
+
+    it('should call service.getOne', () => {
+      expect(serviceGetOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should return service.getOne', () => {
+      expect(res).toBe(getOneReturn);
     });
   });
 });
