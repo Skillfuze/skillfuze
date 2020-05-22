@@ -1,4 +1,4 @@
-import { Controller, Body, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Body, Request, Post, UseGuards, Get, Param } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiUnauthorizedResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { Video } from './video.entity';
@@ -18,5 +18,10 @@ export class VideosController {
   @ApiUnauthorizedResponse()
   public async createOne(@Request() req, @Body() payload: CreateVideoDTO): Promise<Video> {
     return this.service.create(req.user.id, payload);
+  }
+
+  @Get('/:id')
+  public async getOne(@Param('id') id: string): Promise<Video> {
+    return this.service.getOne(id);
   }
 }

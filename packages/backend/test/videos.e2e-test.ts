@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { TestingModule, Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Video } from '../src/api/videos/video.entity';
 import { UserRepository } from '../src/api/users/user.repository';
 import { AuthService } from '../src/api/auth/services/auth.service';
 import { User } from '../src/api/users/user.entity';
@@ -77,6 +78,39 @@ describe('Videos (e2e)', () => {
         .send({ ...payload, title: undefined })
         .set('Authorization', '')
         .expect(401);
+    });
+  });
+
+  describe('GET /api/v1/videos/:id', () => {
+    let video: Video;
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Video Title',
+        url: 'http://a.com',
+      };
+
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token);
+
+      video = res.body;
+    });
+
+    it('should get video successfully on valid id', async () => {
+      const { body } = await request(app.getHttpServer())
+        .get(`${url}/${video.id}`)
+        .expect(200);
+
+      expect(body.id).toBe(video.id);
+      expect(body.uploader.id).toBe(user.id);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer())
+        .get(`${url}/invalid-id`)
+        .expect(404);
     });
   });
 
