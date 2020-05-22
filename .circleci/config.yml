@@ -12,15 +12,15 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "yarn.lock" }}
-            - dependency-cache-
+            - dependencies-cache-{{ checksum "yarn.lock" }}
+            - dependencies-cache-
       - run:
           name: Install Dependencies
           command: |
             yarn install --frozen-lockfile
             yarn bootstrap
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependencies-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
             - ~/.cache/yarn
