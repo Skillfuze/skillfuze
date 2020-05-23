@@ -1,7 +1,14 @@
 coverage:
   range: "85...100"
   status:
-    target: 85
+    project:
+      default:
+        target: 85
+        threshold: 10%
+    patch:
+      default:
+        target: 90
+        threshold: 10%
 
 comment:
   layout: "reach, diff, flags, files"

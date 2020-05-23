@@ -1,0 +1,118 @@
+diff --git a/node_modules/node-media-server/node_media_server.js b/node_modules/node-media-server/node_media_server.js
+index 594792e..9e6b1db 100644
+--- a/node_modules/node-media-server/node_media_server.js
++++ b/node_modules/node-media-server/node_media_server.js
+@@ -25,7 +25,6 @@ class NodeMediaServer {
+       this.nrs = new NodeRtmpServer(this.config);
+       this.nrs.run();
+     }
+-
+     if (this.config.http) {
+       this.nhs = new NodeHttpServer(this.config);
+       this.nhs.run();
+@@ -53,25 +52,25 @@ class NodeMediaServer {
+       Logger.error('uncaughtException', err);
+     });
+ 
+-    Https.get("https://registry.npmjs.org/node-media-server", function (res) {
+-      let size = 0;
+-      let chunks = [];
+-      res.on('data', function (chunk) {
+-        size += chunk.length;
+-        chunks.push(chunk);
+-      });
+-      res.on('end', function () {
+-        let data = Buffer.concat(chunks, size);
+-        let jsonData = JSON.parse(data.toString());
+-        let latestVersion = jsonData['dist-tags']['latest'];
+-        let latestVersionNum = latestVersion.split('.')[0] << 16 | latestVersion.split('.')[1] << 8 | latestVersion.split('.')[2] & 0xff;
+-        let thisVersionNum = Package.version.split('.')[0] << 16 | Package.version.split('.')[1] << 8 | Package.version.split('.')[2] & 0xff
+-        if (thisVersionNum < latestVersionNum) {
+-          Logger.log(`There is a new version ${latestVersion} that can be updated`);
+-        }
+-      });
+-    }).on('error', function (e) {
+-    });
++    // Https.get("https://registry.npmjs.org/node-media-server", function (res) {
++    //   let size = 0;
++    //   let chunks = [];
++    //   res.on('data', function (chunk) {
++    //     size += chunk.length;
++    //     chunks.push(chunk);
++    //   });
++    //   res.on('end', function () {
++    //     let data = Buffer.concat(chunks, size);
++    //     let jsonData = JSON.parse(data.toString());
++    //     let latestVersion = jsonData['dist-tags']['latest'];
++    //     let latestVersionNum = latestVersion.split('.')[0] << 16 | latestVersion.split('.')[1] << 8 | latestVersion.split('.')[2] & 0xff;
++    //     let thisVersionNum = Package.version.split('.')[0] << 16 | Package.version.split('.')[1] << 8 | Package.version.split('.')[2] & 0xff
++    //     if (thisVersionNum < latestVersionNum) {
++    //       Logger.log(`There is a new version ${latestVersion} that can be updated`);
++    //     }
++    //   });
++    // }).on('error', function (e) {
++    // });
+   }
+ 
+   on(eventName, listener) {
+diff --git a/node_modules/node-media-server/node_rtmp_session.js b/node_modules/node-media-server/node_rtmp_session.js
+index cd21bd8..99669ac 100644
+--- a/node_modules/node-media-server/node_rtmp_session.js
++++ b/node_modules/node-media-server/node_rtmp_session.js
+@@ -1000,7 +1000,7 @@ class NodeRtmpSession {
+     this.respondCreateStream(invokeMessage.transId);
+   }
+ 
+-  onPublish(invokeMessage) {
++  async onPublish(invokeMessage) {
+     if (typeof invokeMessage.streamName !== "string") {
+       return;
+     }
+@@ -1028,6 +1028,15 @@ class NodeRtmpSession {
+       Logger.log(`[rtmp publish] NetConnection is publishing. id=${this.id} streamPath=${this.publishStreamPath} streamId=${this.publishStreamId}`);
+       this.sendStatusMessage(this.publishStreamId, "error", "NetStream.Publish.BadConnection", "Connection already publishing");
+     } else {
++      let authenticated = true;
++      if (this.authenticate) {
++        authenticated = await this.authenticate();
++      }
++
++      if (!authenticated) {
++        return;
++      }
++
+       Logger.log(`[rtmp publish] New stream. id=${this.id} streamPath=${this.publishStreamPath} streamId=${this.publishStreamId}`);
+       context.publishers.set(this.publishStreamPath, this.id);
+       this.isPublishing = true;
+diff --git a/node_modules/node-media-server/node_trans_session.js b/node_modules/node-media-server/node_trans_session.js
+index acba02f..63b2ac7 100644
+--- a/node_modules/node-media-server/node_trans_session.js
++++ b/node_modules/node-media-server/node_trans_session.js
+@@ -55,12 +55,21 @@ class NodeTransSession extends EventEmitter {
+       Logger.log('[Transmuxing DASH] ' + this.conf.streamPath + ' to ' + ouPath + '/' + dashFileName);
+     }
+     mkdirp.sync(ouPath);
+-    let argv = ['-y', '-fflags', 'nobuffer', '-i', inPath];
+-    Array.prototype.push.apply(argv, ['-c:v', vc]);
+-    Array.prototype.push.apply(argv, this.conf.vcParam);
+-    Array.prototype.push.apply(argv, ['-c:a', ac]);
+-    Array.prototype.push.apply(argv, this.conf.acParam);
+-    Array.prototype.push.apply(argv, ['-f', 'tee', '-map', '0:a?', '-map', '0:v?', mapStr]);
++    let argv = ['-y', '-i', inPath];
++    if (this.conf.customArgs) {
++      Array.prototype.push.apply(argv, this.conf.customArgs(ouPath).split(/\n| /));
++    } else {
++      Array.prototype.push.apply(argv, ['-c:v', vc]);
++      Array.prototype.push.apply(argv, this.conf.vcParam);
++      Array.prototype.push.apply(argv, ['-c:a', ac]);
++      Array.prototype.push.apply(argv, this.conf.acParam);
++      Array.prototype.push.apply(argv, ['-f', 'tee', '-map', '0:a?', '-map', '0:v?', mapStr]);
++    }
++
++    if (this.conf.playlist) {
++      fs.writeFileSync(`${ouPath}/playlist.m3u8`, this.conf.playlistFile);
++    }
++
+     argv = argv.filter((n) => { return n }); //去空
+     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
+     this.ffmpeg_exec.on('error', (e) => {
