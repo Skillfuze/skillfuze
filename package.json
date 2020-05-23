@@ -13,7 +13,9 @@
       "**/@nestjsx/crud/**",
       "**/@nestjsx/crud",
       "**/@nestjsx/crud-typeorm/**",
-      "**/@nestjsx/crud-typeorm"
+      "**/@nestjsx/crud-typeorm",
+      "**/typeorm/**",
+      "**/typeorm"
     ]
   },
   "scripts": {

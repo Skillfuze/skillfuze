@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Category } from './category';
 
 export interface Livestream {
   id: string;
@@ -11,4 +12,5 @@ export interface Livestream {
   tags: string[];
   streamKey: string;
   isLive: boolean;
+  category: Category;
 }

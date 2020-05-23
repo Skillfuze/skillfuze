@@ -11,19 +11,22 @@ import { UserService } from '../src/api/users/user.service';
 import { AuthModule } from '../src/api/auth/auth.module';
 import { VideosModule } from '../src/api/videos/videos.module';
 import { ormConfig } from './config';
+import { CategoriesRepository } from '../src/api/categories/categories.repository';
+import { CategoriesModule } from '../src/api/categories/categories.module';
 
 describe('Videos (e2e)', () => {
   let videoRepository: VideosRepository;
   const url = '/api/v1/videos';
   let app: INestApplication;
   let module: TestingModule;
+  let categoriesRepo: CategoriesRepository;
   let token: string;
   let user: User;
   let userService: UserService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, VideosModule],
+      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, VideosModule, CategoriesModule],
     }).compile();
 
     const payload = {
@@ -39,6 +42,9 @@ describe('Videos (e2e)', () => {
     const authService = module.get<AuthService>(AuthService);
     token = `Bearer ${authService.generateToken(user)}`;
 
+    categoriesRepo = module.get(CategoriesRepository);
+    await categoriesRepo.save({ id: 1, name: 'Test' });
+
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix('api/v1');
@@ -49,6 +55,7 @@ describe('Videos (e2e)', () => {
     const payload = {
       title: 'Video Title',
       url: 'http://a.com',
+      category: { id: 1 },
     };
 
     it('should create video successfully', async () => {
@@ -88,6 +95,7 @@ describe('Videos (e2e)', () => {
       const payload = {
         title: 'Video Title',
         url: 'http://a.com',
+        category: { id: 1 },
       };
 
       const res = await request(app.getHttpServer())
@@ -121,6 +129,7 @@ describe('Videos (e2e)', () => {
   afterAll(async () => {
     const userRepo = module.get<UserRepository>(UserRepository);
     await userRepo.delete({});
+    await categoriesRepo.delete({});
     await app.close();
   });
 });

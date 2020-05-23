@@ -4,6 +4,7 @@ import { Blog as IBlog } from '@skillfuze/types';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../users/user.entity';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Blog implements IBlog {
@@ -51,6 +52,10 @@ export class Blog implements IBlog {
   @ApiProperty()
   @Column({ type: 'simple-array', nullable: true })
   public tags: string[];
+
+  @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
+  @JoinColumn({ referencedColumnName: 'id' })
+  public category: Category;
 
   public constructor() {
     this.id = shortid.generate();

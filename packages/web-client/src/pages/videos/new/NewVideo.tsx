@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-boolean-value */
-import React, { useState } from 'react';
-import { Input, TagsInput, Button } from '@skillfuze/ui-components';
+import React, { useState, useEffect } from 'react';
+import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
 
 import Layout from '../../../components/Layout';
 import NoSSR from '../../../components/NoSSR';
 import VideoUploader from '../../../components/VideoUploader';
 import { VideosService } from '../../../services/videos.service';
+import { CategoriesService } from '../../../services/categories.service';
 import config from '../../../../config';
 import withAuth from '../../../utils/withAuth';
 
@@ -16,12 +17,28 @@ const NewVideo = () => {
   const [thumbnailURL, setThumbnailURL] = useState();
   const [tags, setTags] = useState([]);
   const [videoURL, setVideoURL] = useState<string>();
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState();
   const [error, setError] = useState<any>({});
   const router = useRouter();
 
+  useEffect(() => {
+    const loadCategories = async () => {
+      setCategories((await CategoriesService.getAll()).map(cat => ({ value: cat, label: cat.name })));
+    };
+    loadCategories();
+  }, []);
+
   const handlePublishVideo = async () => {
     try {
-      const video = await VideosService.create({ title, description, thumbnailURL, tags, url: videoURL });
+      const video = await VideosService.create({
+        title,
+        description,
+        thumbnailURL,
+        tags,
+        url: videoURL,
+        category: category?.value,
+      });
       router.push('/videos/[videoId]', `/videos/${video.id}`);
     } catch (err) {
       setError(err);
@@ -61,6 +78,12 @@ const NewVideo = () => {
             placeholder="Thumbnail URL"
             onChange={setThumbnailURL}
             value={thumbnailURL}
+          />
+          <SelectField
+            placeholder="Select Category"
+            onChange={setCategory}
+            options={categories}
+            error={error.category}
           />
           <TagsInput onChange={setTags} tags={tags} />
           <Button onClick={handlePublishVideo} disabled={!videoURL}>

@@ -41,7 +41,7 @@ const VideoUploader: React.FC<Props> = ({ onComplete }: Props) => {
       uppy={uppyRef.current}
       plugins={['Webcam', 'GoogleDrive', 'ScreenCapture']}
       showLinkToFileUploadResult={false}
-      height={405}
+      height={470}
       proudlyDisplayPoweredByUppy={false}
     />
   );

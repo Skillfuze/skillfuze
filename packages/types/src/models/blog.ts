@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Category } from './category';
 
 export interface Blog {
   id: string;
@@ -12,4 +13,5 @@ export interface Blog {
   publishedAt: Date;
   user: User;
   tags: string[];
+  category: Category;
 }
