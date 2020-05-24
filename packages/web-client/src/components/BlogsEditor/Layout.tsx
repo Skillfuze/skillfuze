@@ -6,6 +6,7 @@ import { useAlert, types } from 'react-alert';
 import { stateFromHTML } from 'draft-js-import-html';
 
 import { useRouter } from 'next/router';
+import { CreateBlogDTO } from '@skillfuze/types';
 import Editor from './Editor';
 import PageLayout from '../Layout';
 import { BlogService, BlogState } from '../../services/blogs.service';
@@ -39,7 +40,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
     loadCategories();
   }, []);
 
-  const prepareBlogPayload = () => ({
+  const prepareBlogState = (): BlogState => ({
     title,
     description,
     thumbnailURL,
@@ -48,12 +49,14 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
     editorState,
   });
 
+  const prepareBlogPayload = (): CreateBlogDTO => BlogService.blogStateToDTO(prepareBlogState());
+
   const alert = useAlert();
   const router = useRouter();
-  const blogsService = useRef(new BlogService(prepareBlogPayload()));
+  const blogsService = useRef(new BlogService(prepareBlogState()));
 
   useInterval(async () => {
-    if (blogsService.current.shouldUpdate(prepareBlogPayload())) {
+    if (blogsService.current.shouldUpdate(prepareBlogState())) {
       alert.show('Saving your draft...', { timeout: 2000, type: types.INFO });
       const mode = window.history.state.as.split('/').pop();
       try {
@@ -73,7 +76,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
   const onPublish = async () => {
     try {
       const blogId = router.query.blogId ?? window.history.state.as.split('/')[2];
-      if (blogsService.current.shouldUpdate(prepareBlogPayload())) {
+      if (blogsService.current.shouldUpdate(prepareBlogState())) {
         await blogsService.current.update(blogId, prepareBlogPayload());
       }
 
