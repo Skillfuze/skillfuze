@@ -23,7 +23,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
   const [thumbnailURL, setThumbnailURL] = useState(props.blogState?.thumbnailURL);
   const [tags, setTags] = useState(props.blogState?.tags ?? []);
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState<any>();
   const [delay, setDelay] = useState(props.blogState?.url ? undefined : 30000);
   const [editorState, setEditorState] = useState(
     props.blogState?.editorState
