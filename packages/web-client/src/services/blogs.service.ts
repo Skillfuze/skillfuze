@@ -3,7 +3,7 @@ import deepEqual from 'deep-eql';
 import cloneDeep from 'clone-deep';
 import axios from 'axios';
 import { stateToHTML } from 'draft-js-export-html';
-import { Blog, CreateBlogDTO, Category } from '@skillfuze/types';
+import { Blog, CreateBlogDTO, UpdateBlogDTO, Category } from '@skillfuze/types';
 import { parseError } from '../utils/parseError';
 
 export interface BlogState {
@@ -34,7 +34,7 @@ export class BlogService {
     }
   }
 
-  public async update(blogId: string, payload: CreateBlogDTO): Promise<Blog> {
+  public async update(blogId: string, payload: UpdateBlogDTO): Promise<Blog> {
     try {
       const { data: blog } = await axios.patch<Blog>(`/api/v1/blogs/${blogId}`, payload);
       this.state = cloneDeep(payload);

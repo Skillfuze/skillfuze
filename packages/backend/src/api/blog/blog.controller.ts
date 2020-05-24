@@ -13,6 +13,7 @@ import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateBlogDTO } from './dtos/create-blog.dto';
+import { UpdateBlogDTO } from './dtos/update-blog.dto';
 import { BlogsEventEmitter } from './blogs.eventemitter';
 
 @Crud({
@@ -76,7 +77,7 @@ export class BlogController implements CrudController<Blog> {
   @ApiNotFoundResponse()
   async updateOne(
     @ParsedRequest() req: CrudRequest,
-    @ParsedBody() dto: CreateBlogDTO,
+    @ParsedBody() dto: UpdateBlogDTO,
     @Request() nestRequest,
   ): Promise<Blog> {
     const blog = await this.service.findOne(
