@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
+import { Category } from '@skillfuze/types';
 
 import withAuth from '../../../utils/withAuth/withAuth';
 import Layout from '../../../components/Layout';
@@ -15,7 +16,7 @@ const CreateLiveStream = () => {
   const [tags, setTags] = useState([]);
   const [streamKey, setStreamKey] = useState('');
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState<any>();
   const [error, setError] = useState<any>({});
   const serverURL = config.streamingServerURL;
 
@@ -29,7 +30,12 @@ const CreateLiveStream = () => {
   const handleSubmit = async (event): Promise<void> => {
     event.preventDefault();
     try {
-      const stream = await livestreamService.create({ title, description, thumbnailURL, category: category?.value });
+      const stream = await livestreamService.create({
+        title,
+        description,
+        thumbnailURL,
+        category: category?.value as Category,
+      });
       setStreamKey(stream.streamKey);
     } catch (err) {
       setError(err);

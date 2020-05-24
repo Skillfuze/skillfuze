@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
+import { Category } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 
 import Layout from '../../../components/Layout';
@@ -18,7 +19,7 @@ const NewVideo = () => {
   const [tags, setTags] = useState([]);
   const [videoURL, setVideoURL] = useState<string>();
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState<any>();
   const [error, setError] = useState<any>({});
   const router = useRouter();
 
@@ -37,7 +38,7 @@ const NewVideo = () => {
         thumbnailURL,
         tags,
         url: videoURL,
-        category: category?.value,
+        category: category?.value as Category,
       });
       router.push('/videos/[videoId]', `/videos/${video.id}`);
     } catch (err) {
