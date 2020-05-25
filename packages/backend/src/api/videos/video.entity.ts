@@ -1,10 +1,11 @@
 import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import * as shortid from 'shortid';
+import { Video as IVideo } from '@skillfuze/types';
 
 import { User } from '../users/user.entity';
 
 @Entity()
-export class Video {
+export class Video implements IVideo {
   @PrimaryColumn()
   public id: string;
 

@@ -4,6 +4,7 @@ require('dotenv').config();
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { ConnectionOptions } from 'typeorm';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { winstonOptions as winston } from './winston.config';
 
 import { tusConfig } from './tus.config';
 import { streamingServer } from './streaming.config';
@@ -18,6 +19,7 @@ type Config = {
   gatsby: {
     buildHookURL: string;
   };
+  winston: typeof winston;
   tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
 };
@@ -57,6 +59,7 @@ const config: Config = {
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
   },
+  winston,
   tus: tusConfig,
   streamingServer,
 };

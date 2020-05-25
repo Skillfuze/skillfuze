@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
+import { CreateVideoDTO as ICreateVideoDTO } from '@skillfuze/types';
 
-export class CreateVideoDTO {
+export class CreateVideoDTO implements ICreateVideoDTO {
   @IsNotEmpty({ message: 'Title should not be empty' })
   @IsString()
   public title: string;

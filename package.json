@@ -6,6 +6,14 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "**/@nestjs/swagger/**",
+      "**/@nestjs/swagger",
+      "**/@nestjsx/crud/**",
+      "**/@nestjsx/crud",
+      "**/@nestjsx/crud-typeorm/**",
+      "**/@nestjsx/crud-typeorm"
     ]
   },
   "scripts": {
@@ -16,7 +24,8 @@
     "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",
-    "postinstall": "patch-package --use-yarn"
+    "postinstall": "patch-package --use-yarn && lerna link",
+    "lerna": "lerna"
   },
   "husky": {
     "hooks": {
