@@ -1,10 +1,10 @@
-import { IsString, IsUrl, IsArray, IsOptional, ValidateNested, IsDefined } from 'class-validator';
+import { IsString, IsUrl, IsArray, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateBlogDTO as ICreateBlogDTO } from '@skillfuze/types';
+import { UpdateBlogDTO as IUpdateBlogDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Category } from '../../categories/category.entity';
 
-export class CreateBlogDTO implements ICreateBlogDTO {
+export class UpdateBlogDTO implements IUpdateBlogDTO {
   @ApiProperty()
   @IsOptional()
   @IsString()
@@ -30,7 +30,7 @@ export class CreateBlogDTO implements ICreateBlogDTO {
   @IsArray()
   public tags?: string[];
 
-  @IsDefined({ message: 'Category should not be empty' })
+  @IsOptional()
   @ValidateNested()
   @Type(() => Category)
   public category: Category;

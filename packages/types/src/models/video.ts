@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Category } from './category';
 
 export interface Video {
   id: string;
@@ -10,4 +11,5 @@ export interface Video {
   updatedAt: Date;
   tags: string[];
   uploader: User;
+  category: Category;
 }

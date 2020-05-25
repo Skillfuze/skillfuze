@@ -1,5 +1,7 @@
-import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional, ValidateNested, IsDefined } from 'class-validator';
 import { CreateVideoDTO as ICreateVideoDTO } from '@skillfuze/types';
+import { Type } from 'class-transformer';
+import { Category } from '../../categories/category.entity';
 
 export class CreateVideoDTO implements ICreateVideoDTO {
   @IsNotEmpty({ message: 'Title should not be empty' })
@@ -21,4 +23,9 @@ export class CreateVideoDTO implements ICreateVideoDTO {
   @IsArray()
   @IsOptional()
   public tags?: string[];
+
+  @IsDefined({ message: 'Category should not be empty' })
+  @ValidateNested()
+  @Type(() => Category)
+  public category: Category;
 }

@@ -19,11 +19,7 @@ const EditBlog = (props: Props) => {
 EditBlog.getInitialProps = async ctx => {
   const blog = await BlogService.get(ctx.query.blogId);
   const blogState: BlogState = {
-    title: blog.title,
-    description: blog.description,
-    thumbnailURL: blog.thumbnailURL,
-    tags: blog.tags,
-    url: blog.url,
+    ...blog,
     editorState: blog.content,
   };
   return { blogState };
