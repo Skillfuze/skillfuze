@@ -56,7 +56,9 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
+    "moment": "^2.26.0",
     "react-select": "^3.1.0",
+    "react-star-ratings": "^2.3.0",
     "tailwindcss": "^1.2.0"
   }
 }
