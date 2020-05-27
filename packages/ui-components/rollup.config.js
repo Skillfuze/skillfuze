@@ -5,6 +5,7 @@ import external from 'rollup-plugin-peer-deps-external'
 import resolve from 'rollup-plugin-node-resolve'
 import postcss from "rollup-plugin-postcss"
 import pkg from './package.json'
+import svgr from '@svgr/rollup';
 
 export default {
   input: 'src/index.ts',
@@ -51,6 +52,7 @@ export default {
       extensions: [".css"],
       extract: true,
       minimize: true,
-    })
+    }),
+    svgr(),
   ]
 }

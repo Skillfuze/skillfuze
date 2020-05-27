@@ -3,7 +3,7 @@
 ### Basic Usage
 
 ```jsx
-<div className="container flex-row">
+<div className="container max-w-xs">
   <ContentCard
     thumbnail="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg" 
     category="Nature"
@@ -19,10 +19,8 @@
 ```jsx
 import Button from '../Button';
 import CourseInfoBar from './components/CourseInfoBar';
-<div className="container flex-row">
+<div className="container max-w-xs">
   <ContentCard
-    height="27rem"
-    width="22rem"
     thumbnail="https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png" 
     category="IT & Software"
     title="AWS Certified Developer - Associate 2020"
@@ -38,7 +36,7 @@ import CourseInfoBar from './components/CourseInfoBar';
 
 ```jsx
 import VideosTopBar from './components/VideosTopBar';
-<div className="container flex-row">
+<div className="container max-w-xs">
   <ContentCard
     thumbnail="https://pixlr.com/photo/image-editing-20200512-pw.jpg" 
     category="Photography"
@@ -54,7 +52,7 @@ import VideosTopBar from './components/VideosTopBar';
 
 ```jsx
 import VideosTopBar from './components/VideosTopBar';
-<div className="container flex-row">
+<div className="container max-w-xs">
   <ContentCard
     thumbnail="https://image.freepik.com/free-photo/image-human-brain_99433-298.jpg" 
     category="Photography"
@@ -68,9 +66,8 @@ import VideosTopBar from './components/VideosTopBar';
 ### Blogs Card Example
 
 ```jsx
-<div className="container flex-row">
+<div className="container max-w-xs">
   <ContentCard
-    height="28rem"
     thumbnail="https://i.ytimg.com/vi/EwBK_cXUTZI/maxresdefault.jpg" 
     category="Photography"
     title="AWS Certified Developer Associate 2020"
