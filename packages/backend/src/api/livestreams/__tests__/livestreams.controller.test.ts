@@ -27,6 +27,7 @@ describe('Livestreams Controller', () => {
     const userId = 1;
     const payload = {
       title: 'Livestream Title',
+      category: { id: 1, name: 'Category' },
     };
     let serviceCreateSpy: jest.SpyInstance;
 

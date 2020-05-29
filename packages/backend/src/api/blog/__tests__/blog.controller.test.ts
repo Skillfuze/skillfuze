@@ -43,6 +43,7 @@ describe('BlogController', () => {
       const payload = {
         title: 'Test Title',
         content: 'test content.',
+        category: { id: 1, name: 'Category' },
       };
 
       const user = {

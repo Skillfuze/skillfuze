@@ -3,6 +3,7 @@ import * as shortid from 'shortid';
 import { Video as IVideo } from '@skillfuze/types';
 
 import { User } from '../users/user.entity';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Video implements IVideo {
@@ -33,6 +34,10 @@ export class Video implements IVideo {
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
   public uploader: User;
+
+  @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
+  @JoinColumn({ referencedColumnName: 'id' })
+  public category: Category;
 
   public constructor() {
     this.id = shortid.generate();

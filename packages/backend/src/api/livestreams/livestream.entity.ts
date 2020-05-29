@@ -4,6 +4,7 @@ import * as shortid from 'shortid';
 import { Livestream as ILivestream } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../users/user.entity';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Livestream implements ILivestream {
@@ -47,6 +48,10 @@ export class Livestream implements ILivestream {
   @ApiProperty()
   @Column({ default: false })
   public isLive: boolean;
+
+  @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
+  @JoinColumn({ referencedColumnName: 'id' })
+  public category: Category;
 
   public constructor() {
     this.id = shortid.generate();

@@ -6,3 +6,4 @@ export { default as Alert } from './components/Alert';
 export { default as TagsInput } from './components/TagsInput';
 export { default as Avatar } from './components/Avatar';
 export { default as TagsView } from './components/TagsView';
+export { default as SelectField } from './components/SelectField';

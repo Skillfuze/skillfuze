@@ -26,6 +26,7 @@ describe('LivestreamsService', () => {
     const payload = {
       title: 'Livestream Title',
       description: 'Livestream Description',
+      category: { id: 1, name: 'Category' },
     };
 
     beforeEach(() => {
