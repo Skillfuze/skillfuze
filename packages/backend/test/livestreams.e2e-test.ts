@@ -112,7 +112,6 @@ describe('Livestreams (e2e)', () => {
       expect(res.body.streamer).toHaveProperty('lastName');
       expect(res.body.streamer).toHaveProperty('email');
       expect(res.body.streamer).toHaveProperty('id');
-      expect(res.body.streamer).not.toHaveProperty('password');
     });
 
     it('should return NotFoundException on invalid streamId', async () => {
