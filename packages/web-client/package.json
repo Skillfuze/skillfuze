@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@khaled-hamam/use-socketio": "^2.0.3",
     "@skillfuze/types": "^0.0.0",
     "@skillfuze/ui-components": "^0.0.0",
     "@uppy/core": "^1.10.4",
@@ -36,13 +37,14 @@
     "draft-js-video-plugin": "^2.0.2",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
-    "next": "9.4.2",
     "moment": "^2.25.3",
+    "next": "9.4.2",
     "next-cookies": "^2.0.3",
     "react": "16.13.1",
     "react-alert": "^7.0.1",
     "react-alert-template-basic": "^1.0.0",
     "react-dom": "16.13.1",
+    "shortid": "^2.2.15",
     "tailwindcss": "^1.4.6",
     "video.js": "^7.7.6"
   },
