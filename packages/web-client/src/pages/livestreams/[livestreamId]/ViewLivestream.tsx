@@ -1,18 +1,20 @@
 import React from 'react';
-import { Livestream } from '@skillfuze/types';
+import { Livestream, User } from '@skillfuze/types';
 
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
 import VideoLayout from '../../../components/VideoLayout';
 import config from '../../../../config';
+import withAuth from '../../../utils/withAuth';
 
 interface Props {
   stream: Livestream;
+  user: User;
 }
 
-const ViewLivestream = ({ stream }: Props) => {
+const ViewLivestream = ({ stream, user }: Props) => {
   return (
-    <Layout title={stream.title}>
+    <Layout title={stream.title} user={user}>
       <VideoLayout
         isLive
         user={stream.streamer}
@@ -30,4 +32,4 @@ ViewLivestream.getInitialProps = async ctx => {
   return { stream };
 };
 
-export default ViewLivestream;
+export default withAuth({})(ViewLivestream);

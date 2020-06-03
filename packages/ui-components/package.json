@@ -56,7 +56,9 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
+    "@popperjs/core": "^2.4.0",
+    "react-popper": "^2.2.3",
     "react-select": "^3.1.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.4.5"
   }
 }
