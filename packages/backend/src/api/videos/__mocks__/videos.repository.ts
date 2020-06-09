@@ -27,4 +27,8 @@ export class VideosRepository {
 
     return video;
   }
+
+  public async update(payload: any) {
+    return payload;
+  }
 }
