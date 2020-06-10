@@ -18,7 +18,7 @@ export class VideosService {
   }
 
   public async getOne(id: string): Promise<Video> {
-    const video = await this.repository.findOne(id, { relations: ['uploader'] });
+    const video = await this.repository.findOne(id, { relations: ['uploader', 'category'] });
     if (!video) {
       throw new NotFoundException();
     }
