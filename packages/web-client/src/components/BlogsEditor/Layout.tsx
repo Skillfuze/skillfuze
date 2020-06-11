@@ -6,7 +6,7 @@ import { useAlert, types } from 'react-alert';
 import { stateFromHTML } from 'draft-js-import-html';
 
 import { useRouter } from 'next/router';
-import { CreateBlogDTO } from '@skillfuze/types';
+import { CreateBlogDTO, User } from '@skillfuze/types';
 import Editor from './Editor';
 import PageLayout from '../Layout';
 import { BlogService, BlogState } from '../../services/blogs.service';
@@ -15,6 +15,7 @@ import { useInterval } from '../../utils/hooks/useInterval';
 import config from '../../../config';
 
 interface Props {
+  user: User;
   blogState?: BlogState;
 }
 
@@ -101,7 +102,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
   );
 
   return (
-    <PageLayout navControls={navControls} title={mode === 'edit' ? `Edit Blog` : 'New Blog'}>
+    <PageLayout navControls={navControls} title={mode === 'edit' ? `Edit Blog` : 'New Blog'} user={props.user}>
       <div className="flex flex-grow flex-col py-16 max-w-screen-md w-full self-center align-center">
         <Input
           value={title}

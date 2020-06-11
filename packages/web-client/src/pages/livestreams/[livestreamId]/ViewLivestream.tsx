@@ -19,7 +19,7 @@ const ViewLivestream = ({ stream, user }: Props) => {
       url={`${config.apiURL}/livestreams`}
       opts={{ query: { streamId: stream.id }, transports: ['websocket'], rememberUpgrade: true }}
     >
-      <Layout title={stream.title}>
+      <Layout title={stream.title} user={user}>
         <VideoLayout
           isLive
           user={stream.streamer}
