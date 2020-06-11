@@ -19,13 +19,10 @@ export const primaryButtonStyle = (color: Color) => {
   return css`
     background-color: var(${bgColor});
     & svg {
-      fill: var(${bgColor});
+      fill: var(--color-white);
     }
     &:hover {
       background-color: var(${bgColor}-light);
-      & svg {
-        fill: var(${bgColor}-light);
-      }
     }
     &:active {
       background-color: var(${bgColor}-dark);

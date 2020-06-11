@@ -1,5 +1,6 @@
 import React from 'react';
 import { Livestream, User } from '@skillfuze/types';
+import { SocketIOProvider } from '@khaled-hamam/use-socketio';
 
 import Layout from '../../../components/Layout';
 import LivestreamService from '../../../services/livestreams.service';
@@ -9,20 +10,26 @@ import withAuth from '../../../utils/withAuth';
 
 interface Props {
   stream: Livestream;
-  user: User;
+  user?: User;
 }
 
 const ViewLivestream = ({ stream, user }: Props) => {
   return (
-    <Layout title={stream.title} user={user}>
-      <VideoLayout
-        isLive
-        user={stream.streamer}
-        video={stream}
-        url={`${config.httpStreamingServerURL}/live/${stream.streamKey}/playlist.m3u8`}
-        videoType="application/x-mpegURL"
-      />
-    </Layout>
+    <SocketIOProvider
+      url={`${config.apiURL}/livestreams`}
+      opts={{ query: { streamId: stream.id }, transports: ['websocket'], rememberUpgrade: true }}
+    >
+      <Layout title={stream.title} user={user}>
+        <VideoLayout
+          isLive
+          user={stream.streamer}
+          video={stream}
+          url={`${config.httpStreamingServerURL}/live/${stream.streamKey}/playlist.m3u8`}
+          videoType="application/x-mpegURL"
+          viewer={user}
+        />
+      </Layout>
+    </SocketIOProvider>
   );
 };
 
