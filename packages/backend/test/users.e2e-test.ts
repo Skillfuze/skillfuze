@@ -3,7 +3,7 @@ import { ValidationPipe, INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from '../src/api/categories/categories.module';
-import { CreateLivestreamDTO } from '../src/api/livestreams/dtos/create-livestream.dto';
+import { LivestreamDTO } from '../src/api/livestreams/dtos/livestream.dto';
 import { Livestream } from '../src/api/livestreams/livestream.entity';
 import { User } from '../src/api/users/user.entity';
 import { LivestreamsService } from '../src/api/livestreams/livestreams.service';
@@ -41,7 +41,7 @@ describe('UsersController (e2e)', () => {
       confirmPassword: '123456789',
     };
     const category = await categoriesRepo.save({ id: 1, name: 'Test' });
-    let livestreamPayload = new CreateLivestreamDTO();
+    let livestreamPayload = new LivestreamDTO();
     livestreamPayload = {
       title: 'Livestream Title',
       category,

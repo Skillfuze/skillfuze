@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 
 import { LivestreamsRepository } from './livestreams.repository';
-import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
+import { LivestreamDTO } from './dtos/livestream.dto';
 import { Livestream } from './livestream.entity';
 import { User } from '../users/user.entity';
 import { hoursDifference } from '../../utils/hoursDifference';
@@ -10,7 +10,7 @@ import { hoursDifference } from '../../utils/hoursDifference';
 export class LivestreamsService {
   public constructor(private readonly repository: LivestreamsRepository) {}
 
-  public async create(userId: number, payload: CreateLivestreamDTO): Promise<Livestream> {
+  public async create(userId: number, payload: LivestreamDTO): Promise<Livestream> {
     const streamer = new User();
     streamer.id = userId;
     const stream = await this.repository.create({ ...payload, streamer });
@@ -20,8 +20,10 @@ export class LivestreamsService {
   }
 
   public async getOne(livestreamId: string): Promise<Livestream> {
-    const stream = await this.repository.findOne(livestreamId, { relations: ['streamer'] });
+    const stream = await this.repository.findOne(livestreamId, { relations: ['streamer', 'category'] });
     if (!stream) throw new NotFoundException();
+    delete stream.streamer.username;
+
     return stream;
   }
 
@@ -60,5 +62,15 @@ export class LivestreamsService {
       where: { streamer: userId, isLive: true },
     });
     return stream;
+  }
+
+  public async update(userId, streamId: string, payload: LivestreamDTO): Promise<Livestream> {
+    const stream = await this.getOne(streamId);
+    if (stream.streamer.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.update({ id: streamId }, payload);
+    return this.repository.findOne(streamId, { relations: ['streamer'] });
   }
 }
