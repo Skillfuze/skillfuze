@@ -28,8 +28,8 @@ export class Video implements IVideo {
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;
 
-  @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  @Column({ type: 'simple-array' })
+  public tags: string[] = [];
 
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
