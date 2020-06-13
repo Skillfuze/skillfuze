@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import * as shortid from 'shortid';
 import { Livestream } from '../livestream.entity';
 
@@ -87,7 +87,7 @@ describe('LivestreamsService', () => {
 
     it('should call findOne, fetch streamer and delete password', async () => {
       const res = await service.getOne('1');
-      expect(repoFindOneSpy).toBeCalledWith('1', { relations: ['streamer'] });
+      expect(repoFindOneSpy).toBeCalledWith('1', { relations: ['streamer', 'category'] });
       expect(res.streamer).not.toHaveProperty('password');
     });
 
@@ -200,6 +200,54 @@ describe('LivestreamsService', () => {
 
     it('should throw NotFoundException given a non-existing key', async () => {
       await expect(service.stop(inValidStreamKey)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('update', () => {
+    const userId = 1;
+    const streamId = '1';
+    const stream = {
+      title: 'stream Title',
+      streamer: {
+        id: userId,
+      },
+    };
+    let res: Livestream;
+    let getOneSpy: jest.SpyInstance;
+    let repoUpdateSpy: jest.SpyInstance;
+    let repoFindOneSpy: jest.SpyInstance;
+    const payload = {
+      id: streamId,
+      title: 'stream updated',
+      category: { id: 1, name: 'category' },
+      streamer: {
+        id: userId,
+      },
+    };
+    beforeEach(async () => {
+      getOneSpy = jest.spyOn(service, 'getOne');
+      repoUpdateSpy = jest.spyOn(repository, 'update');
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockReturnValue(payload);
+      getOneSpy.mockReturnValue(stream);
+      res = await service.update(userId, streamId, payload);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.update(2, streamId, payload)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should call repo.update once', async () => {
+      expect(repoUpdateSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.findOne and return the updated stream', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
+      expect(res).toBe(payload);
     });
   });
 });

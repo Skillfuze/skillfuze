@@ -122,6 +122,81 @@ describe('Livestreams (e2e)', () => {
     });
   });
 
+  describe('PATCH /api/v1/livestreams/:id', () => {
+    let stream: Livestream;
+    let newToken: string;
+    const updatedPayload = {
+      title: 'Livestream Title',
+      category: { id: 1 },
+    };
+
+    beforeAll(async () => {
+      const payload = {
+        firstName: 'Mariam',
+        lastName: 'Kamel',
+        email: 'MariamKamel@skillfuze.com',
+        password: '123456789',
+        confirmPassword: '123456789',
+      };
+      const newUser = await userService.register(payload);
+      const authService = module.get<AuthService>(AuthService);
+      newToken = `Bearer ${authService.generateToken(newUser)}`;
+    });
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Livestream Title',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token)
+        .expect(201);
+
+      stream = res.body;
+    });
+    it('should update stream successfully on valid data', async () => {
+      const { body } = await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', token)
+        .expect(200);
+
+      expect(body.id).toBe(stream.id);
+      expect(body.title).toBe(updatedPayload.title);
+      expect(body.streamer.id).toBe(user.id);
+    });
+    it('should return 403 when streamer isnot the editor', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', newToken)
+        .expect(403);
+    });
+    it('should return 400 on invalid data', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send({ ...updatedPayload, title: undefined })
+        .set('Authorization', token)
+        .expect(400);
+    });
+    it('should return Unauthorized on invalid token', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', '')
+        .expect(401);
+    });
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/invalid-id`)
+        .send(updatedPayload)
+        .set('Authorization', token)
+        .expect(404);
+    });
+  });
+
   afterEach(async () => {
     await livestreamsRepository.delete({});
   });

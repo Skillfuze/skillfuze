@@ -1,6 +1,6 @@
 import { Category } from '../models';
 
-export interface CreateLivestreamDTO {
+export interface LivestreamDTO {
   title: string;
   description?: string;
   thumbnailURL?: string;
