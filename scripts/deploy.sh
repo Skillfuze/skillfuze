@@ -33,7 +33,11 @@ then
   docker tag skillfuze-web khaledhamam/skillfuze-web:latest
   docker push khaledhamam/skillfuze-web
 
-  cd packages/web-client
+  yarn install --frozen-lockfile
+  cd packages/ui-components
+  yarn build
+  cd ../web-client
+  yarn build
   mkdir _next
   cp -r .next/static _next/static
   npm i -g netlify-cli
