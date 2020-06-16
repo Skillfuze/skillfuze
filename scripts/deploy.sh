@@ -38,8 +38,7 @@ then
   cd packages/web-client
   mkdir _next
   cp -r .next/static _next/static
-  npm i -g netlify-cli
-  netlify deploy --dir _next --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_CDN_SITE_ID --prod
+  npx netlify-cli deploy --dir _next --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_CDN_SITE_ID --prod
 
   echo "@skillfuze/web-client deployed.."
 else
