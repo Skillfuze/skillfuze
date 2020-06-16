@@ -30,6 +30,7 @@
     "commit": "git-cz",
     "lerna": "lerna",
     "deploy": "./scripts/deploy.sh",
+    "roll-update": "./scripts/roll-update.sh",
     "postinstall": "patch-package --use-yarn && lerna link"
   },
   "husky": {

@@ -36,9 +36,10 @@ then
   yarn install --frozen-lockfile
   yarn build
   cd packages/web-client
-  mkdir _next
-  cp -r .next/static _next/static
-  npx netlify-cli deploy --dir _next --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_CDN_SITE_ID --prod
+  mkdir -p build/_next
+  cp -r .next/static build/_next/static
+  npx netlify-cli deploy --dir build --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_CDN_SITE_ID --prod
+  cd ../..
 
   echo "@skillfuze/web-client deployed.."
 else
