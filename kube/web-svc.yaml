@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sf-web-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: sf-web
+  ports:
+  - port: 9000
+    targetPort: 3001

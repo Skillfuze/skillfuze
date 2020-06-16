@@ -17,13 +17,6 @@ then
   docker tag skillfuze-backend khaledhamam/skillfuze-backend:latest
   docker push khaledhamam/skillfuze-backend
 
-  ssh $EC2_USER@$EC2_HOST '
-    sudo docker pull khaledhamam/skillfuze-backend
-    sudo docker stop skillfuze-backend
-    sudo docker rm skillfuze-backend
-    sudo docker run --name skillfuze-backend --network="host" --env-file ./.env.backend -d --restart on-failure khaledhamam/skillfuze-backend
-  '
-
   echo "@skillfuze/backend deployed.."
 else
   echo "@skillfuze/backend has not changed, will not deploy.."
@@ -40,12 +33,10 @@ then
   docker tag skillfuze-web khaledhamam/skillfuze-web:latest
   docker push khaledhamam/skillfuze-web
 
-  ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST '
-    sudo docker pull khaledhamam/skillfuze-web
-    sudo docker stop skillfuze-web
-    sudo docker rm skillfuze-web
-    sudo docker run --name skillfuze-web -p 3001:3001 --env-file ./.env.web -d --restart on-failure khaledhamam/skillfuze-web
-  '
+  cd ../packages/web-client
+  mkdir _next
+  cp -r .next/static _next/static
+  netlify deploy --dir _next --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_CDN_SITE_ID --prod
 
   echo "@skillfuze/web-client deployed.."
 else
