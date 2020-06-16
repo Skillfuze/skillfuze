@@ -33,7 +33,7 @@ then
   docker tag skillfuze-web khaledhamam/skillfuze-web:latest
   docker push khaledhamam/skillfuze-web
 
-  cd ../packages/web-client
+  cd packages/web-client
   mkdir _next
   cp -r .next/static _next/static
   npm i -g netlify-cli
