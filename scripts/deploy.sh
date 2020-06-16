@@ -34,10 +34,8 @@ then
   docker push khaledhamam/skillfuze-web
 
   yarn install --frozen-lockfile
-  cd packages/ui-components
   yarn build
-  cd ../web-client
-  yarn build
+  cd packages/web-client
   mkdir _next
   cp -r .next/static _next/static
   npm i -g netlify-cli
