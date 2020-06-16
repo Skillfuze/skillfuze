@@ -24,6 +24,6 @@
     // "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
     "esModuleInterop": true,
   },
-  "include": ["src"],
+  "include": ["src", "global.d.ts"],
   "exclude": ["node_modules", "build"]
 }

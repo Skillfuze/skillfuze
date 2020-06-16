@@ -1,0 +1,15 @@
+export const categorySeed = [
+  { id: 1, name: 'Development' },
+  { id: 2, name: 'Business' },
+  { id: 3, name: 'Finance & Accounting' },
+  { id: 4, name: 'IT & Software' },
+  { id: 5, name: 'Office Productivity' },
+  { id: 6, name: 'Personal Development' },
+  { id: 7, name: 'Design' },
+  { id: 8, name: 'Marketing' },
+  { id: 9, name: 'Lifestyle' },
+  { id: 10, name: 'Photography' },
+  { id: 11, name: 'Health & Fitness' },
+  { id: 12, name: 'Music' },
+  { id: 13, name: 'Teaching & Academics' },
+];

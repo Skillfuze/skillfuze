@@ -1,18 +1,26 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
+import { cx } from 'emotion';
 
 interface Props {
   URL: string;
   alt: string;
+  size?: 'regular' | 'small';
+  className?: string;
 }
 
-const Avatar: React.FC<Props> = ({ URL, alt }: Props) => {
-  return (
-    <img
-      className="object-contain rounded-full w-12 h-12"
-      src={URL || 'https://www.w3schools.com/w3images/avatar2.png'}
-      alt={alt}
-    />
+const Avatar: React.FC<Props> = ({ URL, size, className }: Props) => {
+  const classNameStyle = cx(
+    'object-contain rounded-full bg-grey-light',
+    {
+      'w-12 h-12': size === 'regular',
+      'w-8 h-8': size === 'small',
+    },
+    className,
   );
+  return <img className={classNameStyle} src={URL} />;
 };
-
+Avatar.defaultProps = {
+  size: 'regular',
+};
 export default Avatar;

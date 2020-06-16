@@ -1,10 +1,19 @@
-import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode } from '@nestjs/common';
+import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode, Get, Param } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
+import {
+  ApiTags,
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Blog } from './blog.entity';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateBlogDTO } from './dtos/create-blog.dto';
+import { UpdateBlogDTO } from './dtos/update-blog.dto';
 import { BlogsEventEmitter } from './blogs.eventemitter';
 
 @Crud({
@@ -12,7 +21,7 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
     type: Blog,
   },
   routes: {
-    only: ['getOneBase', 'getManyBase', 'createOneBase', 'updateOneBase', 'deleteOneBase'],
+    only: ['getManyBase', 'createOneBase', 'updateOneBase', 'deleteOneBase'],
   },
   query: {
     alwaysPaginate: true,
@@ -30,8 +39,14 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
       type: 'string',
       primary: true,
     },
+    url: {
+      field: 'url',
+      type: 'string',
+      primary: false,
+    },
   },
 })
+@ApiTags('blogs')
 @Controller('blogs')
 export class BlogController implements CrudController<Blog> {
   public constructor(public service: BlogService, private readonly emitter: BlogsEventEmitter) {}
@@ -40,8 +55,16 @@ export class BlogController implements CrudController<Blog> {
     return this;
   }
 
+  @Get('/:url')
+  async getOne(@Param('url') url: string): Promise<Blog> {
+    return this.service.findOne({ url }, { relations: ['user'] });
+  }
+
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
   async createOne(
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: CreateBlogDTO,
@@ -57,10 +80,14 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
+  @ApiNotFoundResponse()
   async updateOne(
     @ParsedRequest() req: CrudRequest,
-    @ParsedBody() dto: CreateBlogDTO,
+    @ParsedBody() dto: UpdateBlogDTO,
     @Request() nestRequest,
   ): Promise<Blog> {
     const blog = await this.service.findOne(
@@ -79,7 +106,12 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Override()
+  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   async deleteOne(@ParsedRequest() req: CrudRequest, @Request() nestRequest): Promise<void | Blog> {
     const blog = await this.service.findOne(
       { id: nestRequest.params.id },
@@ -98,8 +130,12 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('/:id/publish')
   @HttpCode(200)
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   async publish(@Request() req): Promise<Blog> {
     const res = await this.service.publish(req.params.id, req.user.id);
     this.emitter.emit('publish', res);

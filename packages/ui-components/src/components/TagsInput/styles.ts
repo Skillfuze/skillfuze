@@ -6,6 +6,7 @@ export const containerStyle = css`
   color: var(--color-black);
   font-size: 14px;
   display: flex;
+  background-color: white;
 
   &:focus {
     border-color: var(--color-primary);

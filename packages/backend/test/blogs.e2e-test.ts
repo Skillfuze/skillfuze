@@ -1,8 +1,10 @@
-import * as request from 'supertest';
+import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CategoriesModule } from '../src/api/categories/categories.module';
+import { CategoriesRepository } from '../src/api/categories/categories.repository';
 import { Blog } from '../src/api/blog/blog.entity';
 import { AuthService } from '../src/api/auth/services/auth.service';
 import { UserRepository } from '../src/api/users/user.repository';
@@ -20,12 +22,13 @@ describe('Blogs (e2e)', () => {
   let module: TestingModule;
   let userService: UserService;
   let userRepo: UserRepository;
+  let categoriesRepo: CategoriesRepository;
   let token: string;
   let user: User;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, BlogModule],
+      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, BlogModule, CategoriesModule],
     }).compile();
 
     const payload = {
@@ -42,6 +45,9 @@ describe('Blogs (e2e)', () => {
     const authService = module.get<AuthService>(AuthService);
     token = `Bearer ${authService.generateToken(user)}`;
 
+    categoriesRepo = module.get(CategoriesRepository);
+    await categoriesRepo.save({ id: 1, name: 'Test' });
+
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix('api/v1');
@@ -55,6 +61,7 @@ describe('Blogs (e2e)', () => {
       title: 'Test Title',
       content: 'Blog Content',
       tags: ['tag1', 'tag2'],
+      category: { id: 1 },
     };
 
     it('should create a blog successfully', async () => {
@@ -83,7 +90,7 @@ describe('Blogs (e2e)', () => {
     it('should get all blogs successfully', async () => {
       await request(app.getHttpServer())
         .post(url)
-        .send({ title: 'Test Blog', content: 'test content.' })
+        .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
       const res = await request(app.getHttpServer())
@@ -102,7 +109,7 @@ describe('Blogs (e2e)', () => {
     beforeEach(async () => {
       const res = await request(app.getHttpServer())
         .post(url)
-        .send({ title: 'Test Blog', content: 'test content.' })
+        .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
       blog = res.body;
@@ -161,7 +168,7 @@ describe('Blogs (e2e)', () => {
     beforeEach(async () => {
       const res = await request(app.getHttpServer())
         .post(url)
-        .send({ title: 'Test Blog', content: 'test content.' })
+        .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
       blog = res.body;
@@ -210,7 +217,7 @@ describe('Blogs (e2e)', () => {
     beforeEach(async () => {
       const res = await request(app.getHttpServer())
         .post(url)
-        .send({ title: 'Test Blog', content: 'test content.' })
+        .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
       blog = res.body;
@@ -241,6 +248,7 @@ describe('Blogs (e2e)', () => {
 
   afterAll(async () => {
     await userRepo.delete({});
+    await categoriesRepo.delete({});
     await app.close();
   });
 });

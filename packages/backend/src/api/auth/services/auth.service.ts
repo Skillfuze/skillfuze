@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserTokenPayload } from '@skillfuze/types';
 import { HashingService } from './hashing.service';
 import { User } from '../../users/user.entity';
 import { UserService } from '../../users/user.service';
@@ -21,7 +22,15 @@ export class AuthService {
   }
 
   public generateToken(user: User): string {
-    const payload = { firstName: user.firstName, lastName: user.lastName, email: user.email, id: user.id };
+    const payload: UserTokenPayload = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      id: user.id,
+      username: user.username,
+      avatarURL: user.avatarURL,
+      bio: user.bio,
+    };
     return this.jwtService.sign(payload);
   }
 }

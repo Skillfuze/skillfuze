@@ -1,6 +1,7 @@
 {
   "name": "@skillfuze/ui-components",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "private": true,
   "description": "Skillfuze UI Components Library",
   "author": "Khaled Mohamed <Khal3d.Mohamed@gmail.com>",
   "homepage": "https://github.com/SkillFuze/skillfuze#readme",
@@ -11,9 +12,6 @@
   "types": "build/index.d.ts",
   "directories": {
     "build": "build"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -35,18 +33,23 @@
   },
   "devDependencies": {
     "@emotion/styled": "^10.0.27",
+    "@fullhuman/postcss-purgecss": "^2.2.0",
+    "@svgr/rollup": "^5.4.0",
+    "@svgr/webpack": "^5.4.0",
     "@types/react": "^16.9.23",
+    "@types/react-select": "^3.0.13",
     "autoprefixer": "^9.7.4",
     "emotion": "^10.0.27",
     "postcss-loader": "^3.0.0",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-docgen-typescript": "^1.16.2",
-    "react-dom": "^16.13.0",
+    "react-dom": "^16.13.1",
     "react-styleguidist": "^10.6.2",
     "rollup": "^1.32.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-typescript2": "^0.26.0",
     "source-map-loader": "^0.2.4",
     "tailwind-css-variables": "^2.0.3",
@@ -56,6 +59,12 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
-    "tailwindcss": "^1.2.0"
+    "@popperjs/core": "^2.4.0",
+    "react-popper": "^2.2.3",
+    "react-select": "^3.1.0",
+    "moment": "^2.26.0",
+    "react-multi-carousel": "^2.5.5",
+    "react-star-ratings": "^2.3.0",
+    "tailwindcss": "^1.4.5"
   }
 }

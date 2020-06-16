@@ -26,6 +26,7 @@ describe('LivestreamsService', () => {
     const payload = {
       title: 'Livestream Title',
       description: 'Livestream Description',
+      category: { id: 1, name: 'Category' },
     };
 
     beforeEach(() => {
@@ -46,9 +47,9 @@ describe('LivestreamsService', () => {
       expect(stream.streamKey).toBe(shortIdReturn);
     });
 
-    it('should call shortid.generate twice', async () => {
+    it('should call shortid.generate 3 times', async () => {
       await service.create(userId, payload);
-      expect(shortid.generate).toBeCalledTimes(2);
+      expect(shortid.generate).toBeCalledTimes(3);
     });
 
     it('should call repository.save once', async () => {
@@ -70,8 +71,10 @@ describe('LivestreamsService', () => {
             id: 1,
             firstName: 'Karim',
             lastName: 'Elsayed',
-            password: 'password',
             email: 'karim@gmail.com',
+            username: '',
+            bio: '',
+            avatarURL: '',
           };
           return stream;
         }
@@ -79,20 +82,167 @@ describe('LivestreamsService', () => {
       });
     });
 
-    it('should return livestream data without streamKey on valid id', async () => {
+    it('should return livestream data on valid id', async () => {
       const res = await service.getOne('1');
       expect(res).toBeInstanceOf(Livestream);
-      expect(res).not.toHaveProperty('streamKey');
     });
 
-    it('should call findOne, fetch streamer and delete password', async () => {
-      const res = await service.getOne('1');
+    it('should call findOne, fetch streamer', async () => {
+      await service.getOne('1');
       expect(repoFindOneSpy).toBeCalledWith('1', { relations: ['streamer'] });
-      expect(res.streamer).not.toHaveProperty('password');
     });
 
     it('should throw 404 error when id is invalid', async () => {
       await expect(service.getOne('2')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('isValidKey', () => {
+    const validKey = 'validKey';
+    const nonExistingKey = '404Key';
+    const oldKey = 'oldKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validKey) {
+          return {
+            createdAt: new Date(Date.now()),
+          };
+        }
+        if (payload.streamKey === oldKey) {
+          return {
+            createdAt: new Date(Date.parse('February 18, 2018 12:30 PM')),
+          };
+        }
+
+        return undefined;
+      }) as any);
+    });
+
+    it('should return true on valid key', async () => {
+      expect(await service.isValidKey(validKey)).toBe(true);
+    });
+
+    it('should return false on non-existing key', async () => {
+      expect(await service.isValidKey(nonExistingKey)).toBe(false);
+    });
+
+    it('should return false on key created before 24 hours', async () => {
+      expect(await service.isValidKey(oldKey)).toBe(false);
+    });
+  });
+
+  describe('start', () => {
+    const validStreamKey = 'validStreamKey';
+    const inValidStreamKey = 'inValidStreamKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validStreamKey) {
+          return {
+            createdAt: new Date(Date.now()),
+          };
+        }
+
+        return undefined;
+      }) as any);
+
+      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+    });
+
+    it('should set stream.isLive to true given an existing key', async () => {
+      const stream = await service.start(validStreamKey);
+      expect(stream.isLive).toBe(true);
+    });
+
+    it('should call repository.save given a valid key', async () => {
+      await service.start(validStreamKey);
+      expect(repository.save).toBeCalledTimes(1);
+    });
+
+    it('should throw NotFoundException given a non-existing key', async () => {
+      await expect(service.start(inValidStreamKey)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('stop', () => {
+    const validStreamKey = 'validStreamKey';
+    const inValidStreamKey = 'inValidStreamKey';
+
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation(((payload: any) => {
+        if (payload.streamKey === validStreamKey) {
+          return {
+            createdAt: new Date(Date.now()),
+            streamKey: 'I am not undefined',
+          };
+        }
+
+        return undefined;
+      }) as any);
+
+      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+    });
+
+    it('should set stream.isLive to false given an existing key', async () => {
+      const stream = await service.stop(validStreamKey);
+      expect(stream.isLive).toBe(false);
+    });
+
+    it('should remove streamKey given an existing key', async () => {
+      const stream = await service.stop(validStreamKey);
+      expect(stream.streamKey).toBe(null);
+    });
+
+    it('should call repository.save given a valid key', async () => {
+      await service.stop(validStreamKey);
+      expect(repository.save).toBeCalledTimes(1);
+    });
+
+    it('should throw NotFoundException given a non-existing key', async () => {
+      await expect(service.stop(inValidStreamKey)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('getUserCurrentStream', () => {
+    const LiveUserId = 1;
+    const notLiveUserId = 2;
+    const livestream = {
+      title: 'Livestream Title',
+      description: 'Livestream Description',
+      category: { id: 1, name: 'Category' },
+      isLive: false,
+    };
+
+    beforeAll(async () => {
+      await service.create(notLiveUserId, livestream);
+      livestream.isLive = true;
+      await service.create(LiveUserId, livestream);
+    });
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOne').mockImplementation((payload: any) => {
+        if (payload.where.streamer === LiveUserId) return payload;
+        return undefined;
+      });
+    });
+
+    it('should return the current Livestream for the given userId if found', async () => {
+      const res = await service.getUserCurrentStream(LiveUserId);
+      expect(res).not.toBeUndefined();
+    });
+
+    it('should return undefined when the given userId isnot currently live', async () => {
+      const res = await service.getUserCurrentStream(notLiveUserId);
+      expect(res).toBeUndefined();
+    });
+
+    it('should call findOne once with the select query', async () => {
+      await service.getUserCurrentStream(LiveUserId);
+
+      expect(repository.findOne).toBeCalledTimes(1);
+      expect(repository.findOne).toBeCalledWith({
+        where: { streamer: LiveUserId, isLive: true },
+      });
     });
   });
 });

@@ -11,15 +11,19 @@ interface TagsProps {
 const TagsView: React.FC<TagsProps> = (props: TagsProps) => {
   return (
     <div className={cx(props.className)}>
-      <ul className={cx(listStyle, 'mx-1')}>
-        {props.tags.map(tag => (
-          <li className={cx(listItemStyle, 'py-1 px-3 my-1 mr-1')} key={tag}>
+      <ul className={cx(listStyle)}>
+        {props.tags?.map(tag => (
+          <li className={cx(listItemStyle, 'py-2 px-3 mr-1')} key={tag}>
             {tag}
           </li>
         ))}
       </ul>
     </div>
   );
+};
+
+TagsView.defaultProps = {
+  tags: [],
 };
 
 export default TagsView;
