@@ -1,12 +1,13 @@
 import React from 'react';
+import { User } from '@skillfuze/types';
 import EditorLayout from '../../../components/BlogsEditor/Layout';
 import NoSSR from '../../../components/NoSSR';
 import withAuth from '../../../utils/withAuth';
 
-const NewBlog = () => {
+const NewBlog = ({ user }: { user: User }) => {
   return (
     <NoSSR>
-      <EditorLayout />
+      <EditorLayout user={user} />
     </NoSSR>
   );
 };

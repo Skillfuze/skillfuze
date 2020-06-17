@@ -12,6 +12,8 @@ import { AuthService } from '../src/api/auth/services/auth.service';
 import { LivestreamsModule } from '../src/api/livestreams/livestreams.module';
 import { AuthModule } from '../src/api/auth/auth.module';
 import { ormConfig } from './config';
+import { CategoriesRepository } from '../src/api/categories/categories.repository';
+import { CategoriesModule } from '../src/api/categories/categories.module';
 
 describe('Livestreams (e2e)', () => {
   const url = '/api/v1/livestreams';
@@ -19,12 +21,13 @@ describe('Livestreams (e2e)', () => {
   let module: TestingModule;
   let token: string;
   let user: User;
+  let categoriesRepo: CategoriesRepository;
   let userService: UserService;
   let livestreamsRepository: LivestreamsRepository;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, LivestreamsModule],
+      imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, LivestreamsModule, CategoriesModule],
     }).compile();
 
     const payload = {
@@ -36,6 +39,9 @@ describe('Livestreams (e2e)', () => {
     };
     userService = module.get<UserService>(UserService);
     livestreamsRepository = module.get<LivestreamsRepository>(LivestreamsRepository);
+
+    categoriesRepo = module.get(CategoriesRepository);
+    await categoriesRepo.save({ id: 1, name: 'Test' });
 
     user = await userService.register(payload);
     const authService = module.get<AuthService>(AuthService);
@@ -50,6 +56,7 @@ describe('Livestreams (e2e)', () => {
   describe('POST /api/v1/livestreams', () => {
     const payload = {
       title: 'Livestream Title',
+      category: { id: 1 },
     };
 
     it('should create livestream successfully', async () => {
@@ -86,6 +93,7 @@ describe('Livestreams (e2e)', () => {
     let createdStream: Livestream;
     const payload = {
       title: 'Livestream Title',
+      category: { id: 1 },
     };
     beforeAll(async () => {
       const res = await request(app.getHttpServer())
@@ -104,7 +112,6 @@ describe('Livestreams (e2e)', () => {
       expect(res.body.streamer).toHaveProperty('lastName');
       expect(res.body.streamer).toHaveProperty('email');
       expect(res.body.streamer).toHaveProperty('id');
-      expect(res.body.streamer).not.toHaveProperty('password');
     });
 
     it('should return NotFoundException on invalid streamId', async () => {
@@ -121,6 +128,7 @@ describe('Livestreams (e2e)', () => {
   afterAll(async () => {
     const userRepo = module.get<UserRepository>(UserRepository);
     await userRepo.delete({});
+    await categoriesRepo.delete({});
     await app.close();
   });
 });

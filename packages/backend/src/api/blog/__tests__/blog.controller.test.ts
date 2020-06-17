@@ -26,6 +26,20 @@ describe('BlogController', () => {
     emitSpy = jest.spyOn(emitter, 'emit');
   });
 
+  describe('getOne', () => {
+    let findOneSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      findOneSpy = jest.fn();
+      (service as any).findOne = findOneSpy;
+    });
+
+    it('should call service.findOne with the correct parameters', async () => {
+      await controller.getOne('myBlogUrl');
+      expect(findOneSpy).toBeCalledWith({ url: 'myBlogUrl' }, { relations: ['user'] });
+    });
+  });
+
   describe('createOne', () => {
     let createOneBaseSpy: jest.Mock;
 
@@ -43,6 +57,7 @@ describe('BlogController', () => {
       const payload = {
         title: 'Test Title',
         content: 'test content.',
+        category: { id: 1, name: 'Category' },
       };
 
       const user = {

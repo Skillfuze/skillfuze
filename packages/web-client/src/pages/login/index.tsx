@@ -40,7 +40,7 @@ const LoginPage = () => {
     </Button>
   );
   return (
-    <Layout navControls={navControls} title="Login">
+    <Layout navControls={navControls} title="Login" showProfileControls={false}>
       <div className="flex flex-grow px-40 items-center justify-center h-full">
         <div className="flex w-2/3">
           <LoginSVG />

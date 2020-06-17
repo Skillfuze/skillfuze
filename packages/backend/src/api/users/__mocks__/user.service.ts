@@ -16,4 +16,12 @@ export class UserService {
   public findByEmail(): Promise<User> {
     return undefined;
   }
+
+  public findByUsername(): Promise<User> {
+    return undefined;
+  }
+
+  public getProfileInfo(): Promise<User> {
+    return undefined;
+  }
 }

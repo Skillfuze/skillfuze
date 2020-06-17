@@ -24,8 +24,8 @@
     "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-helmet": "^6.0.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.4.5",
+    "react-helmet": "^6.0.0"
   },
   "repository": {
     "type": "git",

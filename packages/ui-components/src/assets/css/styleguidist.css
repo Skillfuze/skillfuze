@@ -1,4 +1,6 @@
 .container > * {
   margin: 5px 5px;
-  display: inline;
+}
+.react-multiple-carousel__arrow::before {
+  font-family: none !important;
 }
