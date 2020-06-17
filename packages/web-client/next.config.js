@@ -1,4 +1,5 @@
 /* eslint-disable */
+const pkg = require('./package.json');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -15,5 +16,8 @@ module.exports = {
     NEXT_PUBLIC_RTMP_SERVER_URL: process.env.NEXT_PUBLIC_RTMP_SERVER_URL,
     NEXT_PUBLIC_STREAMING_SERVER_URL: process.env.NEXT_PUBLIC_STREAMING_SERVER_URL
   },
-  assetPrefix: isProd ? 'https://static.skillfuze.com' : ''
+  assetPrefix: isProd ? 'https://static.skillfuze.com' : '',
+  generateBuildId: () => {
+    return pkg.version;
+  },
 };
