@@ -14,44 +14,47 @@ export class Livestream implements ILivestream {
 
   @ApiProperty()
   @Column({ type: 'text' })
-  public title: string;
+  public title: string = undefined;
 
   @ApiProperty()
   @Column({ type: 'text', nullable: true })
-  public description: string;
+  public description: string = undefined;
 
   @ApiProperty()
   @Column({ nullable: true })
-  public thumbnailURL: string;
+  public thumbnailURL: string = undefined;
 
   @ApiProperty()
   @CreateDateColumn({ type: 'timestamp' })
-  public createdAt: Date;
+  public createdAt: Date = undefined;
 
   @ApiProperty()
   @UpdateDateColumn({ type: 'timestamp' })
-  public updatedAt: Date;
+  public updatedAt: Date = undefined;
 
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
-  public streamer: User;
+  public streamer: User = undefined;
 
   @ApiProperty()
   @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  public tags: string[] = undefined;
 
   @ApiProperty()
   @Column({ nullable: true, unique: true })
-  public streamKey: string;
+  public streamKey: string = undefined;
 
   @ApiProperty()
   @Column({ default: false })
-  public isLive: boolean;
+  public isLive: boolean = undefined;
+
+  @Column({ default: 0 })
+  public watchingNow: number = undefined;
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
   @JoinColumn({ referencedColumnName: 'id' })
-  public category: Category;
+  public category: Category = undefined;
 
   public constructor() {
     this.id = shortid.generate();

@@ -11,33 +11,36 @@ export class Video implements IVideo {
   public id: string;
 
   @Column({ type: 'text' })
-  public title: string;
+  public title: string = undefined;
 
   @Column({ type: 'text', nullable: true })
-  public description: string;
+  public description: string = undefined;
 
   @Column({ nullable: true })
-  public thumbnailURL: string;
+  public thumbnailURL: string = undefined;
 
   @Column({ nullable: false })
-  public url: string;
+  public url: string = undefined;
 
   @CreateDateColumn({ type: 'timestamp' })
-  public createdAt: Date;
+  public createdAt: Date = undefined;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  public updatedAt: Date;
+  public updatedAt: Date = undefined;
 
   @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  public tags: string[] = undefined;
+
+  @Column({ default: 0 })
+  public views: number = undefined;
 
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
-  public uploader: User;
+  public uploader: User = undefined;
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
   @JoinColumn({ referencedColumnName: 'id' })
-  public category: Category;
+  public category: Category = undefined;
 
   public constructor() {
     this.id = shortid.generate();

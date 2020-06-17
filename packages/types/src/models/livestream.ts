@@ -13,4 +13,5 @@ export interface Livestream {
   streamKey: string;
   isLive: boolean;
   category: Category;
+  watchingNow: number;
 }

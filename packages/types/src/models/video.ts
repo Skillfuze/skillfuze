@@ -12,4 +12,5 @@ export interface Video {
   tags: string[];
   uploader: User;
   category: Category;
+  views: number;
 }
