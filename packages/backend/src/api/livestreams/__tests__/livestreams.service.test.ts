@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import * as shortid from 'shortid';
 import { Livestream } from '../livestream.entity';
 
@@ -243,6 +243,45 @@ describe('LivestreamsService', () => {
       expect(repository.findOne).toBeCalledWith({
         where: { streamer: LiveUserId, isLive: true },
       });
+    });
+  });
+
+  describe('delete', () => {
+    const userId = 1;
+    const streamId = '1';
+    const stream = {
+      title: 'stream Title',
+      streamer: {
+        id: userId,
+      },
+    };
+    let res: HttpStatus;
+    let getOneSpy: jest.SpyInstance;
+    let repoDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      repoDeleteSpy = jest.spyOn(repository, 'delete');
+      getOneSpy = jest.spyOn(service, 'getOne');
+      getOneSpy.mockReturnValue(stream);
+
+      res = await service.delete(userId, streamId);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.delete once', async () => {
+      expect(repoDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.delete(2, streamId)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should call repo.delete and return HttpStatus.OK (200)', async () => {
+      expect(repoDeleteSpy).toBeCalledTimes(1);
+      expect(res).toBe(HttpStatus.OK);
     });
   });
 });

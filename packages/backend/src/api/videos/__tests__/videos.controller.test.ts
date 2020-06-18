@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { VideosController } from '../videos.controller';
 import { VideosService } from '../videos.service';
 import { VideosRepository } from '../videos.repository';
@@ -59,6 +60,24 @@ describe('Videos Controller', () => {
 
     it('should return service.getOne', () => {
       expect(res).toBe(getOneReturn);
+    });
+  });
+
+  describe('delete', () => {
+    const videoId = '1';
+    const userId = 1;
+    let res: HttpStatus;
+    let serviceDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      serviceDeleteSpy = jest.spyOn(service, 'delete');
+      serviceDeleteSpy.mockReturnValue(HttpStatus.OK);
+      res = await controller.delete({ user: { id: userId } }, videoId);
+    });
+
+    it('should call and return service.delete', async () => {
+      expect(serviceDeleteSpy).toBeCalledTimes(1);
+      expect(res).toBe(HttpStatus.OK);
     });
   });
 });

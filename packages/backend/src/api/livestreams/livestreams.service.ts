@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 
 import { LivestreamsRepository } from './livestreams.repository';
 import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
@@ -14,7 +14,6 @@ export class LivestreamsService {
     const streamer = new User();
     streamer.id = userId;
     const stream = await this.repository.create({ ...payload, streamer });
-    delete stream.streamer.username;
 
     return this.repository.save(stream);
   }
@@ -60,5 +59,15 @@ export class LivestreamsService {
       where: { streamer: userId, isLive: true },
     });
     return stream;
+  }
+
+  public async delete(userId: number, id: string): Promise<HttpStatus> {
+    const stream = await this.getOne(id);
+    if (stream.streamer.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.delete(id);
+    return HttpStatus.OK;
   }
 }

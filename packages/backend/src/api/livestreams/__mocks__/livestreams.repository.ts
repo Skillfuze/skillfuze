@@ -14,4 +14,8 @@ export class LivestreamsRepository {
   public async findOne(payload: any) {
     return payload;
   }
+
+  public async delete(payload: any) {
+    return payload;
+  }
 }

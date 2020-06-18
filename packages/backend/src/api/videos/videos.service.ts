@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 
 import { VideosRepository } from './videos.repository';
 import { CreateVideoDTO } from './dtos/create-video.dto';
@@ -21,7 +21,16 @@ export class VideosService {
     if (!video) {
       throw new NotFoundException();
     }
-
     return video;
+  }
+
+  public async delete(userId: number, id: string): Promise<HttpStatus> {
+    const video = await this.getOne(id);
+    if (video.uploader.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.delete(id);
+    return HttpStatus.OK;
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Body, Param, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body, Param, Get, Delete, HttpStatus } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
@@ -33,5 +33,11 @@ export class LivestreamsController {
   @ApiNotFoundResponse()
   public async getOne(@Param('id') livestreamId: string): Promise<Livestream> {
     return this.service.getOne(livestreamId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  public async delete(@Request() req, @Param('id') id: string): Promise<HttpStatus> {
+    return this.service.delete(req.user.id, id);
   }
 }

@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { LivestreamsController } from '../livestreams.controller';
@@ -57,6 +58,24 @@ describe('Livestreams Controller', () => {
       const res = await controller.getOne(streamId);
       expect(serviceGetOneSpy).toBeCalledTimes(1);
       expect(res).toBe(getOneReturn);
+    });
+  });
+
+  describe('delete', () => {
+    const streamId = '1';
+    const userId = 1;
+    let res: HttpStatus;
+    let serviceDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      serviceDeleteSpy = jest.spyOn(service, 'delete');
+      serviceDeleteSpy.mockReturnValue(HttpStatus.OK);
+      res = await controller.delete({ user: { id: userId } }, streamId);
+    });
+
+    it('should call and return service.delete', async () => {
+      expect(serviceDeleteSpy).toBeCalledTimes(1);
+      expect(res).toBe(HttpStatus.OK);
     });
   });
 });

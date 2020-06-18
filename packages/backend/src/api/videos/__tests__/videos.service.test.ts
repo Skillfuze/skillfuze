@@ -1,5 +1,5 @@
 import * as shortid from 'shortid';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 
 import { User } from '../../users/user.entity';
 import { CreateVideoDTO } from '../dtos/create-video.dto';
@@ -71,6 +71,45 @@ describe('VideosService', () => {
 
     it('should throw NotFound Exception on invalid id', async () => {
       await expect(service.getOne(invalidId)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('delete', () => {
+    const userId = 1;
+    const videoId = '1';
+    const video = {
+      title: 'Video Title',
+      uploader: {
+        id: userId,
+      },
+    };
+    let res: HttpStatus;
+    let getOneSpy: jest.SpyInstance;
+    let repoDeleteSpy: jest.SpyInstance;
+
+    beforeAll(async () => {
+      repoDeleteSpy = jest.spyOn(repository, 'delete');
+      getOneSpy = jest.spyOn(service, 'getOne');
+      getOneSpy.mockReturnValue(video);
+
+      res = await service.delete(userId, videoId);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.delete once', async () => {
+      expect(repoDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw forbiddenException when userId not equal video.uploader.id', async () => {
+      await expect(service.delete(2, videoId)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should call repo.delete and return HttpStatus.OK (200)', async () => {
+      expect(repoDeleteSpy).toBeCalledTimes(1);
+      expect(res).toBe(HttpStatus.OK);
     });
   });
 });
