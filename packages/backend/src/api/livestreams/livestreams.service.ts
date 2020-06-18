@@ -14,7 +14,6 @@ export class LivestreamsService {
     const streamer = new User();
     streamer.id = userId;
     const stream = await this.repository.create({ ...payload, streamer });
-    delete stream.streamer.username;
 
     return this.repository.save(stream);
   }
