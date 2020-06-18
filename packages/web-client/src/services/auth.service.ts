@@ -37,8 +37,8 @@ export default class AuthService {
     return Cookie.get('token');
   }
 
-  logout = (): void => {
+  public static logout(): void {
     Cookie.remove('token');
-    Router.push('/login');
-  };
+    Router.reload();
+  }
 }

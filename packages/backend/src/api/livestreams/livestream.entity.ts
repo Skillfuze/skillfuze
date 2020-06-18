@@ -12,9 +12,8 @@ import {
 } from 'typeorm';
 import * as shortid from 'shortid';
 
-import { Livestream as ILivestream } from '@skillfuze/types';
+import { Livestream as ILivestream, User } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../users/user.entity';
 import { Category } from '../categories/category.entity';
 import { Material } from '../materials/material.entity';
 
@@ -49,7 +48,7 @@ export class Livestream implements ILivestream {
   public updatedAt: Date;
 
   @ApiProperty()
-  @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(/* istanbul ignore next */ 'User', { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
   public streamer: User;
 

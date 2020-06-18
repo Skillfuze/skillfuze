@@ -1,17 +1,19 @@
 import React from 'react';
-import { Video } from '@skillfuze/types';
+import { Video, User } from '@skillfuze/types';
 
 import Layout from '../../../components/Layout';
 import VideoLayout from '../../../components/VideoLayout';
 import { VideosService } from '../../../services/videos.service';
+import withAuth from '../../../utils/withAuth';
 
 interface Props {
   video: Video;
+  user: User;
 }
 
-const ViewVideo = ({ video }: Props) => {
+const ViewVideo = ({ video, user }: Props) => {
   return (
-    <Layout>
+    <Layout title={video.title} user={user}>
       <VideoLayout isLive={false} user={video.uploader} video={video} url={video.url} videoType="video/mp4" />
     </Layout>
   );
@@ -22,4 +24,4 @@ ViewVideo.getInitialProps = async (ctx) => {
   return { video };
 };
 
-export default ViewVideo;
+export default withAuth({})(ViewVideo);

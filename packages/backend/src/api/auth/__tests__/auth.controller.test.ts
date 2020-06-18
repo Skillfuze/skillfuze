@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import * as shortid from 'shortid';
 import { HashingService } from '../services/hashing.service';
 import { AuthService } from '../services/auth.service';
 import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
@@ -9,6 +10,7 @@ import { UserService } from '../../users/user.service';
 
 jest.mock('../../users/user.service');
 jest.mock('@nestjs/jwt');
+jest.mock('shortid');
 
 describe('Auth Controller', () => {
   let controller: AuthController;
@@ -27,6 +29,7 @@ describe('Auth Controller', () => {
   });
 
   describe('register', () => {
+    const shortIdReturn = 'randomID';
     let registerSpy: jest.SpyInstance;
     let findByEmailSpy: jest.SpyInstance;
     const payload = {
@@ -40,6 +43,10 @@ describe('Auth Controller', () => {
     beforeEach(() => {
       registerSpy = jest.spyOn(userService, 'register');
       findByEmailSpy = jest.spyOn(userService, 'findByEmail');
+
+      jest.spyOn(shortid, 'generate').mockImplementation(() => {
+        return shortIdReturn;
+      });
 
       findByEmailSpy.mockImplementation((email: string) => {
         if (email === 'duplicate@gmail.com') {
@@ -64,12 +71,18 @@ describe('Auth Controller', () => {
       expect(user).toBeInstanceOf(User);
     });
 
-    it('should remove password, confirmPassword fields and add id field', async () => {
+    it('should remove password, confirmPassword fields and add id', async () => {
       const user = await controller.register(payload);
 
       expect(user).toHaveProperty('id');
       expect(user).not.toHaveProperty('password');
       expect(user).not.toHaveProperty('confirmPassword');
+    });
+
+    it('should generate username', async () => {
+      const user = await controller.register(payload);
+
+      expect(user.username).toBe('user-randomID');
     });
 
     it('should throw EmailAlreadyExistsException on duplicate email', async () => {

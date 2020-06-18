@@ -13,15 +13,15 @@ export class LivestreamsService {
   public async create(userId: number, payload: CreateLivestreamDTO): Promise<Livestream> {
     const streamer = new User();
     streamer.id = userId;
-    const stream = this.repository.create({ ...payload, streamer });
+    const stream = await this.repository.create({ ...payload, streamer });
+    delete stream.streamer.username;
+
     return this.repository.save(stream);
   }
 
   public async getOne(livestreamId: string): Promise<Livestream> {
     const stream = await this.repository.findOne(livestreamId, { relations: ['streamer'] });
     if (!stream) throw new NotFoundException();
-    delete stream.streamer.password;
-    // delete stream.streamKey;
     return stream;
   }
 
@@ -53,5 +53,12 @@ export class LivestreamsService {
     stream.isLive = false;
     stream.streamKey = null;
     return this.repository.save(stream);
+  }
+
+  public async getUserCurrentStream(userId: number): Promise<Livestream> {
+    const stream = await this.repository.findOne({
+      where: { streamer: userId, isLive: true },
+    });
+    return stream;
   }
 }

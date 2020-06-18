@@ -15,7 +15,9 @@
       "**/@nestjsx/crud-typeorm/**",
       "**/@nestjsx/crud-typeorm",
       "**/typeorm/**",
-      "**/typeorm"
+      "**/typeorm",
+      "**/react-multi-carousel/**",
+      "**/react-multi-carousel"
     ]
   },
   "scripts": {
@@ -39,8 +41,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "npm run format",
-      "npm run lint -- --fix",
+      "yarn format",
+      "yarn lint -- --fix",
       "git add"
     ]
   },

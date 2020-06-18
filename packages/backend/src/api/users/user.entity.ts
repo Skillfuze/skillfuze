@@ -1,8 +1,8 @@
-/* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { User as IUser } from '@skillfuze/types';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { User as IUser, Livestream } from '@skillfuze/types';
 import { Exclude } from 'class-transformer';
 import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
+import * as shortid from 'shortid';
 
 @Entity()
 export class User implements IUser {
@@ -26,4 +26,23 @@ export class User implements IUser {
   @Exclude()
   @Column()
   public password: string;
+
+  @ApiProperty()
+  @Column({ nullable: true })
+  public avatarURL: string;
+
+  @ApiProperty()
+  @Column({ type: 'text', nullable: true })
+  public bio: string;
+
+  @ApiProperty()
+  @Column({ unique: true })
+  public username: string;
+
+  @OneToMany('Livestream', 'streamer')
+  public livestreams?: Livestream[];
+
+  public constructor() {
+    this.username = `user-${shortid.generate()}`;
+  }
 }

@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
-import { HashingService } from '../services/hashing.service';
-
 import { User } from '../../users/user.entity';
+import { LivestreamsService } from '../../livestreams/livestreams.service';
+import { LivestreamsRepository } from '../../livestreams/livestreams.repository';
+import { HashingService } from '../services/hashing.service';
 
 import { UserRepository } from '../../users/user.repository';
 import { UserService } from '../../users/user.service';
@@ -25,7 +26,11 @@ describe('Auth Service', () => {
     }).compile();
     jwtService = module.get<JwtService>(JwtService);
     hashingService = module.get<HashingService>(HashingService);
-    userService = new UserService(new UserRepository(), hashingService);
+    userService = new UserService(
+      new UserRepository(),
+      hashingService,
+      new LivestreamsService(new LivestreamsRepository()),
+    );
     authService = new AuthService(userService, hashingService, jwtService);
   });
 
@@ -63,15 +68,35 @@ describe('Auth Service', () => {
       lastName: 'Elsayed',
       email: 'karim@skillfuze.com',
       password: '123456789',
+      username: 'user-1',
+      avatarURL: '',
+      bio: '',
     };
+
     it('should generate token successfully', async () => {
-      const res = authService.generateToken(user);
-      expect(res).toMatchObject({ id: 1, firstName: 'Karim', lastName: 'Elsayed', email: 'karim@skillfuze.com' });
+      const res = authService.generateToken(user as User);
+      expect(res).toMatchObject({
+        id: 1,
+        firstName: 'Karim',
+        lastName: 'Elsayed',
+        email: 'karim@skillfuze.com',
+        username: 'user-1',
+        avatarURL: '',
+        bio: '',
+      });
     });
     it('should call jwt.sign', async () => {
-      await authService.generateToken(user);
+      await authService.generateToken(user as User);
       expect(signSpy).toBeCalled();
-      expect(signSpy).toBeCalledWith({ id: 1, firstName: 'Karim', lastName: 'Elsayed', email: 'karim@skillfuze.com' });
+      expect(signSpy).toBeCalledWith({
+        id: 1,
+        firstName: 'Karim',
+        lastName: 'Elsayed',
+        email: 'karim@skillfuze.com',
+        username: 'user-1',
+        avatarURL: '',
+        bio: '',
+      });
     });
   });
 

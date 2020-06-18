@@ -1,17 +1,19 @@
 import React from 'react';
+import { User } from '@skillfuze/types';
 import EditorLayout from '../../../../components/BlogsEditor/Layout';
 import NoSSR from '../../../../components/NoSSR';
 import { BlogService, BlogState } from '../../../../services/blogs.service';
 import withAuth from '../../../../utils/withAuth';
 
 interface Props {
+  user: User;
   blogState: BlogState;
 }
 
 const EditBlog = (props: Props) => {
   return (
     <NoSSR>
-      <EditorLayout blogState={props.blogState} />
+      <EditorLayout blogState={props.blogState} user={props.user} />
     </NoSSR>
   );
 };

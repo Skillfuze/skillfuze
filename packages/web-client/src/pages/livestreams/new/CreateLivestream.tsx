@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
-import { Category } from '@skillfuze/types';
+import { Category, User } from '@skillfuze/types';
 
 import withAuth from '../../../utils/withAuth/withAuth';
 import Layout from '../../../components/Layout';
@@ -8,7 +8,7 @@ import LivestreamService from '../../../services/livestreams.service';
 import { CategoriesService } from '../../../services/categories.service';
 import config from '../../../../config/index';
 
-const CreateLiveStream = () => {
+const CreateLiveStream = ({ user }: { user: User }) => {
   const livestreamService = new LivestreamService();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -43,7 +43,7 @@ const CreateLiveStream = () => {
   };
 
   return (
-    <Layout title="New Livestream">
+    <Layout title="New Livestream" user={user}>
       <div className="flex flex-grow px-40 items-center justify-center h-full">
         <div className="flex flex-col items-center w-1/2">
           <div className="flex flex-col w-2/3 space-y-6">

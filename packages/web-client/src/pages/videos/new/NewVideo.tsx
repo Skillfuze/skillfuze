@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
-import { Category } from '@skillfuze/types';
+import { Category, User } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 
 import Layout from '../../../components/Layout';
@@ -12,7 +12,7 @@ import { CategoriesService } from '../../../services/categories.service';
 import config from '../../../../config';
 import withAuth from '../../../utils/withAuth';
 
-const NewVideo = () => {
+const NewVideo = ({ user }: { user: User }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [thumbnailURL, setThumbnailURL] = useState();
@@ -56,7 +56,7 @@ const NewVideo = () => {
   };
 
   return (
-    <Layout title="New Video">
+    <Layout title="New Video" user={user}>
       <div className="container flex flex-grow mx-auto flex-wrap-reverse">
         <div className="flex sub-container overflow-auto flex-col p-6 justify-center">
           <NoSSR>

@@ -27,6 +27,7 @@ module.exports = {
 
   },
   pagePerSection: true,
+  skipComponentsWithoutExample: true,
   components: () => {
     return glob.sync("src/components/**/*.tsx").filter(file => {
       if (file.match(/connect.tsx$/)) {
@@ -51,6 +52,10 @@ module.exports = {
         {
           test: /\.css$/,
           use: ['style-loader', 'postcss-loader']
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
         }
       ]
     }
