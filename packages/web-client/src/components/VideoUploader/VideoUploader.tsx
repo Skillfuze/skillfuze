@@ -9,7 +9,7 @@ import config from '../../../config';
 import { useLazyRef } from '../../utils/hooks/useLazyRef';
 
 interface Props {
-  onComplete: (result: Uppy.UploadResult<{}, {}>) => void;
+  onComplete: (result: Uppy.UploadResult<any, any>) => void;
 }
 
 const VideoUploader: React.FC<Props> = ({ onComplete }: Props) => {

@@ -22,7 +22,7 @@ const CreateLiveStream = () => {
 
   useEffect(() => {
     const loadCategories = async () => {
-      setCategories((await CategoriesService.getAll()).map(cat => ({ value: cat, label: cat.name })));
+      setCategories((await CategoriesService.getAll()).map((cat) => ({ value: cat, label: cat.name })));
     };
     loadCategories();
   }, []);

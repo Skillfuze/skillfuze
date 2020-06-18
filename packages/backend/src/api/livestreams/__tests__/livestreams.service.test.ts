@@ -146,7 +146,7 @@ describe('LivestreamsService', () => {
         return undefined;
       }) as any);
 
-      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+      jest.spyOn(repository, 'save').mockImplementation(((payload) => payload) as any);
     });
 
     it('should set stream.isLive to true given an existing key', async () => {
@@ -180,7 +180,7 @@ describe('LivestreamsService', () => {
         return undefined;
       }) as any);
 
-      jest.spyOn(repository, 'save').mockImplementation((payload => payload) as any);
+      jest.spyOn(repository, 'save').mockImplementation(((payload) => payload) as any);
     });
 
     it('should set stream.isLive to false given an existing key', async () => {

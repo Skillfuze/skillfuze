@@ -18,7 +18,7 @@ describe('HashingService', () => {
     hash = jest.spyOn(bcrypt, 'hash');
     compare = jest.spyOn(bcrypt, 'compare');
 
-    genSalt.mockImplementation((payload: object) => {
+    genSalt.mockImplementation((payload: any) => {
       return payload;
     });
     hash.mockImplementation(() => {
