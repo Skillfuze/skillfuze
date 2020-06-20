@@ -40,9 +40,7 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should register the user and return 201', async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload);
+      const res = await request(app.getHttpServer()).post(url).send(payload);
 
       expect(res.status).toBe(201);
 
@@ -59,13 +57,9 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 on duplicate emails', async () => {
-      await request(app.getHttpServer())
-        .post(url)
-        .send(payload);
+      await request(app.getHttpServer()).post(url).send(payload);
 
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload);
+      const res = await request(app.getHttpServer()).post(url).send(payload);
 
       expect(res.status).toBe(400);
     });
@@ -91,9 +85,7 @@ describe('AuthController (e2e)', () => {
       await authController.register(registerPayload);
     });
     it('should login the user and return 200', async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload);
+      const res = await request(app.getHttpServer()).post(url).send(payload);
 
       expect(res.status).toBe(200);
     });

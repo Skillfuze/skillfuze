@@ -60,11 +60,7 @@ describe('Livestreams (e2e)', () => {
     };
 
     it('should create livestream successfully', async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       expect(res.body.id).not.toBe(undefined);
 
@@ -96,11 +92,7 @@ describe('Livestreams (e2e)', () => {
       category: { id: 1 },
     };
     beforeAll(async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       createdStream = res.body;
     });
@@ -115,9 +107,7 @@ describe('Livestreams (e2e)', () => {
     });
 
     it('should return NotFoundException on invalid streamId', async () => {
-      await request(app.getHttpServer())
-        .get(`${url}/id`)
-        .expect(404);
+      await request(app.getHttpServer()).get(`${url}/id`).expect(404);
     });
   });
 

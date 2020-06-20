@@ -52,11 +52,11 @@ describe('Auth Service', () => {
       return undefined;
     });
 
-    matchingPasswordSpy.mockImplementation((payload: object) => {
+    matchingPasswordSpy.mockImplementation((payload: any) => {
       return payload;
     });
 
-    signSpy.mockImplementation((payload: object) => {
+    signSpy.mockImplementation((payload: any) => {
       return payload;
     });
   });

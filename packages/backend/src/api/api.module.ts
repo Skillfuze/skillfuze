@@ -6,9 +6,10 @@ import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
 import { LivestreamsModule } from './livestreams/livestreams.module';
 import { CategoriesModule } from './categories/categories.module';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, BlogModule, LivestreamsModule, VideosModule, CategoriesModule],
+  imports: [UsersModule, AuthModule, BlogModule, LivestreamsModule, VideosModule, CategoriesModule, CoursesModule],
   controllers: [],
   providers: [],
 })

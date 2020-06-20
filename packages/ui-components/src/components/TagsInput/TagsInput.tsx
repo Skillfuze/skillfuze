@@ -25,7 +25,7 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
         return;
       }
 
-      if (props.tags.find(tag => tag.toLowerCase() === input.toLowerCase())) {
+      if (props.tags.find((tag) => tag.toLowerCase() === input.toLowerCase())) {
         return;
       }
 

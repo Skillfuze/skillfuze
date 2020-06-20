@@ -55,7 +55,7 @@ const ProfilePage: NextPage<Props> = ({ user }: Props) => {
   );
 };
 
-ProfilePage.getInitialProps = async ctx => {
+ProfilePage.getInitialProps = async (ctx) => {
   const user = await UsersService.getProfileInfo(ctx.query.username.toString());
   return { user };
 };

@@ -62,9 +62,7 @@ describe('UsersController (e2e)', () => {
     const url = '/api/v1/users';
 
     it('should get profile data successfully with currently livestream if found', async () => {
-      const res = await request(app.getHttpServer())
-        .get(`${url}/${user.username}/profile`)
-        .set('Authorization', token);
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/profile`).set('Authorization', token);
 
       expect(res.body).toHaveProperty('id');
       expect(res.body).toHaveProperty('username');
