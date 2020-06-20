@@ -25,24 +25,27 @@ export const Step: React.FC<StepProps> = (props: StepProps) => {
 
 interface MultiStepFormProps {
   children: any;
+  onNext: () => boolean;
 }
 
 const MultiStepForm: React.FC<MultiStepFormProps> = (props: MultiStepFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const onNext = () => {
-    if (currentStep < props.children.length) {
-      setCurrentStep((prev) => prev + 1);
+    if (props.onNext()) {
+      if (currentStep < props.children.length) {
+        setCurrentStep(prev => prev + 1);
+      }
     }
   };
 
   const onPrev = () => {
     if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep(prev => prev - 1);
     }
   };
 
-  const getStepColor = (step) => {
+  const getStepColor = step => {
     if (step < currentStep) {
       return 'bg-primary';
     }
