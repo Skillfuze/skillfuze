@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { Button, Carousel, ContentCard, VideosTopBar, CourseInfoBar } from '@skillfuze/ui-components';
 import { HomeResponseDTO, User } from '@skillfuze/types';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import HomeSVG from '../../assets/illustrations/home.svg';
 import Layout from '../components/Layout';
 import { HomeService } from '../services/home.service';
@@ -17,6 +18,7 @@ interface Props {
 
 const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
   const router = useRouter();
+
   const LoadLivestreams = (
     <Carousel className="">
       {recommendations.livestreams.map(livestream => (
@@ -36,9 +38,9 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       ))}
     </Carousel>
   );
+
   const LoadCourses = (
     <Carousel className="">
-      <p>Courses</p>
       {recommendations.courses.map(course => (
         <ContentCard
           className=""
@@ -58,6 +60,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       ))}
     </Carousel>
   );
+
   const LoadVideos = (
     <Carousel className="">
       {recommendations.videos.map(video => (
@@ -78,6 +81,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       ))}
     </Carousel>
   );
+
   const LoadBlogs = (
     <Carousel className="">
       {recommendations.blogs.map(blog => (
@@ -98,32 +102,40 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       ))}
     </Carousel>
   );
+
+  const isLoggedIn = user !== undefined;
+  const callToActionText = isLoggedIn ? 'CONTINUE LEARNING' : 'JOIN NOW';
+  const callToActionHref = isLoggedIn ? `/profile/[username]` : '/register';
+  const callToActionAs = isLoggedIn ? `/profile/${user.username}` : '/register';
+
   return (
     <Layout title="Home" user={user}>
-      <div className="h-screen w-full bg-gradient p-4 flex justify-center items-center">
-        <div className="flex container items-center h-full justify-center">
-          <div className="flex flex-col h-full justify-center">
-            <h1 className="text-8xl font-bold text-left text-white pb-4">
-              Learning
-              <br />
-              For Everyone
-              <br />
-              By Everyone
-              <br />
-              About Anything
-            </h1>
-            <div className="pt-4">
-              <Button variant="outlined" color="white" size="large">
-                CONTINUE LEARNING
-              </Button>
-            </div>
+      <div className="min-h-screen w-full bg-gradient p-4 flex justify-around items-center flex-wrap">
+        <div className="flex flex-col items-start h-full justify-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white">
+            Learning
+            <br />
+            For Everyone
+            <br />
+            By Everyone
+            <br />
+            About Anything
+          </h1>
+          <div className="mt-8 call-to-action-btn">
+            <Button variant="outlined" color="white" size="large" className="w-full">
+              <Link as={callToActionAs} href={callToActionHref}>
+                <a>{callToActionText}</a>
+              </Link>
+            </Button>
           </div>
         </div>
-        <div className="flex container flex-col justify-center items-center p-4">
-          <HomeSVG />
-        </div>
+        <HomeSVG height="500" />
         <style jsx>
           {`
+            .call-to-action-btn {
+              min-width: 14rem;
+            }
+
             .bg-gradient {
               background-image: linear-gradient(
                 117deg,
@@ -141,24 +153,28 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           moreText="ALL LIVESTREAMS"
           carousel={LoadLivestreams}
           moreHref="/livestreams"
+          hidden={recommendations.livestreams.length === 0}
         />
         <RecommendationCarousel
           title="Top Courses Recommended For You"
           moreText="ALL COURSES"
           carousel={LoadCourses}
           moreHref="/courses"
+          hidden={recommendations.courses.length === 0}
         />
         <RecommendationCarousel
           title="Top Videos Recommended For You"
           moreText="ALL VIDEOS"
           carousel={LoadVideos}
           moreHref="/videos"
+          hidden={recommendations.videos.length === 0}
         />
         <RecommendationCarousel
           title="Top Blogs Recommended For You"
           moreText="ALL BLOGS"
           carousel={LoadBlogs}
           moreHref="/blogs"
+          hidden={recommendations.blogs.length === 0}
         />
       </div>
     </Layout>
