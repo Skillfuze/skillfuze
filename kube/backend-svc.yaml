@@ -7,5 +7,12 @@ spec:
   selector:
     app: sf-backend
   ports:
-  - port: 8080
+  - port: 3000
     targetPort: 3000
+    name: api-port
+  - port: 1935
+    targetPort: 1935
+    name: rtmp-port
+  - port: 8080
+    targetPort: 8080
+    name: http-streaming-port

@@ -1,6 +1,5 @@
 import * as path from 'path';
 
-/* eslint-disable @typescript-eslint/camelcase */
 export const streamingServer = {
   logType: 3,
   rtmp: {

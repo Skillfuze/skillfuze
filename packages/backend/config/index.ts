@@ -1,4 +1,5 @@
 /* eslint-disable import/first */
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
 
 import { JwtModuleOptions } from '@nestjs/jwt';

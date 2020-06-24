@@ -21,8 +21,19 @@ spec:
             servicePort: 9000
     - host: api.skillfuze.com
       http:
-          paths:
-          - backend:
-              serviceName: sf-backend-svc
-              servicePort: 8080
-
+        paths:
+        - backend:
+            serviceName: sf-backend-svc
+            servicePort: 3000
+    - host: live.skillfuze.com
+      http:
+        paths:
+        - backend:
+            serviceName: sf-backend-svc
+            servicePort: 1935
+    - host: streaming.skillfuze.com
+      http:
+        paths:
+        - backend:
+            serviceName: sf-backend-svc
+            servicePort: 8080

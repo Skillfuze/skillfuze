@@ -50,7 +50,7 @@ if [[ $CHANGED =~ "@skillfuze/ui-components" ]]
 then
   PACKAGE_VERSION=$(node -pe "require('./packages/ui-components/package.json').version")
   echo "@skillfuze/ui-components bumped to v$PACKAGE_VERSION, deploying.."
-  curl -X POST -d {} https://api.netlify.com/build_hooks/5eb493289f63910cdfab3957
+  curl -X POST -d {} https://api.netlify.com/build_hooks/5eea6b1d003bb10298628fa2
   echo "@skillfuze/ui-components deployed.."
 else
   echo "@skillfuze/ui-components has not changed, will not deploy.."
@@ -61,7 +61,7 @@ if [[ $CHANGED =~ "@skillfuze/blogs-client" ]]
 then
   PACKAGE_VERSION=$(node -pe "require('./packages/blogs-client/package.json').version")
   echo "@skillfuze/blogs-client bumped to v$PACKAGE_VERSION, deploying.."
-  curl -X POST -d {} https://api.netlify.com/build_hooks/5eb4887e1dedb35aa39adae3
+  curl -X POST -d {} https://api.netlify.com/build_hooks/5eea6b5e5098730205ce2d6e
   echo "@skillfuze/blogs-client deployed.."
 else
   echo "@skillfuze/blogs-client has not changed, will not deploy.."

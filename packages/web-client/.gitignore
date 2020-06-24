@@ -11,6 +11,7 @@
 # next.js
 /.next/
 /out/
+!public
 
 # production
 /build
@@ -19,6 +20,7 @@
 .DS_Store
 .env*
 !.env.example
+!.env.production
 
 # debug
 npm-debug.log*

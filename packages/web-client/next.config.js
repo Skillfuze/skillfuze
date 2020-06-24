@@ -10,12 +10,6 @@ module.exports = {
     });
     return config;
   },
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_BLOGS_CLIENT: process.env.NEXT_PUBLIC_BLOGS_CLIENT,
-    NEXT_PUBLIC_RTMP_SERVER_URL: process.env.NEXT_PUBLIC_RTMP_SERVER_URL,
-    NEXT_PUBLIC_STREAMING_SERVER_URL: process.env.NEXT_PUBLIC_STREAMING_SERVER_URL
-  },
   assetPrefix: isProd ? 'https://static.skillfuze.com' : '',
   generateBuildId: () => {
     return pkg.version;

@@ -135,4 +135,4 @@ workflows:
           filters:
             branches:
               only:
-                - deployment-test
+                - master
