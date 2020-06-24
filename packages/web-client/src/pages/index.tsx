@@ -1,19 +1,21 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { Button, Carousel, ContentCard, VideosTopBar, CourseInfoBar } from '@skillfuze/ui-components';
-import { HomeResponseDTO } from '@skillfuze/types';
+import { HomeResponseDTO, User } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 import HomeSVG from '../../assets/illustrations/home.svg';
 import Layout from '../components/Layout';
 import { HomeService } from '../services/home.service';
 import RecommendationCarousel from '../components/RecommendationCarousel';
 import config from '../../config';
+import withAuth from '../utils/withAuth';
 
 interface Props {
   recommendations: HomeResponseDTO;
+  user?: User;
 }
 
-const Home: NextPage<Props> = ({ recommendations }: Props) => {
+const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
   const router = useRouter();
   const LoadLivestreams = (
     <Carousel className="">
@@ -97,7 +99,7 @@ const Home: NextPage<Props> = ({ recommendations }: Props) => {
     </Carousel>
   );
   return (
-    <Layout title="Home">
+    <Layout title="Home" user={user}>
       <div className="h-screen w-full bg-gradient p-4 flex justify-center items-center">
         <div className="flex container items-center h-full justify-center">
           <div className="flex flex-col h-full justify-center">
@@ -168,4 +170,4 @@ Home.getInitialProps = async () => {
   return { recommendations };
 };
 
-export default Home;
+export default withAuth({})(Home);

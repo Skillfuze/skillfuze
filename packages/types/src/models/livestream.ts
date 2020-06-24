@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { User } from './user';
 import { Category } from './category';
 

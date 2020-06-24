@@ -2,9 +2,13 @@ import axios from 'axios';
 import AuthService from '../src/services/auth.service';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-const token = new AuthService().getToken();
-if (token) {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-} else {
-  delete axios.defaults.headers.common.Authorization;
-}
+
+axios.interceptors.request.use(function(config) {
+  const token = new AuthService().getToken();
+  if (token) {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
