@@ -19,13 +19,18 @@ export class User implements IUser {
   public lastName: string;
 
   @ApiProperty()
-  @Column({ unique: true })
+  @Column()
   public email: string;
 
   @ApiHideProperty()
   @Exclude()
-  @Column()
+  @Column({ nullable: true })
   public password: string;
+
+  @ApiHideProperty()
+  @Exclude()
+  @Column({ nullable: true })
+  public oAuthId: string;
 
   @ApiProperty()
   @Column({ nullable: true })
