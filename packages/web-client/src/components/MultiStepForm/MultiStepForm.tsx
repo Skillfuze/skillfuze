@@ -25,23 +25,26 @@ export const Step: React.FC<StepProps> = (props: StepProps) => {
 
 interface MultiStepFormProps {
   children: any;
-  onNext: () => boolean;
+  onPageChange: () => Promise<boolean>;
+  onPublish: () => Promise<void>;
 }
 
 const MultiStepForm: React.FC<MultiStepFormProps> = (props: MultiStepFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const onNext = () => {
-    if (props.onNext()) {
+  const onNext = async () => {
+    if (await props.onPageChange()) {
       if (currentStep < props.children.length) {
         setCurrentStep(prev => prev + 1);
       }
     }
   };
 
-  const onPrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+  const onPrev = async () => {
+    if (await props.onPageChange()) {
+      if (currentStep > 1) {
+        setCurrentStep(prev => prev - 1);
+      }
     }
   };
 
@@ -75,8 +78,8 @@ const MultiStepForm: React.FC<MultiStepFormProps> = (props: MultiStepFormProps) 
         <Button onClick={onPrev} disabled={currentStep === 1} color="secondary">
           PREVIOUS
         </Button>
-        <Button onClick={onNext} disabled={currentStep === props.children.length}>
-          NEXT
+        <Button onClick={currentStep === props.children.length ? props.onPublish : onNext}>
+          {currentStep === props.children.length ? `PUBLISH` : `NEXT`}
         </Button>
       </div>
     </div>

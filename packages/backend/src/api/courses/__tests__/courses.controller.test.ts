@@ -34,17 +34,17 @@ describe('Courses Controller', () => {
   });
 
   describe('getOne', () => {
-    let serviceGetBySlugSpy: jest.SpyInstance;
-    const validSlug = 'VALID_SLUG';
+    let serviceGetByIdOrSlugSpy: jest.SpyInstance;
+    const validId = 'VALID_ID';
 
     beforeAll(async () => {
-      serviceGetBySlugSpy = jest.spyOn(service, 'getBySlug');
-      await controller.getOne(validSlug);
+      serviceGetByIdOrSlugSpy = jest.spyOn(service, 'getByIdOrSlug');
+      await controller.getOne(validId);
     });
 
     it('should call service.getBySlug once with correct params', () => {
-      expect(serviceGetBySlugSpy).toBeCalledTimes(1);
-      expect(serviceGetBySlugSpy).toBeCalledWith(validSlug);
+      expect(serviceGetByIdOrSlugSpy).toBeCalledTimes(1);
+      expect(serviceGetByIdOrSlugSpy).toBeCalledWith(validId);
     });
   });
 
@@ -76,6 +76,21 @@ describe('Courses Controller', () => {
     it('should call service.getBySlug once with correct params', () => {
       expect(serviceUpdateSpy).toBeCalledTimes(1);
       expect(serviceUpdateSpy).toBeCalledWith(userId, validId, payload);
+    });
+  });
+
+  describe('publish', () => {
+    let servicePublishSpy: jest.SpyInstance;
+    const validId = 'VALID_ID';
+
+    beforeAll(async () => {
+      servicePublishSpy = jest.spyOn(service, 'publish');
+      await controller.publish(validId, userId);
+    });
+
+    it('should call service.getBySlug once with correct params', () => {
+      expect(servicePublishSpy).toBeCalledTimes(1);
+      expect(servicePublishSpy).toBeCalledWith(validId, userId);
     });
   });
 });

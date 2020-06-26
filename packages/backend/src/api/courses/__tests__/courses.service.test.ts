@@ -49,12 +49,12 @@ describe('CoursesService', () => {
     });
   });
 
-  describe('getBySlug', () => {
-    const validSlug = 'VALID_SLUG';
+  describe('getByIdOrSlug', () => {
+    const validId = 'VALID_ID';
     let course: Course;
 
     beforeAll(async () => {
-      course = await service.getBySlug(validSlug);
+      course = await service.getByIdOrSlug(validId);
     });
 
     it('should get one successfully', () => {
@@ -66,7 +66,7 @@ describe('CoursesService', () => {
     });
 
     it('should throw NotFoundException on invalid slug', async () => {
-      await expect(service.getBySlug('INVALID_SLUG')).rejects.toThrow(NotFoundException);
+      await expect(service.getByIdOrSlug('INVALID_ID')).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -105,6 +105,7 @@ describe('CoursesService', () => {
   describe('update', () => {
     let repoFindOneSpy: jest.SpyInstance;
     let repoUpdateSpy: jest.SpyInstance;
+
     let course: Course;
     const userId = 1;
     const courseId = 'VALID_ID';
@@ -132,6 +133,7 @@ describe('CoursesService', () => {
 
         return undefined;
       });
+
       course = await service.update(userId, courseId, payload);
     });
 
@@ -150,6 +152,38 @@ describe('CoursesService', () => {
 
     it('should throw Forbidden exception on invalid user', async () => {
       await expect(service.update(2, courseId, payload)).rejects.toThrowError(ForbiddenException);
+    });
+  });
+
+  describe('publish', () => {
+    const courseId = 'VALID_ID';
+    const invalidCourseId = 'INVALID_ID';
+    const userId = 1;
+    let repoSaveSpy: jest.SpyInstance;
+    let course: Course;
+
+    beforeAll(async () => {
+      jest.spyOn(Date, 'now').mockReturnValue(0);
+      repoSaveSpy = jest.spyOn(repository, 'save');
+      repoSaveSpy.mockClear();
+
+      course = await service.publish(courseId, userId);
+    });
+
+    it('should set publishedAt with Date.now', () => {
+      expect(course.publishedAt).toMatchObject(new Date(Date.now()));
+    });
+
+    it('should call repository.save once', () => {
+      expect(repoSaveSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw NotFound exception on invalid id', async () => {
+      await expect(service.publish(invalidCourseId, userId)).rejects.toThrowError(NotFoundException);
+    });
+
+    it('should throw Forbidden exception on invalid user', async () => {
+      await expect(service.publish(courseId, 2)).rejects.toThrowError(ForbiddenException);
     });
   });
 });

@@ -40,7 +40,7 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
   return (
     <div data-vjs-player>
       <video
-        ref={(node) => {
+        ref={node => {
           videoNode.current = node;
         }}
         className="video-js vjs-big-play-centered"

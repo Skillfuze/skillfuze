@@ -24,4 +24,8 @@ export class VideosService {
 
     return video;
   }
+
+  public async getUserVideos(username: string): Promise<Video[]> {
+    return this.repository.find({ uploader: { username } });
+  }
 }

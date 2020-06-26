@@ -30,7 +30,10 @@ describe('Course (e2e)', () => {
       const payload = {};
 
       beforeAll(async () => {
-        res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
+        res = await request(app.getHttpServer())
+          .post(url)
+          .send(payload)
+          .set('Authorization', token);
         course = await module.get(CoursesRepository).findOne({ slug: res.body.slug });
       });
 
@@ -45,12 +48,70 @@ describe('Course (e2e)', () => {
 
     describe('on invalid input', () => {
       it('should return 401 on invalid token', async () => {
-        await request(app.getHttpServer()).post(url).set('Authorization', 'INVALID_TOKEN').send().expect(401);
+        await request(app.getHttpServer())
+          .post(url)
+          .set('Authorization', 'INVALID_TOKEN')
+          .send()
+          .expect(401);
       });
     });
   });
 
-  describe('GET /api/v1/courses', () => {
+  describe('POST /api/v1/courses/:id/publish', () => {
+    let createdCourse: Course;
+    let res: request.Response;
+
+    beforeAll(async () => {
+      createdCourse = await module.get(CoursesService).create(payloads.userPayload.id);
+      res = await request(app.getHttpServer())
+        .post(`${url}/${createdCourse.id}/publish`)
+        .set('Authorization', token)
+        .send();
+    });
+
+    it('should return 200 SUCCESS', () => {
+      expect(res.status).toBe(200);
+    });
+
+    it('should set the publishedAt correctly', async () => {
+      const course = await module.get(CoursesService).getByIdOrSlug(res.body.id);
+      expect(course.publishedAt).not.toBeNull();
+    });
+
+    it('should return 401 on invalid token', async () => {
+      await request(app.getHttpServer())
+        .post(`${url}/${createdCourse.id}/publish`)
+        .set('Authorization', 'INVALID_TOKEN')
+        .send()
+        .expect(401);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer())
+        .post(`${url}/INVALID_ID/publish`)
+        .set('Authorization', token)
+        .send()
+        .expect(404);
+    });
+
+    it('should return 403 on invalid user', async () => {
+      const newToken = await createUser(module, {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'different-than-creator-publish@gmail.com',
+        password: '123456',
+        confirmPassword: '123456',
+      });
+
+      await request(app.getHttpServer())
+        .post(`${url}/${createdCourse.id}/publish`)
+        .set('Authorization', newToken)
+        .send()
+        .expect(403);
+    });
+  });
+
+  describe('GET /api/v1/courses/:idOrSlug', () => {
     let createdCourse: Course;
     let result: request.Response;
 
@@ -58,7 +119,9 @@ describe('Course (e2e)', () => {
       createdCourse = await module
         .get(CoursesService)
         .create(payloads.userPayload.id, { category: payloads.categoryPayload });
-      result = await request(app.getHttpServer()).get(`${url}/${createdCourse.slug}`).send();
+      result = await request(app.getHttpServer())
+        .get(`${url}/${createdCourse.id}`)
+        .send();
     });
 
     it('should get course successfully', () => {
@@ -78,7 +141,10 @@ describe('Course (e2e)', () => {
     });
 
     it('should return 404 on invalid slug', async () => {
-      await request(app.getHttpServer()).get(`${url}/INVALID_SLUG`).send().expect(404);
+      await request(app.getHttpServer())
+        .get(`${url}/INVALID_ID`)
+        .send()
+        .expect(404);
     });
   });
 
@@ -90,7 +156,11 @@ describe('Course (e2e)', () => {
     });
 
     it('should return 404 NotFound on invalid id', async () => {
-      await request(app.getHttpServer()).delete(`${url}/invalid_id`).set('Authorization', token).send().expect(404);
+      await request(app.getHttpServer())
+        .delete(`${url}/invalid_id`)
+        .set('Authorization', token)
+        .send()
+        .expect(404);
     });
 
     it('should return 401 Unauthorized on invalid token', async () => {
@@ -118,14 +188,17 @@ describe('Course (e2e)', () => {
     });
 
     it('should delete the course successfully', async () => {
-      await request(app.getHttpServer()).delete(`${url}/${createdCourse.id}`).set('Authorization', token).send();
+      await request(app.getHttpServer())
+        .delete(`${url}/${createdCourse.id}`)
+        .set('Authorization', token)
+        .send();
 
       const course = await module.get(CoursesRepository).findOne(createdCourse.id);
       expect(course).toBe(undefined);
     });
   });
 
-  describe('DELETE /api/v1/courses', () => {
+  describe('PATCH /api/v1/courses/:id', () => {
     let createdCourse: Course;
     const payload = { title: 'NEW_TITLE' };
 
@@ -166,7 +239,10 @@ describe('Course (e2e)', () => {
     });
 
     it('should update the course successfully', async () => {
-      await request(app.getHttpServer()).patch(`${url}/${createdCourse.id}`).set('Authorization', token).send(payload);
+      await request(app.getHttpServer())
+        .patch(`${url}/${createdCourse.id}`)
+        .set('Authorization', token)
+        .send(payload);
 
       const course = await module.get(CoursesRepository).findOne(createdCourse.id);
       expect(course.title).toBe(payload.title);

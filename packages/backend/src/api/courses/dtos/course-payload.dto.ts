@@ -30,5 +30,5 @@ export class CoursePayloadDTO implements ICoursePayloadDTO {
   public price?: number;
 
   @IsOptional()
-  public lessons?: Partial<CourseLesson>[];
+  public lessons?: CourseLesson[];
 }

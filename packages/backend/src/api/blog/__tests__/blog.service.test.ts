@@ -7,6 +7,7 @@ import { BlogService } from '../blog.service';
 import { BlogRepository } from '../blog.repository';
 import { BlogsEventEmitter } from '../blogs.eventemitter';
 import config from '../../../../config';
+import { Blog } from '../blog.entity';
 
 jest.mock('../blog.repository');
 jest.mock('@nestjsx/crud-typeorm');
@@ -107,6 +108,20 @@ describe('BlogService', () => {
     it('should not be triggered from blog update event on unpublished blog', () => {
       emitter.emit('update', {});
       expect(buildGatsbySpy).not.toBeCalled();
+    });
+  });
+
+  describe('getUserBlogs', () => {
+    const username = 'USERNAME';
+
+    beforeAll(() => {
+      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Blog()]));
+    });
+
+    it('should return blogs array', async () => {
+      const videos = await service.getUserBlogs(username);
+      expect(videos.length).toBe(1);
+      expect(videos[0]).toBeInstanceOf(Blog);
     });
   });
 });

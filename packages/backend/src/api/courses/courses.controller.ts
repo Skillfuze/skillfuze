@@ -1,5 +1,11 @@
-import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch } from '@nestjs/common';
-import { ApiBearerAuth, ApiUnauthorizedResponse, ApiNotFoundResponse, ApiForbiddenResponse } from '@nestjs/swagger';
+import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch, Query, HttpCode } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiUnauthorizedResponse,
+  ApiNotFoundResponse,
+  ApiForbiddenResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Course } from './entities/course.entity';
@@ -7,6 +13,7 @@ import { CoursesService } from './courses.service';
 import { UserId } from '../common/decorators/user-id.decorator';
 import { CoursePayloadDTO } from './dtos/course-payload.dto';
 
+@ApiTags('courses')
 @Controller('courses')
 export class CoursesController {
   public constructor(private readonly service: CoursesService) {}
@@ -19,10 +26,10 @@ export class CoursesController {
     return this.service.create(userId, payload);
   }
 
-  @Get('/:slug')
+  @Get('/:id')
   @ApiNotFoundResponse()
-  public async getOne(@Param('slug') slug: string): Promise<Course> {
-    return this.service.getBySlug(slug);
+  public async getOne(@Param('id') id: string): Promise<Course> {
+    return this.service.getByIdOrSlug(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,5 +54,16 @@ export class CoursesController {
     @Body() payload: CoursePayloadDTO,
   ): Promise<Course> {
     return this.service.update(userId, id, payload);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Post('/:id/publish')
+  @HttpCode(200)
+  public async publish(@Param('id') id: string, @UserId() userId: number): Promise<Course> {
+    return this.service.publish(id, userId);
   }
 }

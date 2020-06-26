@@ -22,7 +22,7 @@ describe('CategoriesService', () => {
     ];
 
     beforeAll(async () => {
-      jest.spyOn(repository, 'find').mockReturnValue(new Promise((resolve) => resolve(predefinedCategories)));
+      jest.spyOn(repository, 'find').mockReturnValue(new Promise(resolve => resolve(predefinedCategories)));
       result = await service.getAll();
     });
 

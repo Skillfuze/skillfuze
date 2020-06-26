@@ -73,4 +73,18 @@ describe('VideosService', () => {
       await expect(service.getOne(invalidId)).rejects.toThrow(NotFoundException);
     });
   });
+
+  describe('getUserVideos', () => {
+    const username = 'USERNAME';
+
+    beforeAll(() => {
+      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Video()]));
+    });
+
+    it('should return videos array', async () => {
+      const videos = await service.getUserVideos(username);
+      expect(videos.length).toBe(1);
+      expect(videos[0]).toBeInstanceOf(Video);
+    });
+  });
 });

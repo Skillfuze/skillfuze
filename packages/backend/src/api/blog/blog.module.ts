@@ -10,5 +10,6 @@ import { BlogsEventEmitter } from './blogs.eventemitter';
   imports: [TypeOrmModule.forFeature([BlogRepository])],
   controllers: [BlogController],
   providers: [BlogService, BlogsEventEmitter],
+  exports: [BlogService],
 })
 export class BlogModule {}

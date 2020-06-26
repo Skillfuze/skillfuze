@@ -33,7 +33,7 @@ const RegisterPage = () => {
     } catch (err) {
       setError(err);
       if (err.general) {
-        setError((prev) => ({ ...prev, email: err.general }));
+        setError(prev => ({ ...prev, email: err.general }));
       }
     }
   };

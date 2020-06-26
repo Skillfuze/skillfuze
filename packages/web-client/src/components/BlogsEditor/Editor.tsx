@@ -103,7 +103,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
       />
       <AlignmentTool />
       <SideToolbar>
-        {(externalProps) => (
+        {externalProps => (
           <>
             <HeadlineOneButton {...externalProps} />
             <HeadlineTwoButton {...externalProps} />
@@ -114,7 +114,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         )}
       </SideToolbar>
       <InlineToolbar>
-        {(externalProps) => (
+        {externalProps => (
           <>
             <BoldButton {...(externalProps as any)} />
             <ItalicButton {...(externalProps as any)} />

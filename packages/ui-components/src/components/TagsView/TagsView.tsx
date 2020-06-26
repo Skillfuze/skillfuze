@@ -12,7 +12,7 @@ const TagsView: React.FC<TagsProps> = (props: TagsProps) => {
   return (
     <div className={cx(props.className)}>
       <ul className={cx(listStyle)}>
-        {props.tags?.map((tag) => (
+        {props.tags?.map(tag => (
           <li className={cx(listItemStyle, 'py-2 px-3 mr-1')} key={tag}>
             {tag}
           </li>

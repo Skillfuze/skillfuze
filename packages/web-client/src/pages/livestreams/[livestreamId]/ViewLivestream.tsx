@@ -33,7 +33,7 @@ const ViewLivestream = ({ stream, user }: Props) => {
   );
 };
 
-ViewLivestream.getInitialProps = async (ctx) => {
+ViewLivestream.getInitialProps = async ctx => {
   const livestreamService = new LivestreamService();
   const stream = await livestreamService.getOne(ctx.query.livestreamId.toString());
   return { stream };

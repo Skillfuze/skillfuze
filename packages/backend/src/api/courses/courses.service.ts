@@ -19,8 +19,11 @@ export class CoursesService {
     return this.repository.save(course);
   }
 
-  public async getBySlug(slug: string): Promise<Course> {
-    const course = await this.repository.findOne({ slug }, { relations: ['lessons'] });
+  public async getByIdOrSlug(idOrSlug: string): Promise<Course> {
+    let course = await this.repository.findOne({ slug: idOrSlug }, { relations: ['lessons'] });
+    if (!course) {
+      course = await this.repository.findOne(idOrSlug, { relations: ['lessons'] });
+    }
 
     if (!course) {
       throw new NotFoundException();
@@ -43,7 +46,7 @@ export class CoursesService {
   }
 
   public async update(userId: number, courseId: string, payload: CoursePayloadDTO): Promise<Course> {
-    const course = await this.repository.findOne(courseId, { relations: ['creator'] });
+    let course = await this.repository.findOne(courseId, { relations: ['creator'] });
     if (!course) {
       throw new NotFoundException();
     }
@@ -52,16 +55,43 @@ export class CoursesService {
       throw new ForbiddenException();
     }
 
+    const { lessons } = payload;
+    // eslint-disable-next-line no-param-reassign
+    delete payload.lessons;
     await this.repository.update(courseId, payload);
 
-    return this.repository.findOne(courseId);
+    const oldTitle = course.title;
+    course = await this.repository.findOne(courseId);
+
+    if (payload.title !== oldTitle) {
+      course.slug = await this.generateSlug(course);
+    }
+
+    course.lessons = lessons;
+    return this.repository.save(course);
+  }
+
+  public async publish(courseId: string, userId: number): Promise<Course> {
+    const course = await this.repository.findOne(courseId, { relations: ['creator'] });
+
+    if (!course) {
+      throw new NotFoundException();
+    }
+
+    if (course.creator.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    course.publishedAt = new Date(Date.now());
+
+    return this.repository.save(course);
   }
 
   private async generateSlug(course: Course): Promise<string> {
     let slug: string;
     if (course.title) {
       const titleSlug = slugify(course.title);
-      const isFound = await this.repository.find({ slug: titleSlug });
+      const [isFound] = await this.repository.find({ slug: titleSlug });
       if (isFound) {
         slug = `${titleSlug}-${shortid.generate()}`;
       } else {

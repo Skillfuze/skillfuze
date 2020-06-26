@@ -49,7 +49,11 @@ export class Course implements ICourse {
   @Column({ default: 0 })
   public price: number;
 
-  @OneToMany(() => CourseLesson, (lesson) => lesson.course)
+  @OneToMany(
+    () => CourseLesson,
+    lesson => lesson.course,
+    { cascade: true },
+  )
   public lessons: CourseLesson[];
 
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE', eager: true })
@@ -68,6 +72,9 @@ export class Course implements ICourse {
 
   @DeleteDateColumn({ type: 'timestamp' })
   public deletedAt: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  public publishedAt: Date;
 
   public constructor() {
     this.id = shortid.generate();

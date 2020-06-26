@@ -59,7 +59,11 @@ describe('Videos (e2e)', () => {
     };
 
     it('should create video successfully', async () => {
-      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token)
+        .expect(201);
 
       expect(res.body.id).not.toBe(undefined);
 
@@ -94,20 +98,27 @@ describe('Videos (e2e)', () => {
         category: { id: 1 },
       };
 
-      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token);
 
       video = res.body;
     });
 
     it('should get video successfully on valid id', async () => {
-      const { body } = await request(app.getHttpServer()).get(`${url}/${video.id}`).expect(200);
+      const { body } = await request(app.getHttpServer())
+        .get(`${url}/${video.id}`)
+        .expect(200);
 
       expect(body.id).toBe(video.id);
       expect(body.uploader.id).toBe(user.id);
     });
 
     it('should return 404 on invalid id', async () => {
-      await request(app.getHttpServer()).get(`${url}/invalid-id`).expect(404);
+      await request(app.getHttpServer())
+        .get(`${url}/invalid-id`)
+        .expect(404);
     });
   });
 

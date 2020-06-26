@@ -77,7 +77,7 @@ const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             </div>
           </button>
           <hr className="border-grey-light self-stretch" />
-          {paths.map((path) => (
+          {paths.map(path => (
             <button
               key={path.path}
               className={`${buttonNoFocusStyle} text-grey-dark text-sm`}

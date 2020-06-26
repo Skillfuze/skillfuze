@@ -10,7 +10,7 @@ export const logger = winston.createLogger({
 });
 
 export const stream = {
-  write: (message) => {
+  write: message => {
     logger.info(message);
   },
 };

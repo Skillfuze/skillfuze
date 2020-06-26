@@ -1,47 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, SelectField } from '@skillfuze/ui-components';
-import { User } from '@skillfuze/types';
+import { User, Course } from '@skillfuze/types';
+import { useRouter } from 'next/router';
 import Layout from '../../../../components/Layout';
 import MultiStepForm, { Step } from '../../../../components/MultiStepForm';
 import { CategoriesService } from '../../../../services/categories.service';
+import Done from '../../../../../assets/icons/done.svg';
+import { CoursesService } from '../../../../services/courses.service';
+import withAuth from '../../../../utils/withAuth';
+import CourseContentEditor from '../../../../components/CourseContentEditor/CourseContentEditor';
+import { UsersService } from '../../../../services/users.service';
 
 interface Props {
   user: User;
+  course: Course;
 }
 
-const EditCourse = ({ user }: Props) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState([]);
-  const [thumbnailURL, setThumbnailURL] = useState('');
+const EditCourse = ({ user, course }: Props) => {
+  const [title, setTitle] = useState(course.title ?? '');
+  const [description, setDescription] = useState(course.description ?? '');
+  const [tags, setTags] = useState(course.tags ?? []);
+  const [thumbnailURL, setThumbnailURL] = useState(course.thumbnailURL ?? undefined);
   // TODO
-  const [trailer, setTrailer] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState();
+  const [trailerURL, setTrailerURL] = useState(course.trailerURL ?? undefined);
+  const [price, setPrice] = useState(course.price ? course.price.toString() : '0');
+  const [category, setCategory] = useState<any>(
+    course.category ? { value: course.category, label: course.category.name } : undefined,
+  );
   const [categories, setCategories] = useState([]);
 
+  const [lessons, setLessons] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [videos, setVideos] = useState([]);
+
+  const [errors, setErrors] = useState<any>({});
+
+  const [slug, setSlug] = useState(course.slug);
+
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadData = async () => {
       setCategories((await CategoriesService.getAll()).map(cat => ({ value: cat, label: cat.name })));
+      setBlogs(await UsersService.getBlogs(user.username));
+      setVideos(await UsersService.getVideos(user.username));
     };
-    loadCategories();
+    loadData();
   }, []);
 
-  const onNext = () => {
-    console.log('Hello from next');
-    return true; // Create -> GetInitialProps (API POST -> C_ID) -> Redirect (Edit/C_ID)
+  const router = useRouter();
+
+  const onPageChange = async () => {
+    const payload = {
+      title,
+      description,
+      tags,
+      thumbnailURL,
+      trailerURL,
+      price: parseFloat(price),
+      category: category?.value,
+      lessons,
+    };
+
+    if (Number.isNaN(payload.price)) {
+      payload.price = (price as unknown) as number;
+    }
+
+    try {
+      const { slug: newSlug } = await CoursesService.update(course.id, payload);
+      setSlug(newSlug);
+      return true;
+    } catch (error) {
+      setErrors(error);
+      return false;
+    }
   };
+
+  const onPublish = async () => {
+    await CoursesService.publish(course.id);
+    router.push('/courses/[courseSlug]', `/courses/${slug}`);
+  };
+
   return (
-    <Layout title="New Course" user={user}>
+    <Layout title="Edit Course" user={user}>
       <div className="container flex max-w-screen-sm mx-auto items-center justify-center flex-grow flex-col p-6">
-        <MultiStepForm onNext={onNext}>
+        <MultiStepForm onPageChange={onPageChange} onPublish={onPublish}>
           <Step
             title="What is your course about?"
             description="Give your course a cool title and description, you can always change
     them later"
           >
-            <Input placeholder="Title" value={title} onChange={setTitle} />
-            <Input placeholder="Description" multiline rows={6} value={description} onChange={setDescription} />
+            <Input placeholder="Title..." value={title} onChange={setTitle} label="Title" />
+            <Input
+              placeholder="Description..."
+              multiline
+              rows={6}
+              value={description}
+              onChange={setDescription}
+              label="Description"
+            />
           </Step>
 
           <Step
@@ -58,16 +113,16 @@ const EditCourse = ({ user }: Props) => {
             description="Upload a promotional video and add a thumbnail to your course,
     also don’t forget to choose your pricing."
           >
-            <Input placeholder="Thumbnail URL" value={thumbnailURL} onChange={setThumbnailURL} />
-            <Input placeholder="Promotional Video" />
-            <Input placeholder="Price" value={price} onChange={setPrice} />
+            <Input placeholder="Thumbnail URL" value={thumbnailURL} onChange={setThumbnailURL} label="Thumbnail" />
+            <Input placeholder="Promotional Video" label="Promotional Video" />
+            <Input placeholder="Price" value={price} onChange={setPrice} label="Price" error={errors.price} />
           </Step>
 
           <Step
             title="What are you going to share with us?"
             description="Prepare your course content from your existing videos and blogs"
           >
-            <h2>Step 4</h2>
+            <CourseContentEditor lessons={lessons} onChangeLessons={setLessons} videos={videos} blogs={blogs} />
           </Step>
 
           <Step title="" description="">
@@ -83,4 +138,11 @@ const EditCourse = ({ user }: Props) => {
   );
 };
 
-export default EditCourse;
+EditCourse.getInitialProps = async context => {
+  const course = await CoursesService.get(context.query.courseId);
+  return { course };
+};
+
+export default withAuth({
+  redirectOnAuthFailure: '/login',
+})(EditCourse);

@@ -65,7 +65,11 @@ describe('Blogs (e2e)', () => {
     };
 
     it('should create a blog successfully', async () => {
-      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token)
+        .expect(201);
 
       const blog = await blogService.findOne({ id: res.body.id });
       expect(blog).not.toBe(undefined);
@@ -73,7 +77,10 @@ describe('Blogs (e2e)', () => {
     });
 
     it('should return 401 on unauthorized request', async () => {
-      await request(app.getHttpServer()).post(url).send(payload).expect(401);
+      await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .expect(401);
     });
   });
 
@@ -86,7 +93,10 @@ describe('Blogs (e2e)', () => {
         .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
-      const res = await request(app.getHttpServer()).get(url).query({ limit: 0 }).expect(200);
+      const res = await request(app.getHttpServer())
+        .get(url)
+        .query({ limit: 0 })
+        .expect(200);
 
       expect(res.body.data.length).toBe(1);
     });
@@ -121,7 +131,10 @@ describe('Blogs (e2e)', () => {
     it('should return 401 on unauthorized access', async () => {
       const newContent = 'test content changed.';
 
-      await request(app.getHttpServer()).patch(`${url}/${blog.id}`).send({ content: newContent }).expect(401);
+      await request(app.getHttpServer())
+        .patch(`${url}/${blog.id}`)
+        .send({ content: newContent })
+        .expect(401);
     });
 
     it('should return 404 on invalid blog id', async () => {
@@ -162,27 +175,38 @@ describe('Blogs (e2e)', () => {
     });
 
     it('should delete the blog successfully', async () => {
-      await request(app.getHttpServer()).delete(`${url}/${blog.id}`).set('Authorization', token).expect(200);
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .set('Authorization', token)
+        .expect(200);
 
       const newBlog = await blogService.findOne({ id: blog.id });
       expect(newBlog).toBe(undefined);
     });
 
     it('should return 401 on unauthorized access', async () => {
-      await request(app.getHttpServer()).delete(`${url}/${blog.id}`).expect(401);
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .expect(401);
     });
 
     it('should return 404 on invalid blog id', async () => {
       const invalidId = 4;
 
-      await request(app.getHttpServer()).delete(`${url}/${invalidId}`).set('Authorization', token).expect(404);
+      await request(app.getHttpServer())
+        .delete(`${url}/${invalidId}`)
+        .set('Authorization', token)
+        .expect(404);
     });
 
     it('should return 403 on trying to edit another user blog', async () => {
       const otherUserToken =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJLaGFsZWQiLCJsYXN0TmFtZSI6Ik1vaGFtZWQiLCJlbWFpbCI6ImtoYWxlZDEyM0Bza2lsbGZ1emUuY29tIiwiaWQiOi0xLCJpYXQiOjE1ODU2ODc3NDh9.MC08RjbFFgGCYcBDNPGYVx_1Aevo7r7E1kU1dT3qif4';
 
-      await request(app.getHttpServer()).delete(`${url}/${blog.id}`).set('Authorization', otherUserToken).expect(403);
+      await request(app.getHttpServer())
+        .delete(`${url}/${blog.id}`)
+        .set('Authorization', otherUserToken)
+        .expect(403);
     });
   });
 
@@ -200,7 +224,10 @@ describe('Blogs (e2e)', () => {
     });
 
     it('should publish the blog successfully', async () => {
-      await request(app.getHttpServer()).post(`${url}/${blog.id}/publish`).set('Authorization', token).expect(200);
+      await request(app.getHttpServer())
+        .post(`${url}/${blog.id}/publish`)
+        .set('Authorization', token)
+        .expect(200);
 
       const newBlog = await blogService.findOne({ id: blog.id });
       expect(newBlog.publishedAt).not.toBe(undefined);
@@ -208,7 +235,9 @@ describe('Blogs (e2e)', () => {
     });
 
     it('should return 401 on unauthorized access', async () => {
-      await request(app.getHttpServer()).post(`${url}/${blog.id}/publish`).expect(401);
+      await request(app.getHttpServer())
+        .post(`${url}/${blog.id}/publish`)
+        .expect(401);
     });
   });
 
