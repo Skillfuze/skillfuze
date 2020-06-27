@@ -172,7 +172,7 @@ describe('Videos (e2e)', () => {
     it('should return 400 on invalid data', async () => {
       await request(app.getHttpServer())
         .patch(`${url}/${video.id}`)
-        .send({ ...updatePayload, title: undefined })
+        .send({ ...updatePayload, title: '' })
         .set('Authorization', token)
         .expect(400);
     });

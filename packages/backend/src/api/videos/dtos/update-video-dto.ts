@@ -5,8 +5,9 @@ import { Category } from '../../categories/category.entity';
 
 export class UpdateVideoDTO implements IUpdateVideoDTO {
   @IsNotEmpty({ message: 'Title should not be empty' })
+  @IsOptional()
   @IsString()
-  public title: string;
+  public title?: string;
 
   @IsString()
   @IsOptional()
@@ -22,6 +23,7 @@ export class UpdateVideoDTO implements IUpdateVideoDTO {
 
   @IsDefined({ message: 'Category should not be empty' })
   @ValidateNested()
+  @IsOptional()
   @Type(() => Category)
-  public category: Category;
+  public category?: Category;
 }

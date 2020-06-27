@@ -1,9 +1,9 @@
 import { Category } from '../models';
 
 export interface UpdateVideoDTO {
-  title: string;
+  title?: string;
   description?: string;
   thumbnailURL?: string;
   tags?: string[];
-  category: Category;
+  category?: Category;
 }
