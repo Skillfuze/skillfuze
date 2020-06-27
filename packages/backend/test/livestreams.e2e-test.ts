@@ -176,7 +176,7 @@ describe('Livestreams (e2e)', () => {
     it('should return 400 on invalid data', async () => {
       await request(app.getHttpServer())
         .patch(`${url}/${stream.id}`)
-        .send({ ...updatedPayload, title: undefined })
+        .send({ ...updatedPayload, title: '' })
         .set('Authorization', token)
         .expect(400);
     });

@@ -7,10 +7,12 @@ import {
   ApiNotFoundResponse,
   ApiResponse,
   ApiBearerAuth,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
+import { UpdateLivestreamDTO } from './dtos/update-livestream.dto';
 import { LivestreamsService } from './livestreams.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { LivestreamDTO } from './dtos/livestream.dto';
+import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
 import { Livestream } from './livestream.entity';
 
 @ApiTags('livestreams')
@@ -24,7 +26,7 @@ export class LivestreamsController {
   @ApiCreatedResponse({ type: Livestream })
   @ApiBadRequestResponse()
   @ApiUnauthorizedResponse()
-  public async createOne(@Request() req, @Body() payload: LivestreamDTO): Promise<Livestream> {
+  public async createOne(@Request() req, @Body() payload: CreateLivestreamDTO): Promise<Livestream> {
     return this.service.create(req.user.id, payload);
   }
 
@@ -36,8 +38,16 @@ export class LivestreamsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   @Patch('/:id')
-  public async update(@Param('id') id: string, @Request() req, @Body() payload: LivestreamDTO): Promise<Livestream> {
+  public async update(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() payload: UpdateLivestreamDTO,
+  ): Promise<Livestream> {
     return this.service.update(req.user.id, id, payload);
   }
 }

@@ -1,10 +1,10 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional, ValidateNested, IsDefined } from 'class-validator';
-import { LivestreamDTO as ILivestreamDTO } from '@skillfuze/types';
+import { CreateLivestreamDTO as ICreateLivestreamDTO } from '@skillfuze/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Category } from '../../categories/category.entity';
 
-export class LivestreamDTO implements ILivestreamDTO {
+export class CreateLivestreamDTO implements ICreateLivestreamDTO {
   @ApiProperty()
   @IsNotEmpty({ message: 'Title should not be empty' })
   @IsString()

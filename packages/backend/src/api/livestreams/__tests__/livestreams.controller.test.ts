@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-
+import { UpdateLivestreamDTO } from '../dtos/update-livestream.dto';
 import { LivestreamsController } from '../livestreams.controller';
 import { LivestreamsService } from '../livestreams.service';
 import { LivestreamsRepository } from '../livestreams.repository';
-import { LivestreamDTO } from '../dtos/livestream.dto';
 import { Livestream } from '../livestream.entity';
 
 jest.mock('../livestreams.service');
@@ -75,7 +74,7 @@ describe('Livestreams Controller', () => {
     beforeEach(async () => {
       serviceUpdateSpy = jest.spyOn(service, 'update');
       serviceUpdateSpy.mockReturnValue(updateReturn);
-      res = await controller.update(streamId, { user: { id: userId } }, payload as LivestreamDTO);
+      res = await controller.update(streamId, { user: { id: userId } }, payload as UpdateLivestreamDTO);
     });
 
     it('should call and return service.update', async () => {
