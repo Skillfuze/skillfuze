@@ -14,7 +14,7 @@ export class UserRepository {
   }
 
   public findOne(options: any): User {
-    if (options.email === 'test@gmail.com') {
+    if (options.email === 'test@gmail.com' || options.username === 'user-test') {
       return new User();
     }
     return undefined;
