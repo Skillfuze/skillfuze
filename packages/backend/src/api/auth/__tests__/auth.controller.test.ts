@@ -7,6 +7,7 @@ import { EmailAlreadyExistsException } from '../../../common/exceptions/email-al
 import { AuthController } from '../auth.controller';
 import { User } from '../../users/user.entity';
 import { UserService } from '../../users/user.service';
+import { UserRepository } from '../../users/user.repository';
 
 jest.mock('../../users/user.service');
 jest.mock('@nestjs/jwt');
@@ -20,7 +21,7 @@ describe('Auth Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [UserService, AuthService, JwtService, HashingService],
+      providers: [UserService, AuthService, JwtService, HashingService, UserRepository],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
