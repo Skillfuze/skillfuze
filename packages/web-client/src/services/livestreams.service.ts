@@ -20,4 +20,8 @@ export default class LivestreamService {
       throw parseError(err.response.data);
     }
   }
+
+  public static async delete(id: string): Promise<void> {
+    await axios.delete(`api/v1/livestreams/${id}`);
+  }
 }

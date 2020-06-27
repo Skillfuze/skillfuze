@@ -17,4 +17,8 @@ export class VideosService {
     const { data: video } = await axios.get<Video>(`api/v1/videos/${id}`);
     return video;
   }
+
+  public static async delete(id: string): Promise<void> {
+    await axios.delete(`api/v1/videos/${id}`);
+  }
 }

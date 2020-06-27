@@ -1,25 +1,34 @@
+/* eslint-disable no-restricted-globals */
 import React from 'react';
 import moment from 'moment';
-import { Avatar, Button, TagsView } from '@skillfuze/ui-components';
+import { Avatar, Button, TagsView, MoreActions } from '@skillfuze/ui-components';
+import { useRouter } from 'next/router';
 
-import { User } from '@skillfuze/types';
+import { User, Video } from '@skillfuze/types';
 import VideoPlayer from '../VideoPlayer';
-import More from '../../../assets/icons/More.svg';
 import WatchingNow from './WatchingNow';
 import LiveChat from './LiveChat';
 
 interface Props {
   isLive: boolean;
-  user: any;
-  video: any;
+  user: User;
+  video: Video;
   url: string;
   videoType: string;
   viewer?: User;
+  onDelete: any;
 }
 
-const VideoLayout: React.FC<Props> = ({ isLive, user, video, url, videoType, viewer }: Props) => {
-  const onClickMore = () => {
-    console.log('More');
+const VideoLayout: React.FC<Props> = ({ isLive, user, video, url, videoType, viewer, onDelete }: Props) => {
+  const router = useRouter();
+  const pageURL = typeof window === 'object' ? window.location.href : undefined;
+
+  const onEdit = () => {
+    if (isLive) {
+      router.push(`/livestreams/edit/${video.id}`);
+    } else {
+      router.push(`/videos/edit/${video.id}`);
+    }
   };
 
   return (
@@ -32,17 +41,14 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, video, url, videoType, vie
             {isLive ? <WatchingNow /> : moment(video.createdAt).format('MMM D, YYYY')}
           </p>
           <hr className="text-grey" />
-
           <div className="sub-container flex items-center space-x-3">
-            {/* TODO */}
-            <Avatar URL={undefined} alt="Profile Picture" />
+            <Avatar URL={user.avatarURL} alt="Profile Picture" />
             <p className="font-semibold flex-grow text-sm">{`${user.firstName} ${user.lastName}`}</p>
             <Button size="small" variant="outlined">
               Follow
             </Button>
-            <More className="cursor-pointer" onClick={onClickMore} />
+            <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
           </div>
-
           <div className="ml-12 pl-3 space-y-4">
             <h2 className="text-grey-dark text-sm leading-normal">{video.description}</h2>
             <TagsView className="text-sm" tags={video.tags} />

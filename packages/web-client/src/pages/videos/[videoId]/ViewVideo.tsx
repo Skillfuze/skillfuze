@@ -12,9 +12,20 @@ interface Props {
 }
 
 const ViewVideo = ({ video, user }: Props) => {
+  const onDelete = async () => {
+    await VideosService.delete(video.id);
+  };
+
   return (
     <Layout title={video.title} user={user}>
-      <VideoLayout isLive={false} user={video.uploader} video={video} url={video.url} videoType="video/mp4" />
+      <VideoLayout
+        isLive={false}
+        user={video.uploader}
+        video={video}
+        url={video.url}
+        videoType="video/mp4"
+        onDelete={onDelete}
+      />
     </Layout>
   );
 };
