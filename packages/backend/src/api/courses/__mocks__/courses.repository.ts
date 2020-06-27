@@ -7,7 +7,7 @@ export class CoursesRepository {
   public create(payload?: Partial<Course>): Course {
     const course = new Course();
     if (payload) {
-      Object.keys(payload).forEach(key => {
+      Object.keys(payload).forEach((key) => {
         course[key] = payload[key];
       });
     }

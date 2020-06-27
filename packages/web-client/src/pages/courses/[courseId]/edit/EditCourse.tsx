@@ -22,14 +22,14 @@ const EditCourse = ({ user, course }: Props) => {
   const [tags, setTags] = useState(course.tags ?? []);
   const [thumbnailURL, setThumbnailURL] = useState(course.thumbnailURL ?? undefined);
   // TODO
-  const [trailerURL, setTrailerURL] = useState(course.trailerURL ?? undefined);
+  const [trailerURL] = useState(course.trailerURL ?? undefined);
   const [price, setPrice] = useState(course.price ? course.price.toString() : '0');
   const [category, setCategory] = useState<any>(
     course.category ? { value: course.category, label: course.category.name } : undefined,
   );
-  const [categories, setCategories] = useState([]);
+  const [lessons, setLessons] = useState(course.lessons ?? []);
 
-  const [lessons, setLessons] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [videos, setVideos] = useState([]);
 
@@ -39,9 +39,15 @@ const EditCourse = ({ user, course }: Props) => {
 
   useEffect(() => {
     const loadData = async () => {
-      setCategories((await CategoriesService.getAll()).map(cat => ({ value: cat, label: cat.name })));
-      setBlogs(await UsersService.getBlogs(user.username));
-      setVideos(await UsersService.getVideos(user.username));
+      const [loadedCategories, loadedBlogs, loadedVideos] = await Promise.all([
+        CategoriesService.getAll(),
+        UsersService.getBlogs(user.username),
+        UsersService.getVideos(user.username),
+      ]);
+
+      setCategories(loadedCategories.map((cat) => ({ value: cat, label: cat.name })));
+      setBlogs(loadedBlogs);
+      setVideos(loadedVideos);
     };
     loadData();
   }, []);
@@ -138,7 +144,7 @@ const EditCourse = ({ user, course }: Props) => {
   );
 };
 
-EditCourse.getInitialProps = async context => {
+EditCourse.getInitialProps = async (context) => {
   const course = await CoursesService.get(context.query.courseId);
   return { course };
 };

@@ -19,7 +19,7 @@ const ViewVideo = ({ video, user }: Props) => {
   );
 };
 
-ViewVideo.getInitialProps = async ctx => {
+ViewVideo.getInitialProps = async (ctx) => {
   const video = await VideosService.getOne(ctx.query.videoId.toString());
   return { video };
 };

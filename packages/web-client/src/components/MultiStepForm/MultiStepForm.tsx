@@ -35,7 +35,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = (props: MultiStepFormProps) 
   const onNext = async () => {
     if (await props.onPageChange()) {
       if (currentStep < props.children.length) {
-        setCurrentStep(prev => prev + 1);
+        setCurrentStep((prev) => prev + 1);
       }
     }
   };
@@ -43,12 +43,12 @@ const MultiStepForm: React.FC<MultiStepFormProps> = (props: MultiStepFormProps) 
   const onPrev = async () => {
     if (await props.onPageChange()) {
       if (currentStep > 1) {
-        setCurrentStep(prev => prev - 1);
+        setCurrentStep((prev) => prev - 1);
       }
     }
   };
 
-  const getStepColor = step => {
+  const getStepColor = (step) => {
     if (step < currentStep) {
       return 'bg-primary';
     }

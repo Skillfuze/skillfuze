@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch, Query, HttpCode } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch, HttpCode } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiUnauthorizedResponse,

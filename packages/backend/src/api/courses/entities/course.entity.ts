@@ -49,11 +49,7 @@ export class Course implements ICourse {
   @Column({ default: 0 })
   public price: number;
 
-  @OneToMany(
-    () => CourseLesson,
-    lesson => lesson.course,
-    { cascade: true },
-  )
+  @OneToMany(() => CourseLesson, (lesson) => lesson.course, { cascade: true, eager: true })
   public lessons: CourseLesson[];
 
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE', eager: true })

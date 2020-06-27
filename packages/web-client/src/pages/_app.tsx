@@ -62,7 +62,7 @@ const App = ({ Component, pageProps }) => {
   );
 };
 
-const AlertInterceptor = props => {
+const AlertInterceptor = (props) => {
   const alert = useAlert();
   useEffect(() => {
     configureErrorInterceptor((msg: string) => alert.show(msg, { type: 'warning' }));

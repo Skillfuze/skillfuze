@@ -25,7 +25,7 @@ export class UserRegisterDTO implements IUserRegisterDTO {
   @ApiProperty()
   @ValidateIf(
     /* istanbul ignore next */
-    payload => {
+    (payload) => {
       return payload.confirmPassword === payload.password;
     },
     { message: 'Passwords do not match' },

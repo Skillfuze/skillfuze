@@ -26,6 +26,13 @@ export class VideosService {
   }
 
   public async getUserVideos(username: string): Promise<Video[]> {
-    return this.repository.find({ uploader: { username } });
+    const res = await this.repository.find({
+      join: { alias: 'videos', innerJoin: { users: 'videos.uploader' } },
+      where: (qb) => {
+        qb.where('users.username = :username', { username });
+      },
+    });
+
+    return res;
   }
 }

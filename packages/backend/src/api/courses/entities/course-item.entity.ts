@@ -24,10 +24,7 @@ export class CourseLesson implements ICourseLesson {
   public materialId: string;
 
   @Exclude()
-  @ManyToOne(
-    () => Course,
-    course => course.lessons,
-  )
+  @ManyToOne(() => Course, (course) => course.lessons)
   public course: Course;
 
   @ManyToOne(() => Material)
