@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { CreateLivestreamDTO, Livestream } from '@skillfuze/types';
+import { UpdateLivestreamDTO, CreateLivestreamDTO, Livestream } from '@skillfuze/types';
 import { parseError } from '../utils/parseError';
 
-export default class LivestreamService {
-  async create(payload: CreateLivestreamDTO): Promise<Livestream> {
+export class LivestreamService {
+  public static async create(payload: CreateLivestreamDTO): Promise<Livestream> {
     try {
       const res = await axios.post<Livestream>('/api/v1/livestreams', payload);
       return res.data;
@@ -12,7 +12,7 @@ export default class LivestreamService {
     }
   }
 
-  async getOne(streamId: string): Promise<Livestream> {
+  public static async getOne(streamId: string): Promise<Livestream> {
     try {
       const res = await axios.get<Livestream>(`/api/v1/livestreams/${streamId}`);
       return res.data;
@@ -23,5 +23,14 @@ export default class LivestreamService {
 
   public static async delete(id: string): Promise<void> {
     await axios.delete(`api/v1/livestreams/${id}`);
+  }
+
+  public static async update(id: string, updatedLivestream: UpdateLivestreamDTO): Promise<Livestream> {
+    try {
+      const { data: livestream } = await axios.patch<Livestream>(`api/v1/livestreams/${id}`, updatedLivestream);
+      return livestream;
+    } catch (error) {
+      throw parseError(error.response.data);
+    }
   }
 }

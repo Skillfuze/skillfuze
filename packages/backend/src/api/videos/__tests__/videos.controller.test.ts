@@ -1,4 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
+import { UpdateVideoDTO } from '../dtos/update-video-dto';
 import { VideosController } from '../videos.controller';
 import { VideosService } from '../videos.service';
 import { VideosRepository } from '../videos.repository';
@@ -75,9 +76,37 @@ describe('Videos Controller', () => {
       res = await controller.delete({ user: { id: userId } }, videoId);
     });
 
-    it('should call and return service.delete', async () => {
+    it('should call service.delete', async () => {
       expect(serviceDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should return service.delete', () => {
       expect(res).toBe(HttpStatus.OK);
+    });
+  });
+
+  describe('update', () => {
+    const update = 'UPDATED';
+    const userId = 1;
+    const videoId = '1';
+    const payload = {
+      title: 'Video Title',
+    };
+    let res: Video;
+
+    let serviceUpdateSpy: jest.SpyInstance;
+    beforeEach(async () => {
+      serviceUpdateSpy = jest.spyOn(service, 'update');
+      serviceUpdateSpy.mockReturnValue(update);
+      res = await controller.update(videoId, { user: { id: userId } }, payload as UpdateVideoDTO);
+    });
+
+    it('should call service.update once', () => {
+      expect(serviceUpdateSpy).toBeCalledTimes(1);
+    });
+
+    it('should return service.update', () => {
+      expect(res).toBe(update);
     });
   });
 });

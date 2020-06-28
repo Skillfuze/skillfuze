@@ -1,6 +1,5 @@
 import * as shortid from 'shortid';
 import { NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
-
 import { User } from '../../users/user.entity';
 import { CreateVideoDTO } from '../dtos/create-video.dto';
 import { Video } from '../video.entity';
@@ -87,7 +86,8 @@ describe('VideosService', () => {
     let getOneSpy: jest.SpyInstance;
     let repoDeleteSpy: jest.SpyInstance;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
+      jest.clearAllMocks();
       repoDeleteSpy = jest.spyOn(repository, 'delete');
       getOneSpy = jest.spyOn(service, 'getOne');
       getOneSpy.mockReturnValue(video);
@@ -103,13 +103,63 @@ describe('VideosService', () => {
       expect(repoDeleteSpy).toBeCalledTimes(1);
     });
 
+    it('should return HttpStatus.OK (200)', async () => {
+      expect(res).toBe(HttpStatus.OK);
+    });
+
     it('should throw forbiddenException when userId not equal video.uploader.id', async () => {
       await expect(service.delete(2, videoId)).rejects.toThrow(ForbiddenException);
     });
+  });
 
-    it('should call repo.delete and return HttpStatus.OK (200)', async () => {
-      expect(repoDeleteSpy).toBeCalledTimes(1);
-      expect(res).toBe(HttpStatus.OK);
+  describe('update', () => {
+    const userId = 1;
+    const videoId = '1';
+    const video = {
+      title: 'Video Title',
+      uploader: {
+        id: userId,
+      },
+    };
+    const payload = {
+      id: videoId,
+      title: 'Video updated',
+      category: { id: 1, name: 'category' },
+      uploader: {
+        id: userId,
+      },
+    };
+    let res: Video;
+    let getOneSpy: jest.SpyInstance;
+    let repoUpdateSpy: jest.SpyInstance;
+    let repoFindOneSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      getOneSpy = jest.spyOn(service, 'getOne');
+      repoUpdateSpy = jest.spyOn(repository, 'update');
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockReturnValue(payload);
+
+      getOneSpy.mockReturnValue(video);
+      res = await service.update(userId, videoId, payload);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.update once', async () => {
+      expect(repoUpdateSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw forbiddenException when userId not equal video.uploader.id', async () => {
+      await expect(service.update(2, videoId, payload)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should call repo.findOne and return the updated video', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
+      expect(res).toBe(payload);
     });
   });
 });

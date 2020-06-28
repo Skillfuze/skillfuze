@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Video, CreateVideoDTO } from '@skillfuze/types';
+import { Video, CreateVideoDTO, UpdateVideoDTO } from '@skillfuze/types';
 
 import { parseError } from '../utils/parseError';
 
@@ -20,5 +20,14 @@ export class VideosService {
 
   public static async delete(id: string): Promise<void> {
     await axios.delete(`api/v1/videos/${id}`);
+  }
+
+  public static async update(id: string, updatedVideo: UpdateVideoDTO): Promise<Video> {
+    try {
+      const { data: video } = await axios.patch<Video>(`api/v1/videos/${id}`, updatedVideo);
+      return video;
+    } catch (error) {
+      throw parseError(error.response.data);
+    }
   }
 }

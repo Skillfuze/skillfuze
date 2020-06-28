@@ -89,7 +89,7 @@ describe('LivestreamsService', () => {
 
     it('should call findOne, fetch streamer', async () => {
       await service.getOne('1');
-      expect(repoFindOneSpy).toBeCalledWith('1', { relations: ['streamer'] });
+      expect(repoFindOneSpy).toBeCalledWith('1', { relations: ['streamer', 'category'] });
     });
 
     it('should throw 404 error when id is invalid', async () => {
@@ -275,13 +275,60 @@ describe('LivestreamsService', () => {
       expect(repoDeleteSpy).toBeCalledTimes(1);
     });
 
+    it('should HttpStatus.OK (200)', async () => {
+      expect(res).toBe(HttpStatus.OK);
+    });
+
     it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
       await expect(service.delete(2, streamId)).rejects.toThrow(ForbiddenException);
     });
+  });
 
-    it('should call repo.delete and return HttpStatus.OK (200)', async () => {
-      expect(repoDeleteSpy).toBeCalledTimes(1);
-      expect(res).toBe(HttpStatus.OK);
+  describe('update', () => {
+    const userId = 1;
+    const streamId = '1';
+    let res: Livestream;
+    let getOneSpy: jest.SpyInstance;
+    let repoUpdateSpy: jest.SpyInstance;
+    let repoFindOneSpy: jest.SpyInstance;
+    const stream = {
+      title: 'stream Title',
+      streamer: {
+        id: userId,
+      },
+    };
+    const payload = {
+      id: streamId,
+      title: 'stream updated',
+      category: { id: 1, name: 'category' },
+      streamer: {
+        id: userId,
+      },
+    };
+    beforeEach(async () => {
+      getOneSpy = jest.spyOn(service, 'getOne');
+      repoUpdateSpy = jest.spyOn(repository, 'update');
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockReturnValue(payload);
+      getOneSpy.mockReturnValue(stream);
+      res = await service.update(userId, streamId, payload);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.update(2, streamId, payload)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should call repo.update once', async () => {
+      expect(repoUpdateSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.findOne and return the updated stream', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
+      expect(res).toBe(payload);
     });
   });
 });

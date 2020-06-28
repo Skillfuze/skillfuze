@@ -1,9 +1,10 @@
 import { HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-
+import { UpdateLivestreamDTO } from '../dtos/update-livestream.dto';
 import { LivestreamsController } from '../livestreams.controller';
 import { LivestreamsService } from '../livestreams.service';
 import { LivestreamsRepository } from '../livestreams.repository';
+import { Livestream } from '../livestream.entity';
 
 jest.mock('../livestreams.service');
 jest.mock('../livestreams.repository');
@@ -76,6 +77,28 @@ describe('Livestreams Controller', () => {
     it('should call and return service.delete', async () => {
       expect(serviceDeleteSpy).toBeCalledTimes(1);
       expect(res).toBe(HttpStatus.OK);
+    });
+  });
+
+  describe('update', () => {
+    const updateReturn = 'Updated Stream';
+    const streamId = '1';
+    const userId = 1;
+    const payload = {
+      title: 'Stream Title',
+    };
+    let res: Livestream;
+    let serviceUpdateSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      serviceUpdateSpy = jest.spyOn(service, 'update');
+      serviceUpdateSpy.mockReturnValue(updateReturn);
+      res = await controller.update(streamId, { user: { id: userId } }, payload as UpdateLivestreamDTO);
+    });
+
+    it('should call and return service.update', async () => {
+      expect(serviceUpdateSpy).toBeCalledTimes(1);
+      expect(res).toBe(updateReturn);
     });
   });
 });

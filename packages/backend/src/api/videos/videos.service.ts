@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
-
+import { UpdateVideoDTO } from './dtos/update-video-dto';
 import { VideosRepository } from './videos.repository';
 import { CreateVideoDTO } from './dtos/create-video.dto';
 import { Video } from './video.entity';
@@ -17,7 +17,7 @@ export class VideosService {
   }
 
   public async getOne(id: string): Promise<Video> {
-    const video = await this.repository.findOne(id, { relations: ['uploader'] });
+    const video = await this.repository.findOne(id, { relations: ['uploader', 'category'] });
     if (!video) {
       throw new NotFoundException();
     }
@@ -32,5 +32,15 @@ export class VideosService {
 
     await this.repository.delete(id);
     return HttpStatus.OK;
+  }
+
+  public async update(userId: number, videoId: string, payload: UpdateVideoDTO): Promise<Video> {
+    const video = await this.getOne(videoId);
+    if (video.uploader.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.update({ id: videoId }, payload);
+    return this.repository.findOne(videoId, { relations: ['uploader', 'category'] });
   }
 }

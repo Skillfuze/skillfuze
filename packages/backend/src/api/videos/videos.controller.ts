@@ -1,5 +1,13 @@
-import { Controller, Body, Request, Post, UseGuards, Get, Param, Delete, HttpStatus } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiUnauthorizedResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Body, Request, Post, UseGuards, Get, Param, Delete, HttpStatus, Patch } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+  ApiTags,
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
+import { UpdateVideoDTO } from './dtos/update-video-dto';
 
 import { Video } from './video.entity';
 import { CreateVideoDTO } from './dtos/create-video.dto';
@@ -26,8 +34,20 @@ export class VideosController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   @Delete('/:id')
   public async delete(@Request() req, @Param('id') id: string): Promise<HttpStatus> {
     return this.service.delete(req.user.id, id);
+  }
+
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Patch('/:id')
+  public async update(@Param('id') id: string, @Request() req, @Body() payload: UpdateVideoDTO): Promise<Video> {
+    return this.service.update(req.user.id, id, payload);
   }
 }

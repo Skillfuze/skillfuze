@@ -16,6 +16,11 @@ export default class AuthService {
     }
   }
 
+  async googleLogin(authCode: string): Promise<LoginResponseDTO> {
+    const { data } = await axios.post<LoginResponseDTO>('api/v1/auth/google', { code: authCode });
+    return data;
+  }
+
   async register(payload: UserRegisterDTO): Promise<User> {
     try {
       const res = await axios.post<User>('/api/v1/auth/register', payload);

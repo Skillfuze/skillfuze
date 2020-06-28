@@ -31,4 +31,8 @@ export class VideosRepository {
   public async delete(payload: any) {
     return payload;
   }
+
+  public async update(payload: any) {
+    return payload;
+  }
 }
