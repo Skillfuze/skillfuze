@@ -8,3 +8,4 @@ export * from './update-blog.dto';
 export * from './create-video.dto';
 export * from './update-video-dto';
 export * from './user-token-payload';
+export * from './attachment-response.dto';

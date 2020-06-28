@@ -9,6 +9,7 @@ import { winstonOptions as winston } from './winston.config';
 import { tusConfig } from './tus.config';
 import { streamingServer } from './streaming.config';
 import { oauth } from './oauth.config';
+import { multerConfig } from './multer.config';
 
 type Config = {
   api: {
@@ -24,6 +25,7 @@ type Config = {
   tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
   oauth: typeof oauth;
+  multer: typeof multerConfig;
 };
 
 const config: Config = {
@@ -65,6 +67,7 @@ const config: Config = {
   tus: tusConfig,
   streamingServer,
   oauth,
+  multer: multerConfig,
 };
 
 export default config;
