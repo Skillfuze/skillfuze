@@ -16,7 +16,7 @@ const EditVideo = ({ video }: Props) => {
     </Layout>
   );
 };
-EditVideo.getInitialProps = async ctx => {
+EditVideo.getInitialProps = async (ctx) => {
   const video = await VideosService.getOne(ctx.query.videoId.toString());
   return { video };
 };

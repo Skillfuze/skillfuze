@@ -16,7 +16,7 @@ async function bootstrap() {
     new ValidationPipe({
       forbidNonWhitelisted: true,
       whitelist: true,
-      exceptionFactory: errors => new BadRequestException(errors),
+      exceptionFactory: (errors) => new BadRequestException(errors),
     }),
   );
   app.setGlobalPrefix('api/v1');

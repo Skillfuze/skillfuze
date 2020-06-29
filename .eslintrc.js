@@ -41,5 +41,6 @@ module.exports = {
     'react/button-has-type': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/ban-types': 'off',
+    camelcase: 'off',
   },
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { User } from '@skillfuze/types';
 import Layout from '../../../components/Layout';
 import withAuth from '../../../utils/withAuth';
 import VideoData from '../../../components/VideoData';

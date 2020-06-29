@@ -137,11 +137,7 @@ describe('Livestreams (e2e)', () => {
         title: 'Livestream Title',
         category: { id: 1 },
       };
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       stream = res.body;
     });

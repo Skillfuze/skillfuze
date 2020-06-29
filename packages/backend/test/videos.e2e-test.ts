@@ -138,10 +138,7 @@ describe('Videos (e2e)', () => {
         url: 'http://a.com',
         category: { id: 1 },
       };
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
 
       video = res.body;
     });
