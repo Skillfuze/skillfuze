@@ -30,7 +30,7 @@ export class VideosService {
       throw new ForbiddenException();
     }
 
-    await this.repository.delete(id);
+    await this.repository.softDelete(id);
     return HttpStatus.OK;
   }
 

@@ -35,7 +35,7 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
       }
     });
 
-    return player.current.dispose;
+    return () => player.current.dispose;
   }, []);
   return (
     <div data-vjs-player>

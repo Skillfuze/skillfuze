@@ -68,7 +68,7 @@ export class LivestreamsService {
       throw new ForbiddenException();
     }
 
-    await this.repository.delete(id);
+    await this.repository.softDelete(id);
     return HttpStatus.OK;
   }
 

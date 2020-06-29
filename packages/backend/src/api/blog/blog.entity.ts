@@ -1,4 +1,13 @@
-import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import * as shortid from 'shortid';
 import { Blog as IBlog } from '@skillfuze/types';
 
@@ -43,6 +52,10 @@ export class Blog implements IBlog {
   @ApiProperty()
   @Column({ type: 'timestamp', nullable: true })
   public publishedAt: Date;
+
+  @ApiProperty()
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })

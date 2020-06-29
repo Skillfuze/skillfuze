@@ -84,11 +84,11 @@ describe('VideosService', () => {
     };
     let res: HttpStatus;
     let getOneSpy: jest.SpyInstance;
-    let repoDeleteSpy: jest.SpyInstance;
+    let repoSoftDeleteSpy: jest.SpyInstance;
 
     beforeEach(async () => {
       jest.clearAllMocks();
-      repoDeleteSpy = jest.spyOn(repository, 'delete');
+      repoSoftDeleteSpy = jest.spyOn(repository, 'softDelete');
       getOneSpy = jest.spyOn(service, 'getOne');
       getOneSpy.mockReturnValue(video);
 
@@ -99,8 +99,8 @@ describe('VideosService', () => {
       expect(getOneSpy).toBeCalledTimes(1);
     });
 
-    it('should call repo.delete once', async () => {
-      expect(repoDeleteSpy).toBeCalledTimes(1);
+    it('should call repo.softDelete once', async () => {
+      expect(repoSoftDeleteSpy).toBeCalledTimes(1);
     });
 
     it('should return HttpStatus.OK (200)', async () => {

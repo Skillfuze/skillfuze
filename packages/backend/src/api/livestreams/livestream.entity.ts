@@ -1,4 +1,13 @@
-import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import * as shortid from 'shortid';
 
 import { Livestream as ILivestream, User } from '@skillfuze/types';
@@ -30,6 +39,9 @@ export class Livestream implements ILivestream {
   @ApiProperty()
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  public deletedAt: Date;
 
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ 'User', { nullable: false, onDelete: 'CASCADE' })

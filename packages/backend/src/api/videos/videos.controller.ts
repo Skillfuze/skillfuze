@@ -42,6 +42,7 @@ export class VideosController {
     return this.service.delete(req.user.id, id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse()
   @ApiForbiddenResponse()

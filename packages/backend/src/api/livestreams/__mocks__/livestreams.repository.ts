@@ -15,7 +15,7 @@ export class LivestreamsRepository {
     return payload;
   }
 
-  public async delete(payload: any) {
+  public async softDelete(payload: any) {
     return payload;
   }
 

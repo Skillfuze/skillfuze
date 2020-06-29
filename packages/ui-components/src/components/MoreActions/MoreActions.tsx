@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { usePopper } from 'react-popper';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import Modal from 'react-modal';
 
-import { buttonNoFocusStyle } from './styles';
+import { buttonNoFocusStyle, modalStyle } from './styles';
 import More from '../../assets/icons/More.svg';
 import Facebook from '../../assets/icons/Facebook.svg';
 import CopyLink from '../../assets/icons/Copy.svg';
 import Twitter from '../../assets/icons/Twitter.svg';
 import Edit from '../../assets/icons/Edit.svg';
 import Delete from '../../assets/icons/Delete.svg';
-
 import { useOnClickOutside } from '../../utils/useOnClickOutside';
+import Button from '../Button';
 
 interface MoreActionsProps {
   URL: string;
@@ -24,6 +25,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({ URL, enableControls, onEdit, 
   const twitterSharer = `https://twitter.com/intent/tweet?url=${URL}`;
   const [showPopper, setShowPopper] = useState(false);
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
+  const [modalOpened, setModalOpened] = useState(false);
   const popperElementRef = useRef(null);
   const moreRef = useRef(null);
 
@@ -50,6 +52,11 @@ const MoreActions: React.FC<MoreActionsProps> = ({ URL, enableControls, onEdit, 
       },
     ],
   });
+
+  const onClickDelete = () => {
+    setShowPopper(false);
+    setModalOpened(true);
+  };
 
   return (
     <div>
@@ -84,15 +91,35 @@ const MoreActions: React.FC<MoreActionsProps> = ({ URL, enableControls, onEdit, 
                 <Edit />
                 <p className="ml-2">Edit</p>
               </button>
-              <button className={`flex items-center ${buttonNoFocusStyle}`} onClick={onDelete}>
-                <Delete />
-                <p className="ml-2">Delete</p>
-              </button>
+              {onDelete && (
+                <button className={`flex items-center ${buttonNoFocusStyle}`} onClick={onClickDelete}>
+                  <Delete />
+                  <p className="ml-2">Delete</p>
+                </button>
+              )}
             </>
           )}
           <div ref={setArrowElement} />
         </div>
       )}
+      <Modal
+        isOpen={modalOpened}
+        shouldCloseOnOverlayClick
+        onRequestClose={() => setModalOpened(false)}
+        style={modalStyle}
+        contentLabel="Delete Confirmation"
+        ariaHideApp={false}
+      >
+        <p>Are you sure you want to delete this?</p>
+        <div className="flex justify-center justify-around mt-2">
+          <Button variant="outlined" onClick={() => setModalOpened(false)}>
+            No
+          </Button>
+          <Button color="warning" onClick={onDelete}>
+            Yes
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

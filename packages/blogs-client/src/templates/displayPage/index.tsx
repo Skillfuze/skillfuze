@@ -1,22 +1,39 @@
 import React from 'react';
-import { Button, Avatar } from '@skillfuze/ui-components';
+import { Button, Avatar, MoreActions } from '@skillfuze/ui-components';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
+import { navigate } from '@reach/router';
+import cookie from 'react-cookies';
 
+import axios from 'axios';
 import Bookmark from '../../../assets/icons/bookmark.svg';
-import More from '../../../assets/icons/More.svg';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const config = require('../../../config');
 
 interface Props {
   pageContext: { blog: any };
 }
 
 const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
+  const pageURL = typeof window !== 'undefined' ? window.location.href : '';
   const onClickBookmark = () => {
     console.log('Bookmarked');
   };
 
-  const onClickMore = () => {
-    console.log('More');
+  const onEdit = () => {
+    navigate(`${config.webClientUrl}/blogs/${blog.id}/edit`);
+  };
+
+  const onDelete = async () => {
+    const authConfig = {
+      headers: { Authorization: `Bearer ${cookie.load('token')}` },
+    };
+    try {
+      await axios.delete(`${config.API_URL}/api/v1/blogs/${blog.id}`, authConfig);
+    } finally {
+      navigate(`${config.webClientUrl}/`);
+    }
   };
 
   return (
@@ -63,7 +80,7 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
               <div className="mr-4">
                 <Bookmark onClick={onClickBookmark} style={{ cursor: 'pointer' }} />
               </div>
-              <More onClick={onClickMore} style={{ cursor: 'pointer' }} />
+              <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
             </div>
             <p className="text-left text-xs text-grey-dark">{moment(blog.publishedAt).format('ll')}</p>
           </div>

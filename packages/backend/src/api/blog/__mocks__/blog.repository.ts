@@ -12,4 +12,8 @@ export class BlogRepository {
     }
     return undefined;
   }
+
+  public async softDelete(payload: any) {
+    return payload;
+  }
 }

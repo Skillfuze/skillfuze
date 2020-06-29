@@ -1,4 +1,13 @@
-import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import * as shortid from 'shortid';
 import { Video as IVideo } from '@skillfuze/types';
 
@@ -24,6 +33,9 @@ export class Video implements IVideo {
 
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  public deletedAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;

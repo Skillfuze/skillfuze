@@ -257,10 +257,10 @@ describe('LivestreamsService', () => {
     };
     let res: HttpStatus;
     let getOneSpy: jest.SpyInstance;
-    let repoDeleteSpy: jest.SpyInstance;
+    let repoSoftDeleteSpy: jest.SpyInstance;
 
     beforeEach(async () => {
-      repoDeleteSpy = jest.spyOn(repository, 'delete');
+      repoSoftDeleteSpy = jest.spyOn(repository, 'softDelete');
       getOneSpy = jest.spyOn(service, 'getOne');
       getOneSpy.mockReturnValue(stream);
 
@@ -271,11 +271,11 @@ describe('LivestreamsService', () => {
       expect(getOneSpy).toBeCalledTimes(1);
     });
 
-    it('should call repo.delete once', async () => {
-      expect(repoDeleteSpy).toBeCalledTimes(1);
+    it('should call repo.softDelete once', async () => {
+      expect(repoSoftDeleteSpy).toBeCalledTimes(1);
     });
 
-    it('should HttpStatus.OK (200)', async () => {
+    it('should return HttpStatus.OK (200)', async () => {
       expect(res).toBe(HttpStatus.OK);
     });
 

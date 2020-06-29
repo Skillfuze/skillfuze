@@ -11,8 +11,8 @@ interface HeaderAvatarWrapperProps {
 const HeaderAvatarWrapper: React.FC<HeaderAvatarWrapperProps> = ({ user }: HeaderAvatarWrapperProps) => {
   return (
     <HeaderAvatar
-      username={user.firstName}
-      avatarURL={undefined}
+      username={user.username}
+      avatarURL={user.avatarURL}
       displayName={`${user.firstName} ${user.lastName}`}
       push={Router.push}
       logout={AuthService.logout}

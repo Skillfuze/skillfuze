@@ -38,11 +38,16 @@ export class LivestreamsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   @Delete('/:id')
   public async delete(@Request() req, @Param('id') id: string): Promise<HttpStatus> {
     return this.service.delete(req.user.id, id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse()
   @ApiForbiddenResponse()

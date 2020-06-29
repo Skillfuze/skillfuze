@@ -55,6 +55,19 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     return `${slugify(title)}-${blogId}`;
   }
 
+  public async delete(userId: number, id: string): Promise<Blog> {
+    const blog = await this.repository.findOne(id, { relations: ['user'] });
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+    if (blog.user.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.softDelete(id);
+    return this.repository.findOne(id);
+  }
+
   public async buildGatsby(): Promise<void> {
     if (config.gatsby.buildHookURL) {
       axios.post(config.gatsby.buildHookURL);
