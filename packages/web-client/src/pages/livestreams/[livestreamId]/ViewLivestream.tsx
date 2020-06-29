@@ -3,7 +3,7 @@ import { Livestream, User } from '@skillfuze/types';
 import { SocketIOProvider } from '@khaled-hamam/use-socketio';
 
 import Layout from '../../../components/Layout';
-import LivestreamService from '../../../services/livestreams.service';
+import { LivestreamService } from '../../../services/livestreams.service';
 import VideoLayout from '../../../components/VideoLayout';
 import config from '../../../../config';
 import withAuth from '../../../utils/withAuth';
@@ -33,9 +33,8 @@ const ViewLivestream = ({ stream, user }: Props) => {
   );
 };
 
-ViewLivestream.getInitialProps = async (ctx) => {
-  const livestreamService = new LivestreamService();
-  const stream = await livestreamService.getOne(ctx.query.livestreamId.toString());
+ViewLivestream.getInitialProps = async ctx => {
+  const stream = await LivestreamService.getOne(ctx.query.livestreamId.toString());
   return { stream };
 };
 

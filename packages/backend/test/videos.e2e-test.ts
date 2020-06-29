@@ -111,6 +111,86 @@ describe('Videos (e2e)', () => {
     });
   });
 
+  describe('PATCH /api/v1/videos/:id', () => {
+    let video: Video;
+    let newToken: string;
+    const updatePayload = {
+      title: 'Video Title',
+      category: { id: 1 },
+    };
+
+    beforeAll(async () => {
+      const payload = {
+        firstName: 'Mariam',
+        lastName: 'Kamel',
+        email: 'MariamKamel@skillfuze.com',
+        password: '123456789',
+        confirmPassword: '123456789',
+      };
+      const newUser = await userService.register(payload);
+      const authService = module.get<AuthService>(AuthService);
+      newToken = `Bearer ${authService.generateToken(newUser)}`;
+    });
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Video Title',
+        url: 'http://a.com',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer())
+        .post(url)
+        .send(payload)
+        .set('Authorization', token);
+
+      video = res.body;
+    });
+
+    it('should update video successfully on valid data', async () => {
+      const { body } = await request(app.getHttpServer())
+        .patch(`${url}/${video.id}`)
+        .send(updatePayload)
+        .set('Authorization', token)
+        .expect(200);
+
+      expect(body.id).toBe(video.id);
+      expect(body.title).toBe(updatePayload.title);
+      expect(body.uploader.id).toBe(user.id);
+    });
+
+    it('should return 400 on invalid data', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${video.id}`)
+        .send({ ...updatePayload, title: '' })
+        .set('Authorization', token)
+        .expect(400);
+    });
+
+    it('should return Unauthorized on invalid token', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${video.id}`)
+        .send(updatePayload)
+        .set('Authorization', '')
+        .expect(401);
+    });
+
+    it('should return 403 when uplaoder isnot the editor', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${video.id}`)
+        .send(updatePayload)
+        .set('Authorization', newToken)
+        .expect(403);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/invalid-id`)
+        .send(updatePayload)
+        .set('Authorization', token)
+        .expect(404);
+    });
+  });
+
   afterEach(async () => {
     await videoRepository.delete({});
   });

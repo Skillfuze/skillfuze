@@ -53,8 +53,8 @@ export class Livestream implements ILivestream {
   public streamer: User;
 
   @ApiProperty()
-  @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  @Column({ type: 'simple-array' })
+  public tags: string[] = [];
 
   @ApiProperty()
   @Column({ nullable: true, unique: true })

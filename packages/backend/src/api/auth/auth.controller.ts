@@ -45,4 +45,10 @@ export class AuthController {
   public async login(@Request() req): Promise<LoginResponseDTO> {
     return { token: this.authService.generateToken(req.user) };
   }
+
+  @Post('/google')
+  @HttpCode(200)
+  public async googleAuth(@Body() payload: { code: string }): Promise<LoginResponseDTO> {
+    return this.authService.googleAuth(payload.code);
+  }
 }

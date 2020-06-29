@@ -69,8 +69,8 @@ export class Blog implements IBlog {
   public user: User;
 
   @ApiProperty()
-  @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  @Column({ type: 'simple-array' })
+  public tags: string[] = [];
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
   @JoinColumn({ referencedColumnName: 'id' })

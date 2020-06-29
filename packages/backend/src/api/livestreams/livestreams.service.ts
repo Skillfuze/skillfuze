@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { UpdateLivestreamDTO } from './dtos/update-livestream.dto';
 
 import { LivestreamsRepository } from './livestreams.repository';
 import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
@@ -19,8 +20,9 @@ export class LivestreamsService {
   }
 
   public async getOne(livestreamId: string): Promise<Livestream> {
-    const stream = await this.repository.findOne(livestreamId, { relations: ['streamer'] });
+    const stream = await this.repository.findOne(livestreamId, { relations: ['streamer', 'category'] });
     if (!stream) throw new NotFoundException();
+
     return stream;
   }
 
@@ -59,5 +61,15 @@ export class LivestreamsService {
       where: { streamer: userId, isLive: true },
     });
     return stream;
+  }
+
+  public async update(userId, streamId: string, payload: UpdateLivestreamDTO): Promise<Livestream> {
+    const stream = await this.getOne(streamId);
+    if (stream.streamer.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.update({ id: streamId }, payload);
+    return this.repository.findOne(streamId, { relations: ['streamer', 'category'] });
   }
 }

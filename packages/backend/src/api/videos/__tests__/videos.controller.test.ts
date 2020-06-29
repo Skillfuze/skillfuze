@@ -1,3 +1,4 @@
+import { UpdateVideoDTO } from '../dtos/update-video-dto';
 import { VideosController } from '../videos.controller';
 import { VideosService } from '../videos.service';
 import { VideosRepository } from '../videos.repository';
@@ -59,6 +60,30 @@ describe('Videos Controller', () => {
 
     it('should return service.getOne', () => {
       expect(res).toBe(getOneReturn);
+    });
+  });
+  describe('update', () => {
+    const update = 'UPDATED';
+    const userId = 1;
+    const videoId = '1';
+    const payload = {
+      title: 'Video Title',
+    };
+    let res: Video;
+
+    let serviceUpdateSpy: jest.SpyInstance;
+    beforeEach(async () => {
+      serviceUpdateSpy = jest.spyOn(service, 'update');
+      serviceUpdateSpy.mockReturnValue(update);
+      res = await controller.update(videoId, { user: { id: userId } }, payload as UpdateVideoDTO);
+    });
+
+    it('should call service.update once', () => {
+      expect(serviceUpdateSpy).toBeCalledTimes(1);
+    });
+
+    it('should return service.update', () => {
+      expect(res).toBe(update);
     });
   });
 });
