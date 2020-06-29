@@ -8,7 +8,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { User } from '../users/user.entity';
-import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
+import { EmailAlreadyExistsException } from '../common/exceptions/email-already-exists.exception';
 
 import { UserRegisterDTO, UserLoginDTO } from '../users/dtos';
 import { AuthService } from './services/auth.service';

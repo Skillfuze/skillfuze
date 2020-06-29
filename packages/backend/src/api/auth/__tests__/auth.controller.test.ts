@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as shortid from 'shortid';
 import { HashingService } from '../services/hashing.service';
 import { AuthService } from '../services/auth.service';
-import { EmailAlreadyExistsException } from '../../../common/exceptions/email-already-exists.exception';
+import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
 import { AuthController } from '../auth.controller';
 import { User } from '../../users/user.entity';
 import { UserService } from '../../users/user.service';
@@ -119,7 +119,7 @@ describe('Auth Controller', () => {
         return undefined;
       });
 
-      generateTokenSpy.mockImplementation((p: object) => {
+      generateTokenSpy.mockImplementation((p: any) => {
         if (p) return 'token';
         return undefined;
       });

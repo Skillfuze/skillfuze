@@ -30,7 +30,6 @@ export class AuthService {
 
   public async googleAuth(code: string): Promise<LoginResponseDTO> {
     const {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       tokens: { id_token },
     } = await this.googleOAuthClient.getToken(code);
 

@@ -11,6 +11,7 @@ const CreateLiveStream = ({ user }: { user: User }) => {
     </Layout>
   );
 };
+
 export default withAuth({
   redirectOnAuthFailure: '/login',
 })(CreateLiveStream);
