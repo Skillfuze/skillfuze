@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { User } from '../../users/user.entity';
-import { Course } from '../entities/course.entity';
-import { CourseLesson } from '../entities/course-item.entity';
+import { User } from '../../../users/user.entity';
+import { Course } from '../../entities/course.entity';
+import { CourseLesson } from '../../entities/course-item.entity';
 
 export class CoursesRepository {
   public create(payload?: Partial<Course>): Course {
@@ -22,6 +22,8 @@ export class CoursesRepository {
   public findOne(payload: any, options: any): Course {
     if (payload.slug === 'VALID_SLUG' || payload.id === 'VALID_ID' || payload === 'VALID_ID') {
       const course = new Course();
+      course.id = 'VALID_ID';
+      course.slug = 'VALID_SLUG';
 
       if (options?.relations?.includes('lessons')) {
         course.lessons = new Array<CourseLesson>();
@@ -52,4 +54,8 @@ export class CoursesRepository {
   }
 
   public softDelete(criteria: string) {}
+
+  public async isUserEnrolled(userId: number, courseId: string): Promise<boolean> {
+    return Promise.resolve(userId === 1 && courseId === 'VALID_ID');
+  }
 }

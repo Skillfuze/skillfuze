@@ -6,5 +6,5 @@ export const ormConfig: TypeOrmModuleOptions = {
   database: 'skillfuze-test',
   synchronize: true,
   logging: false,
-  entities: [`${__dirname}/../src/api/**/*.entity.{ts,js}`],
+  entities: [`${__dirname}/../src/api/**/*.entity.{ts,js}`, `${__dirname}/../src/api/**/*.view.{ts,js}`],
 };

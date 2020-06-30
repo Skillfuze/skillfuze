@@ -7,6 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { GetCourseLessonResponseDTO } from '@skillfuze/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Course } from './entities/course.entity';
 import { CoursesService } from './courses.service';
@@ -65,5 +66,19 @@ export class CoursesController {
   @HttpCode(200)
   public async publish(@Param('id') id: string, @UserId() userId: number): Promise<Course> {
     return this.service.publish(id, userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Get('/:slug/lessons/:lessonId')
+  public async getLesson(
+    @Param('slug') courseSlug: string,
+    @Param('lessonId') lessonId: string,
+    @UserId() userId: number,
+  ): Promise<GetCourseLessonResponseDTO> {
+    return this.service.getLesson(courseSlug, lessonId, userId);
   }
 }

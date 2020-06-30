@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
 import { CourseLesson as ICourseLesson } from '@skillfuze/types';
 import { Exclude } from 'class-transformer';
 
@@ -8,8 +8,8 @@ import { Material } from '../../materials/material.entity';
 
 @Entity()
 export class CourseLesson implements ICourseLesson {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryColumn({ generated: 'uuid' })
+  public id: string;
 
   @Column()
   public title: string;
