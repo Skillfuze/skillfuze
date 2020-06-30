@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__grid" viewBox="0 0 25 25">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#707070}
+        </style>
+    </defs>
+    <g id="prefix__Group_85" data-name="Group 85">
+        <g id="prefix__Group_84" data-name="Group 84">
+            <path id="prefix__Rectangle_593" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 593" transform="translate(9.375 9.375)"/>
+            <path id="prefix__Rectangle_594" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 594"/>
+            <path id="prefix__Rectangle_595" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 595" transform="translate(9.375 18.75)"/>
+            <path id="prefix__Rectangle_596" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 596" transform="translate(0 9.375)"/>
+            <path id="prefix__Rectangle_597" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 597" transform="translate(0 18.75)"/>
+            <path id="prefix__Rectangle_598" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 598" transform="translate(18.75)"/>
+            <path id="prefix__Rectangle_599" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 599" transform="translate(9.375)"/>
+            <path id="prefix__Rectangle_600" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 600" transform="translate(18.75 9.375)"/>
+            <path id="prefix__Rectangle_601" d="M0 0H6.25V6.25H0z" class="prefix__cls-1" data-name="Rectangle 601" transform="translate(18.75 18.75)"/>
+        </g>
+    </g>
+</svg>
