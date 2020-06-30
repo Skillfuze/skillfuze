@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 
@@ -58,11 +57,11 @@ describe('Auth Service', () => {
       return undefined;
     });
 
-    matchingPasswordSpy.mockImplementation((payload: object) => {
+    matchingPasswordSpy.mockImplementation((payload: any) => {
       return payload;
     });
 
-    signSpy.mockImplementation((payload: object) => {
+    signSpy.mockImplementation((payload: any) => {
       return payload;
     });
   });
@@ -146,7 +145,6 @@ describe('Auth Service', () => {
 
     beforeAll(() => {
       (authService as any).googleOAuthClient.getToken = jest.fn(() => {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         return { tokens: { id_token: idToken } };
       });
 

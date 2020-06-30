@@ -16,7 +16,7 @@ async function bootstrap() {
     new ValidationPipe({
       forbidNonWhitelisted: true,
       whitelist: true,
-      exceptionFactory: errors => new BadRequestException(errors),
+      exceptionFactory: (errors) => new BadRequestException(errors),
     }),
   );
   app.setGlobalPrefix('api/v1');
@@ -45,10 +45,10 @@ async function bootstrap() {
 }
 bootstrap();
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   logger.error('uncaught exception', err);
 });
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   logger.error('unhandled rejection', err);
 });

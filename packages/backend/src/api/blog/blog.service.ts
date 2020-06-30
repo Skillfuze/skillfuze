@@ -51,6 +51,17 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     return this.repository.findOne(blogId);
   }
 
+  public async getUserBlogs(username: string): Promise<Blog[]> {
+    const res = await this.repository.find({
+      join: { alias: 'blogs', innerJoin: { users: 'blogs.user' } },
+      where: (qb) => {
+        qb.where('users.username = :username', { username });
+      },
+    });
+
+    return res;
+  }
+
   private generateUrl(title: string, blogId: string): string {
     return `${slugify(title)}-${blogId}`;
   }

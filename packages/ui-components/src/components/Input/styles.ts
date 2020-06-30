@@ -39,7 +39,7 @@ export const errorType = css`
 `;
 
 export const labelType = css`
-  color: var(--color-black);
+  color: var(--color-grey-dark);
   font-size: 14px;
 `;
 

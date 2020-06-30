@@ -1,14 +1,30 @@
-import { Entity, PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+  BeforeInsert,
+  getManager,
+} from 'typeorm';
 import * as shortid from 'shortid';
 import { Video as IVideo } from '@skillfuze/types';
 
 import { User } from '../users/user.entity';
 import { Category } from '../categories/category.entity';
+import { Material } from '../materials/material.entity';
 
 @Entity()
 export class Video implements IVideo {
   @PrimaryColumn()
   public id: string;
+
+  @OneToOne(() => Material, { cascade: true })
+  @JoinColumn({ name: 'id' })
+  private material: Material;
 
   @Column({ type: 'text' })
   public title: string;
@@ -41,5 +57,10 @@ export class Video implements IVideo {
 
   public constructor() {
     this.id = shortid.generate();
+  }
+
+  @BeforeInsert()
+  private async saveMaterial(): Promise<void> {
+    await getManager().save(Material, { id: this.id });
   }
 }
