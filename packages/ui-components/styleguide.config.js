@@ -15,7 +15,7 @@ module.exports = {
       links: [
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&display=swap'
+          href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap'
         }
       ]
     }
