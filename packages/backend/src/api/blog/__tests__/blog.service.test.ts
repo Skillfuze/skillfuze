@@ -1,4 +1,4 @@
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import * as slugify from 'slugify';
 import * as shortid from 'shortid';
@@ -75,7 +75,7 @@ describe('BlogService', () => {
         id: userId,
       },
     };
-    let res: Blog;
+    let res: HttpStatus;
     let repoFindOneSpy: jest.SpyInstance;
     let repoSoftDeleteSpy: jest.SpyInstance;
 
@@ -88,16 +88,16 @@ describe('BlogService', () => {
       res = await service.delete(userId, blogId);
     });
 
-    it('should call repo.findOne twice', async () => {
-      expect(repoFindOneSpy).toBeCalledTimes(2);
+    it('should call repo.findOne once', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
     });
 
     it('should call repo.softDelete once', async () => {
       expect(repoSoftDeleteSpy).toBeCalledTimes(1);
     });
 
-    it('should return the deleted blog', async () => {
-      expect(res).toBe(blog);
+    it('should return 200 ', async () => {
+      expect(res).toBe(res);
     });
 
     it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
@@ -147,6 +147,20 @@ describe('BlogService', () => {
     it('should not be triggered from blog update event on unpublished blog', () => {
       emitter.emit('update', {});
       expect(buildGatsbySpy).not.toBeCalled();
+    });
+  });
+
+  describe('getUserBlogs', () => {
+    const username = 'USERNAME';
+
+    beforeAll(() => {
+      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Blog()]));
+    });
+
+    it('should return blogs array', async () => {
+      const videos = await service.getUserBlogs(username);
+      expect(videos.length).toBe(1);
+      expect(videos[0]).toBeInstanceOf(Blog);
     });
   });
 });

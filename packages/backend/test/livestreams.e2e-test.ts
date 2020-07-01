@@ -60,11 +60,7 @@ describe('Livestreams (e2e)', () => {
     };
 
     it('should create livestream successfully', async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       expect(res.body.id).not.toBe(undefined);
 
@@ -96,11 +92,7 @@ describe('Livestreams (e2e)', () => {
       category: { id: 1 },
     };
     beforeAll(async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       createdStream = res.body;
     });
@@ -115,9 +107,7 @@ describe('Livestreams (e2e)', () => {
     });
 
     it('should return NotFoundException on invalid streamId', async () => {
-      await request(app.getHttpServer())
-        .get(`${url}/id`)
-        .expect(404);
+      await request(app.getHttpServer()).get(`${url}/id`).expect(404);
     });
   });
 
@@ -144,40 +134,25 @@ describe('Livestreams (e2e)', () => {
         url: 'http://a.com',
         category: { id: 1 },
       };
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
 
       stream = res.body;
     });
 
     it('should delete stream successfully on valid data', async () => {
-      await request(app.getHttpServer())
-        .delete(`${url}/${stream.id}`)
-        .set('Authorization', token)
-        .expect(200);
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', token).expect(200);
     });
 
     it('should return Unauthorized on invalid token', async () => {
-      await request(app.getHttpServer())
-        .delete(`${url}/${stream.id}`)
-        .set('Authorization', '')
-        .expect(401);
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', '').expect(401);
     });
 
     it('should return 403 when token.Id doesnot match the streamer.Id', async () => {
-      await request(app.getHttpServer())
-        .delete(`${url}/${stream.id}`)
-        .set('Authorization', newToken)
-        .expect(403);
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', newToken).expect(403);
     });
 
     it('should return 404 on invalid id', async () => {
-      await request(app.getHttpServer())
-        .delete(`${url}/invalid-id`)
-        .set('Authorization', token)
-        .expect(404);
+      await request(app.getHttpServer()).delete(`${url}/invalid-id`).set('Authorization', token).expect(404);
     });
   });
 
@@ -207,11 +182,7 @@ describe('Livestreams (e2e)', () => {
         title: 'Livestream Title',
         category: { id: 1 },
       };
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       stream = res.body;
     });

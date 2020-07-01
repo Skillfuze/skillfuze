@@ -16,7 +16,6 @@ export class CreateVideoDTO implements ICreateVideoDTO {
   @IsOptional()
   public thumbnailURL?: string;
 
-  // eslint-disable-next-line @typescript-eslint/camelcase
   @IsUrl({ require_tld: process.env.NODE_ENV === 'production' }, { message: 'URL should be valid URL' })
   public url: string;
 

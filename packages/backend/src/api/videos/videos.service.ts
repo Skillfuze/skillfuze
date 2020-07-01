@@ -34,6 +34,17 @@ export class VideosService {
     return HttpStatus.OK;
   }
 
+  public async getUserVideos(username: string): Promise<Video[]> {
+    const res = await this.repository.find({
+      join: { alias: 'videos', innerJoin: { users: 'videos.uploader' } },
+      where: (qb) => {
+        qb.where('users.username = :username', { username });
+      },
+    });
+
+    return res;
+  }
+
   public async update(userId: number, videoId: string, payload: UpdateVideoDTO): Promise<Video> {
     const video = await this.getOne(videoId);
     if (video.uploader.id !== userId) {

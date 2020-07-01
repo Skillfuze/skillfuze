@@ -58,13 +58,11 @@ describe('UsersController (e2e)', () => {
     await app.init();
   });
 
-  describe('Get /api/v1/users/:username', () => {
+  describe('GET /api/v1/users/:username', () => {
     const url = '/api/v1/users';
 
     it('should get profile data successfully with currently livestream if found', async () => {
-      const res = await request(app.getHttpServer())
-        .get(`${url}/${user.username}/profile`)
-        .set('Authorization', token);
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/profile`).set('Authorization', token);
 
       expect(res.body).toHaveProperty('id');
       expect(res.body).toHaveProperty('username');
@@ -83,6 +81,26 @@ describe('UsersController (e2e)', () => {
         .expect(404);
 
       expect(res.body.message).toBe('User not found');
+    });
+  });
+
+  describe('GET /api/v1/users/:username/videos', () => {
+    const url = '/api/v1/users';
+
+    it('should get the user videos successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/videos`).send().expect(200);
+
+      expect(res.body.length).toBe(0);
+    });
+  });
+
+  describe('GET /api/v1/users/:username/blogs', () => {
+    const url = '/api/v1/users';
+
+    it('should get the user blogs successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/blogs`).send().expect(200);
+
+      expect(res.body.length).toBe(0);
     });
   });
 

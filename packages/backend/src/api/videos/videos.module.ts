@@ -10,6 +10,7 @@ import { VideosService } from './videos.service';
   imports: [TypeOrmModule.forFeature([VideosRepository])],
   providers: [VideosService],
   controllers: [VideosController],
+  exports: [VideosService],
 })
 export class VideosModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {

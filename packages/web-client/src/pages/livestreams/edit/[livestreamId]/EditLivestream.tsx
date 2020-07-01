@@ -16,7 +16,7 @@ const EditLivestream = ({ stream }: Props) => {
     </Layout>
   );
 };
-EditLivestream.getInitialProps = async ctx => {
+EditLivestream.getInitialProps = async (ctx) => {
   const stream = await LivestreamService.getOne(ctx.query.livestreamId.toString());
   return { stream };
 };

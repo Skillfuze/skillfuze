@@ -24,6 +24,17 @@ const SelectField: React.FC<SelectFieldProps> = (props: SelectFieldProps) => {
     props.onChange?.(newValue);
   };
 
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      boxShadow: 'none',
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      color: 'var(--color-grey)',
+    }),
+  };
+
   return (
     <div className={cx('flex flex-col', props.className)}>
       {Boolean(props.label?.length) && <p className={cx(labelType, 'mb-1')}>{props.label}</p>}
@@ -35,6 +46,7 @@ const SelectField: React.FC<SelectFieldProps> = (props: SelectFieldProps) => {
         isDisabled={props.disabled}
         className={className}
         onChange={onChange}
+        styles={customStyles}
       />
       {Boolean(error?.length) && <p className={cx(errorType, 'mt-1')}>{error}</p>}
     </div>
