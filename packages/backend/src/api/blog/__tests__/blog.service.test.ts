@@ -97,7 +97,7 @@ describe('BlogService', () => {
     });
 
     it('should return 200 ', async () => {
-      expect(res).toBe(res);
+      expect(res).toBe(200);
     });
 
     it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
