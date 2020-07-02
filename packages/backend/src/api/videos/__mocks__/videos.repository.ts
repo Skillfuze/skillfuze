@@ -32,6 +32,10 @@ export class VideosRepository {
     return video;
   }
 
+  public async softDelete(payload: any) {
+    return payload;
+  }
+
   public async update(payload: any) {
     return payload;
   }

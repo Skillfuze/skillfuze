@@ -9,6 +9,7 @@ export interface Video {
   url: string;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
   tags: string[];
   uploader: User;
   category: Category;

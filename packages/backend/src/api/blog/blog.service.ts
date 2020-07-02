@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import slugify from 'slugify';
 import axios from 'axios';
@@ -64,6 +64,19 @@ export class BlogService extends TypeOrmCrudService<Blog> {
 
   private generateUrl(title: string, blogId: string): string {
     return `${slugify(title)}-${blogId}`;
+  }
+
+  public async delete(userId: number, id: string): Promise<HttpStatus> {
+    const blog = await this.repository.findOne(id, { relations: ['user'] });
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+    if (blog.user.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.repository.softDelete(id);
+    return HttpStatus.OK;
   }
 
   public async buildGatsby(): Promise<void> {

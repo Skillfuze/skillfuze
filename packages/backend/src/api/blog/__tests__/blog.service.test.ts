@@ -1,13 +1,13 @@
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import * as slugify from 'slugify';
 import * as shortid from 'shortid';
+import { Blog } from '../blog.entity';
 
 import { BlogService } from '../blog.service';
 import { BlogRepository } from '../blog.repository';
 import { BlogsEventEmitter } from '../blogs.eventemitter';
 import config from '../../../../config';
-import { Blog } from '../blog.entity';
 
 jest.mock('../blog.repository');
 jest.mock('@nestjsx/crud-typeorm');
@@ -63,6 +63,45 @@ describe('BlogService', () => {
 
       const res = await service.publish(blogId, userId);
       expect(res.url).toBe(expectUrl);
+    });
+  });
+
+  describe('delete', () => {
+    const userId = 1;
+    const blogId = '1';
+    const blog = {
+      title: 'blog Title',
+      user: {
+        id: userId,
+      },
+    };
+    let res: HttpStatus;
+    let repoFindOneSpy: jest.SpyInstance;
+    let repoSoftDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      repoSoftDeleteSpy = jest.spyOn(repository, 'softDelete');
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockReturnValue(blog);
+
+      res = await service.delete(userId, blogId);
+    });
+
+    it('should call repo.findOne once', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.softDelete once', async () => {
+      expect(repoSoftDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should return 200 ', async () => {
+      expect(res).toBe(200);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.delete(2, blogId)).rejects.toThrow(ForbiddenException);
     });
   });
 

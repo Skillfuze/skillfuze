@@ -21,6 +21,14 @@ export class LivestreamService {
     }
   }
 
+  public static async delete(id: string): Promise<void> {
+    try {
+      await axios.delete(`api/v1/livestreams/${id}`);
+    } catch (error) {
+      throw parseError(error.response.data);
+    }
+  }
+
   public static async update(id: string, updatedLivestream: UpdateLivestreamDTO): Promise<Livestream> {
     try {
       const { data: livestream } = await axios.patch<Livestream>(`api/v1/livestreams/${id}`, updatedLivestream);

@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
   OneToOne,
   BeforeInsert,
   getManager,
@@ -62,6 +63,10 @@ export class Blog implements IBlog {
   @ApiProperty()
   @Column({ type: 'timestamp', nullable: true })
   public publishedAt: Date;
+
+  @ApiProperty()
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })

@@ -18,6 +18,14 @@ export class VideosService {
     return video;
   }
 
+  public static async delete(id: string): Promise<void> {
+    try {
+      await axios.delete(`api/v1/videos/${id}`);
+    } catch (error) {
+      throw parseError(error.response.data);
+    }
+  }
+
   public static async update(id: string, updatedVideo: UpdateVideoDTO): Promise<Video> {
     try {
       const { data: video } = await axios.patch<Video>(`api/v1/videos/${id}`, updatedVideo);

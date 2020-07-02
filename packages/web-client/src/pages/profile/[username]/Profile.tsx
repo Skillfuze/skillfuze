@@ -1,24 +1,24 @@
 import React from 'react';
 import { User } from '@skillfuze/types';
-import { Avatar, Button } from '@skillfuze/ui-components';
+import { Avatar, Button, MoreActions } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import Layout from '../../../components/Layout';
 import { UsersService } from '../../../services/users.service';
-import More from '../../../../assets/icons/More.svg';
 
 interface Props {
   user: User;
 }
 const ProfilePage: NextPage<Props> = ({ user }: Props) => {
+  const pageURL = typeof window === 'object' ? window.location.href : undefined;
   const router = useRouter();
 
   const handleLiveClick = (): void => {
     router.push(`/livestreams/${user.livestreams[0].id}`);
   };
 
-  const onClickMore = (): void => {
-    console.log('More');
+  const onEdit = (): void => {
+    console.log('Edit');
   };
 
   return (
@@ -44,7 +44,7 @@ const ProfilePage: NextPage<Props> = ({ user }: Props) => {
                   Follow
                 </Button>
               </div>
-              <More className="mt-1 cursor-pointer" onClick={onClickMore} />
+              <MoreActions URL={pageURL} enableControls onEdit={onEdit} />
             </div>
             <h5 className="font-bold text-black-light">{`${0} followers  ${0} following`}</h5>
             <p className="text-xl text-black-light">{user.bio}</p>

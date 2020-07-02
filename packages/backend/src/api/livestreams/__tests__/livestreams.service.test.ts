@@ -1,4 +1,4 @@
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import * as shortid from 'shortid';
 import { Livestream } from '../livestream.entity';
 
@@ -246,7 +246,7 @@ describe('LivestreamsService', () => {
     });
   });
 
-  describe('update', () => {
+  describe('delete', () => {
     const userId = 1;
     const streamId = '1';
     const stream = {
@@ -255,10 +255,48 @@ describe('LivestreamsService', () => {
         id: userId,
       },
     };
+    let res: HttpStatus;
+    let getOneSpy: jest.SpyInstance;
+    let repoSoftDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      repoSoftDeleteSpy = jest.spyOn(repository, 'softDelete');
+      getOneSpy = jest.spyOn(service, 'getOne');
+      getOneSpy.mockReturnValue(stream);
+
+      res = await service.delete(userId, streamId);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.softDelete once', async () => {
+      expect(repoSoftDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should return HttpStatus.OK (200)', async () => {
+      expect(res).toBe(HttpStatus.OK);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.delete(2, streamId)).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('update', () => {
+    const userId = 1;
+    const streamId = '1';
     let res: Livestream;
     let getOneSpy: jest.SpyInstance;
     let repoUpdateSpy: jest.SpyInstance;
     let repoFindOneSpy: jest.SpyInstance;
+    const stream = {
+      title: 'stream Title',
+      streamer: {
+        id: userId,
+      },
+    };
     const payload = {
       id: streamId,
       title: 'stream updated',

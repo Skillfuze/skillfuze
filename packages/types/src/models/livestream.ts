@@ -9,6 +9,7 @@ export interface Livestream {
   thumbnailURL: string;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
   streamer: User;
   tags: string[];
   streamKey: string;

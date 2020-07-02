@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Body, Param, Get, Patch } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body, Param, Get, Delete, HttpStatus, Patch } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
@@ -10,10 +10,10 @@ import {
   ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { UpdateLivestreamDTO } from './dtos/update-livestream.dto';
-import { LivestreamsService } from './livestreams.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateLivestreamDTO } from './dtos/create-livestream.dto';
 import { Livestream } from './livestream.entity';
+import { LivestreamsService } from './livestreams.service';
 
 @ApiTags('livestreams')
 @Controller('livestreams')
@@ -35,6 +35,16 @@ export class LivestreamsController {
   @ApiNotFoundResponse()
   public async getOne(@Param('id') livestreamId: string): Promise<Livestream> {
     return this.service.getOne(livestreamId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Delete('/:id')
+  public async delete(@Request() req, @Param('id') id: string): Promise<HttpStatus> {
+    return this.service.delete(req.user.id, id);
   }
 
   @UseGuards(JwtAuthGuard)

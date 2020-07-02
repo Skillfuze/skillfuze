@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
   OneToOne,
   BeforeInsert,
   getManager,
@@ -40,6 +41,9 @@ export class Video implements IVideo {
 
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  public deletedAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;

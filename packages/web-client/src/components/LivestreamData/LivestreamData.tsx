@@ -12,7 +12,7 @@ const LivestreamData = ({ livestream }: { livestream?: Livestream }) => {
 
   const [title, setTitle] = useState(editMode ? livestream.title : '');
   const [description, setDescription] = useState(editMode ? livestream.description : '');
-  const [thumbnailURL, setThumbnailURL] = useState(editMode ? livestream.thumbnailURL : '');
+  const [thumbnailURL, setThumbnailURL] = useState(editMode ? livestream.thumbnailURL : undefined);
   const [tags, setTags] = useState(editMode ? livestream.tags : []);
   const [streamKey, setStreamKey] = useState(editMode ? livestream.streamKey : '');
   const [category, setCategory] = useState<any>(
@@ -35,7 +35,7 @@ const LivestreamData = ({ livestream }: { livestream?: Livestream }) => {
         const stream = await LivestreamService.create({
           title,
           description,
-          thumbnailURL: thumbnailURL === '' ? null : thumbnailURL,
+          thumbnailURL,
           tags,
           category: category?.value as Category,
         });
@@ -48,7 +48,7 @@ const LivestreamData = ({ livestream }: { livestream?: Livestream }) => {
         await LivestreamService.update(livestream.id, {
           title,
           description,
-          thumbnailURL: thumbnailURL === '' ? null : thumbnailURL,
+          thumbnailURL: thumbnailURL === '' ? undefined : thumbnailURL,
           tags,
           category: category?.value as Category,
         });

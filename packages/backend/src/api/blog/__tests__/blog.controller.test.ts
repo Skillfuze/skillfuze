@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, HttpStatus } from '@nestjs/common';
 import { BlogController } from '../blog.controller';
 import { BlogService } from '../blog.service';
 import { Blog } from '../blog.entity';
@@ -7,7 +7,7 @@ import { BlogsEventEmitter } from '../blogs.eventemitter';
 import { CreateBlogDTO } from '../dtos/create-blog.dto';
 
 jest.mock('../blog.service');
-
+jest.mock('../blog.repository');
 describe('BlogController', () => {
   let controller: BlogController;
   let service: BlogService;
@@ -146,76 +146,23 @@ describe('BlogController', () => {
   });
 
   describe('deleteOne', () => {
-    let deleteOneBaseSpy: jest.Mock;
-    let blogServiceFindOneSpy: jest.SpyInstance;
-    const correctUserId = 2;
-
-    beforeEach(() => {
-      deleteOneBaseSpy = jest.fn();
-      const controllerBase = controller.base;
-      const getBaseSpy = jest.spyOn(controller, 'base', 'get');
-      getBaseSpy.mockImplementation(() => ({
-        deleteOneBase: deleteOneBaseSpy,
-        ...controllerBase,
-      }));
-
-      blogServiceFindOneSpy = jest.fn();
-      Object.defineProperty(service, 'findOne', {
-        get: () => blogServiceFindOneSpy,
-      });
-
-      blogServiceFindOneSpy.mockImplementation(() => {
-        return {
-          user: {
-            id: correctUserId,
-          },
-        };
-      });
+    const blogId = '1';
+    const userId = 1;
+    let res: HttpStatus;
+    let serviceDeleteSpy: jest.SpyInstance;
+    const request = {
+      user: { id: userId },
+      params: { id: blogId },
+    };
+    beforeEach(async () => {
+      serviceDeleteSpy = jest.spyOn(service, 'delete');
+      serviceDeleteSpy.mockReturnValue(HttpStatus.OK);
+      res = await controller.deleteOne(undefined, request);
     });
 
-    it('should call deleteOneBase with the correct params', async () => {
-      const payload = {
-        id: 1,
-      };
-
-      const request = {
-        user: { id: correctUserId },
-        params: { id: payload.id },
-      };
-
-      await controller.deleteOne(undefined, request);
-      expect(deleteOneBaseSpy).toBeCalledWith(undefined);
-    });
-
-    it('should throw error when deleting a blog with incorrect user', async () => {
-      const payload = {
-        id: 1,
-      };
-
-      const wrongUserId = 1;
-
-      const request = {
-        user: { id: wrongUserId },
-        params: { id: payload.id },
-      };
-
-      await expect(controller.deleteOne(undefined, request)).rejects.toThrow(ForbiddenException);
-
-      expect(blogServiceFindOneSpy).toBeCalledWith({ id: payload.id }, { relations: ['user'] });
-    });
-
-    it('should emit delete event', async () => {
-      const payload = {
-        id: 1,
-      };
-
-      const request = {
-        user: { id: correctUserId },
-        params: { id: payload.id },
-      };
-
-      await controller.deleteOne(undefined, request);
-      expect(emitSpy).toBeCalledWith('delete', undefined);
+    it('should call and return service.delete', async () => {
+      expect(serviceDeleteSpy).toBeCalledTimes(1);
+      expect(res).toBe(HttpStatus.OK);
     });
   });
 

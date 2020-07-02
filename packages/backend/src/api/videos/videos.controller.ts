@@ -1,4 +1,4 @@
-import { Controller, Body, Request, Post, UseGuards, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Body, Request, Post, UseGuards, Get, Param, Delete, HttpStatus, Patch } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
@@ -31,6 +31,15 @@ export class VideosController {
   @Get('/:id')
   public async getOne(@Param('id') id: string): Promise<Video> {
     return this.service.getOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Delete('/:id')
+  public async delete(@Request() req, @Param('id') id: string): Promise<HttpStatus> {
+    return this.service.delete(req.user.id, id);
   }
 
   @UseGuards(JwtAuthGuard)
