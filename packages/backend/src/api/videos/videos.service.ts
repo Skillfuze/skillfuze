@@ -1,3 +1,4 @@
+import { PaginatedResponse } from '@skillfuze/types';
 import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { UpdateVideoDTO } from './dtos/update-video-dto';
 import { VideosRepository } from './videos.repository';
@@ -34,15 +35,21 @@ export class VideosService {
     return HttpStatus.OK;
   }
 
-  public async getUserVideos(username: string): Promise<Video[]> {
-    const res = await this.repository.find({
+  public async getUserVideos(username: string, skip = 0, take = 10): Promise<PaginatedResponse<Video>> {
+    const [videos, count] = await this.repository.findAndCount({
       join: { alias: 'videos', innerJoin: { users: 'videos.uploader' } },
       where: (qb) => {
         qb.where('users.username = :username', { username });
       },
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
     });
 
-    return res;
+    return {
+      data: videos,
+      count,
+    };
   }
 
   public async update(userId: number, videoId: string, payload: UpdateVideoDTO): Promise<Video> {

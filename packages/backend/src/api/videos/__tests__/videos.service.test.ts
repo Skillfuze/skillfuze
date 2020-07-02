@@ -116,13 +116,13 @@ describe('VideosService', () => {
     const username = 'USERNAME';
 
     beforeAll(() => {
-      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Video()]));
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Video()], 1]));
     });
 
-    it('should return videos array', async () => {
-      const videos = await service.getUserVideos(username);
-      expect(videos.length).toBe(1);
-      expect(videos[0]).toBeInstanceOf(Video);
+    it('should return videos array and count = 1', async () => {
+      const res = await service.getUserVideos(username);
+      expect(res.data[0]).toBeInstanceOf(Video);
+      expect(res.count).toBe(1);
     });
   });
 

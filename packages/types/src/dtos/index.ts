@@ -9,3 +9,4 @@ export * from './create-video.dto';
 export * from './course-payload.dto';
 export * from './update-video-dto';
 export * from './user-token-payload';
+export * from './paginated-response.dto';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { User } from '../../users/user.entity';
 import { Video } from '../video.entity';
 
@@ -15,6 +16,10 @@ export class VideosRepository {
   }
 
   public async find() {
+    return undefined;
+  }
+
+  public async findAndCount() {
     return undefined;
   }
 

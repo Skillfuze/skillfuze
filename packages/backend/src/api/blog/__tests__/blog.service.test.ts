@@ -154,13 +154,13 @@ describe('BlogService', () => {
     const username = 'USERNAME';
 
     beforeAll(() => {
-      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Blog()]));
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Blog()], 1]));
     });
 
-    it('should return blogs array', async () => {
-      const videos = await service.getUserBlogs(username);
-      expect(videos.length).toBe(1);
-      expect(videos[0]).toBeInstanceOf(Blog);
+    it('should return blogs array and count = 1', async () => {
+      const res = await service.getUserBlogs(username);
+      expect(res.count).toBe(1);
+      expect(res.data[0]).toBeInstanceOf(Blog);
     });
   });
 });
