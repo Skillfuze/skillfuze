@@ -58,6 +58,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       where: (qb) => {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
+      relations: ['user'],
       order: { createdAt: 'DESC' },
       skip,
       take,

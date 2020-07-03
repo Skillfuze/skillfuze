@@ -39,6 +39,7 @@ export class CoursesService {
       where: (qb) => {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
+      relations: ['creator'],
       order: { createdAt: 'DESC' },
       skip,
       take,
@@ -56,6 +57,7 @@ export class CoursesService {
       where: (qb) => {
         qb.where('enrolled.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
+      relations: ['creator'],
       order: { createdAt: 'DESC' },
       skip,
       take,

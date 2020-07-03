@@ -41,6 +41,7 @@ export class VideosService {
       where: (qb) => {
         qb.where('users.username = :username', { username });
       },
+      relations: ['uploader', 'category'],
       order: { createdAt: 'DESC' },
       skip,
       take,
