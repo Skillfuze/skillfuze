@@ -44,6 +44,8 @@
     "react-alert": "^7.0.1",
     "react-alert-template-basic": "^1.0.0",
     "react-dom": "16.13.1",
+    "react-google-login": "^5.1.20",
+    "react-popper": "^2.2.3",
     "shortid": "^2.2.15",
     "tailwindcss": "^1.4.6",
     "video.js": "^7.7.6"

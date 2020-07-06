@@ -3,15 +3,10 @@ import { css } from 'emotion';
 export const baseSelectFieldStyle = css`
   font-size: 14px;
 
-  & > :first-child {
+  & > div:first-of-type {
     border-radius: 4px;
     border: solid 1px var(--color-grey);
     color: var(--color-black);
-
-    &:focus {
-      border-color: var(--color-primary);
-      outline: none;
-    }
 
     &:hover {
       border-color: var(--color-primary-light);

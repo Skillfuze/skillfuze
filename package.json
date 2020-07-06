@@ -25,7 +25,7 @@
     "build": "lerna run build",
     "bootstrap": "lerna bootstrap",
     "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
-    "format": "prettier '{.,src/**}/*.{js,jsx,ts,tsx}' --write",
+    "format": "prettier 'packages/**/*.{ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",
     "lerna": "lerna",
@@ -68,7 +68,7 @@
     "lint-staged": "^9.4.2",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.5",
     "ts-node": "^8.5.0",
     "typescript": "^3.8.3"
   },

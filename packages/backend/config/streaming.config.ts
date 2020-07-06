@@ -19,7 +19,7 @@ export const streamingServer = {
     tasks: [
       {
         app: 'live',
-        customArgs: outPath =>
+        customArgs: (outPath: string): string =>
           `
           -vf scale=w=640:h=360:force_original_aspect_ratio=decrease -c:a aac -ar 48000 -c:v h264 -profile:v main -crf 20 -sc_threshold 0 -g 48 -keyint_min 48 -hls_time 4  -b:v 800k -maxrate 856k -bufsize 1200k -b:a 96k -hls_segment_filename ${outPath}/360p_%03d.ts ${outPath}/360p.m3u8
 

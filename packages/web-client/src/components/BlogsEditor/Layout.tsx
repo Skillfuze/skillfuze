@@ -36,7 +36,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     const loadCategories = async () => {
-      setCategories((await CategoriesService.getAll()).map(cat => ({ value: cat, label: cat.name })));
+      setCategories((await CategoriesService.getAll()).map((cat) => ({ value: cat, label: cat.name })));
     };
     loadCategories();
   }, []);
@@ -127,7 +127,13 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
           className="mb-4"
           type="url"
         />
-        <SelectField placeholder="Select Category" onChange={setCategory} options={categories} error={error.category} />
+        <SelectField
+          className="z-50"
+          placeholder="Select Category"
+          onChange={setCategory}
+          options={categories}
+          error={error.category}
+        />
         <TagsInput tags={tags} onChange={setTags} limit={5} className="my-4" />
         <Editor editorState={editorState} onChange={setEditorState} />
       </div>

@@ -5,6 +5,7 @@ import { User } from '@skillfuze/types';
 import { Button } from '@skillfuze/ui-components';
 import Logo from '../../../assets/icons/skillfuze-logo.svg';
 import HeaderAvatarWrapper from './HeaderAvatarWrapper';
+import Categories from './Categories';
 
 interface Props {
   showProfileControls?: boolean;
@@ -14,9 +15,10 @@ interface Props {
 
 const Navbar: React.FC<Props> = (props: Props) => (
   <nav className="flex py-3 px-5 items-center space-x-6">
-    <div className="flex-grow self-start">
+    <div className="self-start">
       <Logo style={{ width: '7.5rem' }} className="cursor-pointer" onClick={() => Router.push('/')} />
     </div>
+    <div className="flex flex-grow justify-center">{props.showProfileControls && <Categories />}</div>
     <div>{props.controls}</div>
     {props.showProfileControls &&
       (props.user ? (

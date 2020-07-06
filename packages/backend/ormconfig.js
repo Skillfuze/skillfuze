@@ -5,7 +5,7 @@ module.exports = {
   "synchronize": process.env.NODE_ENV !== 'production',
   "logging": process.env.NODE_ENV !== 'production',
   "entities": [`${__dirname}/dist/**/*.entity.js`],
-  "migrations": [`${__dirname}/dist/db/migrations/*.ts`],
+  "migrations": [`${__dirname}/dist/db/migrations/*.js`],
   "cli": {
     "migrationsDir": "db/migrations"
   }

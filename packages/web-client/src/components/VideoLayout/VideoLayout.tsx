@@ -1,25 +1,34 @@
+/* eslint-disable no-restricted-globals */
 import React from 'react';
 import moment from 'moment';
-import { Avatar, Button, TagsView } from '@skillfuze/ui-components';
+import { Avatar, Button, TagsView, MoreActions } from '@skillfuze/ui-components';
+import { useRouter } from 'next/router';
 
-import { User } from '@skillfuze/types';
+import { User, Video, Livestream } from '@skillfuze/types';
 import VideoPlayer from '../VideoPlayer';
-import More from '../../../assets/icons/More.svg';
 import WatchingNow from './WatchingNow';
 import LiveChat from './LiveChat';
 
 interface Props {
   isLive: boolean;
-  user: any;
-  video: any;
+  user: User;
+  content: Video | Livestream;
   url: string;
   videoType: string;
   viewer?: User;
+  onDelete: any;
 }
 
-const VideoLayout: React.FC<Props> = ({ isLive, user, video, url, videoType, viewer }: Props) => {
-  const onClickMore = () => {
-    console.log('More');
+const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, viewer, onDelete }: Props) => {
+  const router = useRouter();
+  const pageURL = typeof window === 'object' ? window.location.href : undefined;
+
+  const onEdit = () => {
+    if (isLive) {
+      router.push(`/livestreams/edit/${content.id}`);
+    } else {
+      router.push(`/videos/edit/${content.id}`);
+    }
   };
 
   return (
@@ -27,25 +36,22 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, video, url, videoType, vie
       <VideoPlayer url={url} videoType={videoType} />
       <div className="flex lg:flex-no-wrap flex-wrap-reverse lg:space-x-4 lg:space-y-0 space-y-reverse space-y-4">
         <div className="space-y-4 flex-grow">
-          <h1 className="sub-container text-lg font-semibold">{video.title}</h1>
+          <h1 className="sub-container text-lg font-semibold">{content.title}</h1>
           <p className={isLive ? 'text-warning text-sm' : 'text-grey-dark text-sm'}>
-            {isLive ? <WatchingNow /> : moment(video.createdAt).format('MMM D, YYYY')}
+            {isLive ? <WatchingNow /> : moment(content.createdAt).format('MMM D, YYYY')}
           </p>
           <hr className="text-grey" />
-
           <div className="sub-container flex items-center space-x-3">
-            {/* TODO */}
-            <Avatar URL={undefined} alt="Profile Picture" />
+            <Avatar URL={user.avatarURL} alt="Profile Picture" />
             <p className="font-semibold flex-grow text-sm">{`${user.firstName} ${user.lastName}`}</p>
             <Button size="small" variant="outlined">
               Follow
             </Button>
-            <More className="cursor-pointer" onClick={onClickMore} />
+            <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
           </div>
-
           <div className="ml-12 pl-3 space-y-4">
-            <h2 className="text-grey-dark text-sm leading-normal">{video.description}</h2>
-            <TagsView className="text-sm" tags={video.tags} />
+            <h2 className="text-grey-dark text-sm leading-normal">{content.description}</h2>
+            <TagsView className="text-sm" tags={content.tags} />
           </div>
         </div>
         {isLive && <LiveChat user={viewer} />}

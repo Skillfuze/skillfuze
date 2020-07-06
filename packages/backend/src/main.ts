@@ -12,7 +12,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const isProd = process.env.NODE_ENV === 'production';
 
-  app.useGlobalPipes(new ValidationPipe({ exceptionFactory: errors => new BadRequestException(errors) }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      whitelist: true,
+      exceptionFactory: (errors) => new BadRequestException(errors),
+    }),
+  );
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(morgan(isProd ? 'combined' : 'dev', { stream }));
@@ -39,10 +45,10 @@ async function bootstrap() {
 }
 bootstrap();
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   logger.error('uncaught exception', err);
 });
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   logger.error('unhandled rejection', err);
 });

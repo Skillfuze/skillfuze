@@ -23,7 +23,7 @@ describe('Categories Controller', () => {
     let result: any;
 
     beforeAll(async () => {
-      jest.spyOn(service, 'getAll').mockReturnValue(new Promise(resolve => resolve(serviceReturnValue)));
+      jest.spyOn(service, 'getAll').mockReturnValue(new Promise((resolve) => resolve(serviceReturnValue)));
       result = await controller.getAll();
     });
 

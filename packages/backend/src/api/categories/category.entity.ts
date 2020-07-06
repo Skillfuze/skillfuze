@@ -12,4 +12,8 @@ export class Category implements ICategory {
   @IsOptional()
   @Column()
   public name: string;
+
+  @IsOptional()
+  @Column({ nullable: true })
+  public slug?: string;
 }
