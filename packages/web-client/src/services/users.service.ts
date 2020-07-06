@@ -1,5 +1,5 @@
-import { User, Video, Blog } from '@skillfuze/types';
-/* eslint-disable no-underscore-dangle */
+import { User, Video, Blog, Course, PaginatedResponse, PaginationOptions } from '@skillfuze/types';
+import qs from 'qs';
 import axios from 'axios';
 
 export class UsersService {
@@ -8,13 +8,23 @@ export class UsersService {
     return res.data;
   }
 
-  static async getVideos(username: string): Promise<Video[]> {
-    const res = await axios.get(`/api/v1/users/${username}/videos`);
+  static async getVideos(username: string, options?: PaginationOptions): Promise<PaginatedResponse<Video>> {
+    const res = await axios.get(`/api/v1/users/${username}/videos?${qs.stringify(options)}`);
     return res.data;
   }
 
-  static async getBlogs(username: string): Promise<Blog[]> {
-    const res = await axios.get(`/api/v1/users/${username}/blogs`);
+  static async getBlogs(username: string, options?: PaginationOptions): Promise<PaginatedResponse<Blog>> {
+    const res = await axios.get(`/api/v1/users/${username}/blogs?${qs.stringify(options)}`);
+    return res.data;
+  }
+
+  static async getCourses(username: string, options?: PaginationOptions): Promise<PaginatedResponse<Course>> {
+    const res = await axios.get(`/api/v1/users/${username}/courses?${qs.stringify(options)}`);
+    return res.data;
+  }
+
+  static async getEnrolledCourses(username: string, options?: PaginationOptions): Promise<PaginatedResponse<Course>> {
+    const res = await axios.get(`/api/v1/users/${username}/enrolledCourses?${qs.stringify(options)}`);
     return res.data;
   }
 }

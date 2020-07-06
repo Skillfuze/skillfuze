@@ -9,6 +9,6 @@ export { default as TagsView } from './components/TagsView';
 export { default as SelectField } from './components/SelectField';
 export { default as HeaderAvatar } from './components/HeaderAvatar';
 export { default as MoreActions } from './components/MoreActions';
-export { default as ContentTabs } from './components/ContentTabs';
 export { default as Loading } from './components/Loading';
+export * from './components/ContentTabs';
 export * from './components/ContentCard';

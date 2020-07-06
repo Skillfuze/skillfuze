@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, HttpStatus } from '@
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import slugify from 'slugify';
 import axios from 'axios';
+import { PaginatedResponse } from '@skillfuze/types';
 
 import { Blog } from './blog.entity';
 import { BlogRepository } from './blog.repository';
@@ -51,15 +52,21 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     return this.repository.findOne(blogId);
   }
 
-  public async getUserBlogs(username: string): Promise<Blog[]> {
-    const res = await this.repository.find({
+  public async getUserBlogs(username: string, skip = 0, take = 10): Promise<PaginatedResponse<Blog>> {
+    const [blogs, count] = await this.repository.findAndCount({
       join: { alias: 'blogs', innerJoin: { users: 'blogs.user' } },
       where: (qb) => {
-        qb.where('users.username = :username', { username });
+        qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
     });
-
-    return res;
+    return {
+      data: blogs,
+      count,
+    };
   }
 
   private generateUrl(title: string, blogId: string): string {

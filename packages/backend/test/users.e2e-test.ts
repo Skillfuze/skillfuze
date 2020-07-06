@@ -90,20 +90,43 @@ describe('UsersController (e2e)', () => {
     it('should get the user videos successfully', async () => {
       const res = await request(app.getHttpServer()).get(`${url}/${user.username}/videos`).send().expect(200);
 
-      expect(res.body.length).toBe(0);
+      expect(res.body.data.length).toBe(0);
+      expect(res.body.count).toBe(0);
     });
   });
 
   describe('GET /api/v1/users/:username/blogs', () => {
     const url = '/api/v1/users';
 
-    it('should get the user blogs successfully', async () => {
+    it('should get the user blogs and their count successfully', async () => {
       const res = await request(app.getHttpServer()).get(`${url}/${user.username}/blogs`).send().expect(200);
 
-      expect(res.body.length).toBe(0);
+      expect(res.body.data.length).toBe(0);
+      expect(res.body.count).toBe(0);
     });
   });
 
+  describe('GET /api/v1/users/:username/courses', () => {
+    const url = '/api/v1/users';
+
+    it('should get the user courses and their count successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/courses`).send().expect(200);
+
+      expect(res.body.data.length).toBe(0);
+      expect(res.body.count).toBe(0);
+    });
+  });
+
+  describe('GET /api/v1/users/:username/enrolledCourses', () => {
+    const url = '/api/v1/users';
+
+    it('should get the user enrolledCourses and their count successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}/${user.username}/enrolledCourses`).send().expect(200);
+
+      expect(res.body.data.length).toBe(0);
+      expect(res.body.count).toBe(0);
+    });
+  });
   afterEach(async () => {
     const userRepo = module.get<UserRepository>(UserRepository);
     await userRepo.delete({});

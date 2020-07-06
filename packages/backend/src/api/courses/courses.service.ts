@@ -1,3 +1,4 @@
+import { PaginatedResponse } from '@skillfuze/types';
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import slugify from 'slugify';
 import shortid from 'shortid';
@@ -30,6 +31,42 @@ export class CoursesService {
     }
 
     return course;
+  }
+
+  public async getUserCourses(username: string, skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
+    const [courses, count] = await this.repository.findAndCount({
+      join: { alias: 'courses', innerJoin: { users: 'courses.creator' } },
+      where: (qb) => {
+        qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
+      },
+      relations: ['creator'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: courses,
+      count,
+    };
+  }
+
+  public async getUserEnrolledCourses(username: string, skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
+    const [enrolled, count] = await this.repository.findAndCount({
+      join: { alias: 'courses', leftJoinAndSelect: { enrolled: 'courses.enrolled' } },
+      where: (qb) => {
+        qb.where('enrolled.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
+      },
+      relations: ['creator'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: enrolled,
+      count,
+    };
   }
 
   public async delete(userId: number, courseId: string): Promise<void> {
