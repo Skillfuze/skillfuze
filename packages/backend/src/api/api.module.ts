@@ -7,9 +7,19 @@ import { BlogModule } from './blog/blog.module';
 import { LivestreamsModule } from './livestreams/livestreams.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CoursesModule } from './courses/courses.module';
+import { AttachmentsModule } from './attachments/attachments.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, BlogModule, LivestreamsModule, VideosModule, CategoriesModule, CoursesModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    BlogModule,
+    LivestreamsModule,
+    VideosModule,
+    CategoriesModule,
+    CoursesModule,
+    AttachmentsModule,
+  ],
   controllers: [],
   providers: [],
 })
