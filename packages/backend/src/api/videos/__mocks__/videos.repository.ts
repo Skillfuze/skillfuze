@@ -14,6 +14,10 @@ export class VideosRepository {
     return payload;
   }
 
+  public async find() {
+    return undefined;
+  }
+
   public async findOne(id: string, options: any) {
     if (id !== '1') {
       return undefined;
@@ -26,5 +30,13 @@ export class VideosRepository {
     }
 
     return video;
+  }
+
+  public async softDelete(payload: any) {
+    return payload;
+  }
+
+  public async update(payload: any) {
+    return payload;
   }
 }

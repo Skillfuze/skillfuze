@@ -16,8 +16,8 @@ const LiveChat: React.FC<LiveChatProps> = ({ user }: LiveChatProps) => {
   const [userId] = useState(shortid.generate);
   const chatDivRef = useRef<HTMLDivElement>();
 
-  const addMessage = payload => {
-    setMessages(prev => [...prev, payload]);
+  const addMessage = (payload) => {
+    setMessages((prev) => [...prev, payload]);
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ user }: LiveChatProps) => {
 
   const { socket } = useSocket(LivestreamsEvents.CHAT, addMessage);
 
-  const onSend = event => {
+  const onSend = (event) => {
     event.preventDefault();
 
     const author = user ? `${user.firstName} ${user.lastName}` : `[Guest] ${userId}`;
@@ -41,11 +41,11 @@ const LiveChat: React.FC<LiveChatProps> = ({ user }: LiveChatProps) => {
       <h5 className="font-semibold p-3 bg-primary text-white">Live Chat</h5>
       <div
         className="flex-grow p-4 space-y-4 overflow-scroll shadow"
-        ref={ref => {
+        ref={(ref) => {
           chatDivRef.current = ref;
         }}
       >
-        {messages.map(message => (
+        {messages.map((message) => (
           <div className="flex flex-col text-sm">
             <p className="font-semibold">
               {`${message.author}: `}

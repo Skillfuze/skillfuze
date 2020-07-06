@@ -60,11 +60,7 @@ describe('Livestreams (e2e)', () => {
     };
 
     it('should create livestream successfully', async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       expect(res.body.id).not.toBe(undefined);
 
@@ -96,11 +92,7 @@ describe('Livestreams (e2e)', () => {
       category: { id: 1 },
     };
     beforeAll(async () => {
-      const res = await request(app.getHttpServer())
-        .post(url)
-        .send(payload)
-        .set('Authorization', token)
-        .expect(201);
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
 
       createdStream = res.body;
     });
@@ -115,8 +107,122 @@ describe('Livestreams (e2e)', () => {
     });
 
     it('should return NotFoundException on invalid streamId', async () => {
+      await request(app.getHttpServer()).get(`${url}/id`).expect(404);
+    });
+  });
+
+  describe('DELETE /api/v1/livestreams/:id', () => {
+    let stream: Livestream;
+    let newToken: string;
+
+    beforeAll(async () => {
+      const payload = {
+        firstName: 'Karim',
+        lastName: 'Elsayed',
+        email: 'Karim@skillfuze.com',
+        password: '123456789',
+        confirmPassword: '123456789',
+      };
+      const newUser = await userService.register(payload);
+      const authService = module.get<AuthService>(AuthService);
+      newToken = `Bearer ${authService.generateToken(newUser)}`;
+    });
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Livestream Title',
+        url: 'http://a.com',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
+
+      stream = res.body;
+    });
+
+    it('should delete stream successfully on valid data', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', token).expect(200);
+    });
+
+    it('should return Unauthorized on invalid token', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', '').expect(401);
+    });
+
+    it('should return 403 when token.Id doesnot match the streamer.Id', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', newToken).expect(403);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer()).delete(`${url}/invalid-id`).set('Authorization', token).expect(404);
+    });
+  });
+
+  describe('PATCH /api/v1/livestreams/:id', () => {
+    let stream: Livestream;
+    let newToken: string;
+    const updatedPayload = {
+      title: 'Livestream Title',
+      category: { id: 1 },
+    };
+
+    beforeAll(async () => {
+      const payload = {
+        firstName: 'Mariam',
+        lastName: 'Kamel',
+        email: 'MariamKamel@skillfuze.com',
+        password: '123456789',
+        confirmPassword: '123456789',
+      };
+      const newUser = await userService.register(payload);
+      const authService = module.get<AuthService>(AuthService);
+      newToken = `Bearer ${authService.generateToken(newUser)}`;
+    });
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Livestream Title',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token).expect(201);
+
+      stream = res.body;
+    });
+    it('should update stream successfully on valid data', async () => {
+      const { body } = await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', token)
+        .expect(200);
+
+      expect(body.id).toBe(stream.id);
+      expect(body.title).toBe(updatedPayload.title);
+      expect(body.streamer.id).toBe(user.id);
+    });
+    it('should return 403 when streamer isnot the editor', async () => {
       await request(app.getHttpServer())
-        .get(`${url}/id`)
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', newToken)
+        .expect(403);
+    });
+    it('should return 400 on invalid data', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send({ ...updatedPayload, title: '' })
+        .set('Authorization', token)
+        .expect(400);
+    });
+    it('should return Unauthorized on invalid token', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/${stream.id}`)
+        .send(updatedPayload)
+        .set('Authorization', '')
+        .expect(401);
+    });
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer())
+        .patch(`${url}/invalid-id`)
+        .send(updatedPayload)
+        .set('Authorization', token)
         .expect(404);
     });
   });

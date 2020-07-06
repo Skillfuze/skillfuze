@@ -9,6 +9,7 @@ interface TagsInputProps {
   onChange: (tags: string[]) => void;
   limit?: number;
   className?: string;
+  placeholder?: string;
 }
 
 const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
@@ -25,7 +26,7 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
         return;
       }
 
-      if (props.tags.find(tag => tag.toLowerCase() === input.toLowerCase())) {
+      if (props.tags.find((tag) => tag.toLowerCase() === input.toLowerCase())) {
         return;
       }
 
@@ -51,11 +52,12 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
           <Input
             className="px-1"
             value={input}
+            style={{ backgroundColor: 'white' }}
             type="text"
             onKeyDown={inputKeyDown}
             onChange={setInput}
             borderless
-            placeholder={props.tags.length ? '' : 'Insert tag...'}
+            placeholder={props.tags.length ? '' : props.placeholder}
             disabled={Boolean(props.limit && props.limit === props.tags.length)}
           />
         </li>
@@ -66,6 +68,7 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
 
 TagsInput.defaultProps = {
   limit: 0,
+  placeholder: 'Insert Tags...',
 };
 
 export default TagsInput;

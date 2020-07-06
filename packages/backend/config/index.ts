@@ -8,6 +8,7 @@ import { winstonOptions as winston } from './winston.config';
 
 import { tusConfig } from './tus.config';
 import { streamingServer } from './streaming.config';
+import { oauth } from './oauth.config';
 
 type Config = {
   api: {
@@ -22,6 +23,7 @@ type Config = {
   winston: typeof winston;
   tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
+  oauth: typeof oauth;
 };
 
 const config: Config = {
@@ -62,6 +64,7 @@ const config: Config = {
   winston,
   tus: tusConfig,
   streamingServer,
+  oauth,
 };
 
 export default config;

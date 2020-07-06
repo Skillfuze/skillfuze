@@ -11,6 +11,7 @@ export interface Blog {
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
+  deletedAt: Date;
   user: User;
   tags: string[];
   category: Category;

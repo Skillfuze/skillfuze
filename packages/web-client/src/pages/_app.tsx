@@ -11,12 +11,12 @@ import '@uppy/screen-capture/dist/style.min.css';
 import '@uppy/webcam/dist/style.min.css';
 import '@skillfuze/ui-components/build/index.css';
 
-import React from 'react';
-import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import React, { useEffect } from 'react';
+import { transitions, positions, Provider as AlertProvider, useAlert } from 'react-alert';
 import { Alert } from '@skillfuze/ui-components';
 import Head from 'next/head';
 
-import '../../config/axios';
+import { configureErrorInterceptor } from '../../config/axios';
 
 const options = {
   position: positions.TOP_CENTER,
@@ -54,10 +54,21 @@ const App = ({ Component, pageProps }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <AlertProvider template={Alert} {...options}>
-        <Component {...pageProps} />
+        <AlertInterceptor>
+          <Component {...pageProps} />
+        </AlertInterceptor>
       </AlertProvider>
     </>
   );
+};
+
+const AlertInterceptor = (props) => {
+  const alert = useAlert();
+  useEffect(() => {
+    configureErrorInterceptor((msg: string) => alert.show(msg, { type: 'warning' }));
+  }, []);
+
+  return props.children;
 };
 
 export default App;

@@ -1,4 +1,14 @@
-import { Controller, UseGuards, Request, ForbiddenException, Post, HttpCode, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Request,
+  ForbiddenException,
+  Post,
+  HttpCode,
+  Get,
+  Param,
+  HttpStatus,
+} from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
 import {
@@ -112,21 +122,11 @@ export class BlogController implements CrudController<Blog> {
   @ApiUnauthorizedResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
-  async deleteOne(@ParsedRequest() req: CrudRequest, @Request() nestRequest): Promise<void | Blog> {
-    const blog = await this.service.findOne(
-      { id: nestRequest.params.id },
-      {
-        relations: ['user'],
-      },
-    );
-
-    if (blog && blog.user.id !== nestRequest.user.id) {
-      throw new ForbiddenException();
-    }
-
-    const res = await this.base.deleteOneBase(req);
+  async deleteOne(@ParsedRequest() req: CrudRequest, @Request() nestRequest): Promise<HttpStatus> {
+    const { id } = nestRequest.params;
+    const res = await this.service.delete(nestRequest.user.id, id);
     this.emitter.emit('delete', res);
-    return res;
+    return HttpStatus.OK;
   }
 
   @UseGuards(JwtAuthGuard)

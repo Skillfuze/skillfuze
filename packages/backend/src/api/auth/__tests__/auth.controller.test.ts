@@ -3,10 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import * as shortid from 'shortid';
 import { HashingService } from '../services/hashing.service';
 import { AuthService } from '../services/auth.service';
-import { EmailAlreadyExistsException } from '../../../common/exceptions/email-already-exists.exception';
+import { EmailAlreadyExistsException } from '../../common/exceptions/email-already-exists.exception';
 import { AuthController } from '../auth.controller';
 import { User } from '../../users/user.entity';
 import { UserService } from '../../users/user.service';
+import { UserRepository } from '../../users/user.repository';
 
 jest.mock('../../users/user.service');
 jest.mock('@nestjs/jwt');
@@ -20,7 +21,7 @@ describe('Auth Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [UserService, AuthService, JwtService, HashingService],
+      providers: [UserService, AuthService, JwtService, HashingService, UserRepository],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -118,7 +119,7 @@ describe('Auth Controller', () => {
         return undefined;
       });
 
-      generateTokenSpy.mockImplementation((p: object) => {
+      generateTokenSpy.mockImplementation((p: any) => {
         if (p) return 'token';
         return undefined;
       });
