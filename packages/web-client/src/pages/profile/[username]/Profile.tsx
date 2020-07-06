@@ -122,12 +122,13 @@ const ProfilePage: NextPage<Props> = ({
 };
 
 ProfilePage.getInitialProps = async (ctx) => {
-  const user = await UsersService.getProfileInfo(ctx.query.username.toString());
-  const initialBlogs = await UsersService.getBlogs(ctx.query.username.toString());
-  const initialVideos = await UsersService.getVideos(ctx.query.username.toString());
-  const initialCourses = await UsersService.getCourses(ctx.query.username.toString());
-  const initialEnrolledCourses = await UsersService.getEnrolledCourses(ctx.query.username.toString());
-
+  const [user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses] = await Promise.all([
+    UsersService.getProfileInfo(ctx.query.username.toString()),
+    UsersService.getBlogs(ctx.query.username.toString()),
+    UsersService.getVideos(ctx.query.username.toString()),
+    UsersService.getCourses(ctx.query.username.toString()),
+    UsersService.getEnrolledCourses(ctx.query.username.toString()),
+  ]);
   return { user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses };
 };
 
