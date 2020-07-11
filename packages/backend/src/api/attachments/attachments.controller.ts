@@ -1,6 +1,6 @@
 import { Controller, Post, UseInterceptors, UploadedFile, Req, Get, Param, Res } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AttachmentResponseDTO, AttachmentType } from '@skillfuze/types';
+import { AttachmentResponseDTO } from '@skillfuze/types';
 import path from 'path';
 
 import { FileTypeInterceptor } from './file-type.interceptor';
@@ -13,7 +13,7 @@ export class AttachmentsController {
     const fileUrl =
       process.env.NODE_ENV === 'production'
         ? file.location
-        : `http://localhost:3000/api/v1/attachments/${AttachmentType[req.query.type]}/${file.filename}`;
+        : `http://localhost:3000/api/v1/attachments/${req.query.type}/${file.filename}`;
     return { url: fileUrl };
   }
 

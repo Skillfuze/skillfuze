@@ -13,7 +13,7 @@ export class UpdateVideoDTO implements IUpdateVideoDTO {
   @IsOptional()
   public description?: string;
 
-  @IsUrl({}, { message: 'Thumbnail URL should be valid URL' })
+  @IsUrl({ require_tld: false }, { message: 'Thumbnail URL should be valid URL' })
   @IsOptional()
   public thumbnailURL?: string;
 

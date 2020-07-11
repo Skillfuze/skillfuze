@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
-import { Video, Category } from '@skillfuze/types';
+import { Video, Category, AttachmentType } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 
 import NoSSR from '../NoSSR';
@@ -9,6 +9,7 @@ import VideoUploader from '../VideoUploader';
 import { CategoriesService } from '../../services/categories.service';
 import config from '../../../config';
 import { VideosService } from '../../services/videos.service';
+import UploadButton from '../UploadButton';
 
 interface Props {
   video?: Video;
@@ -102,11 +103,11 @@ const VideoData: React.FC<Props> = ({ video }: Props) => {
             multiline
             rows={6}
           />
-          <Input
-            error={error.thumbnailURL}
-            placeholder="Thumbnail URL"
-            onChange={setThumbnailURL}
-            value={thumbnailURL}
+          <UploadButton
+            placeholder="Thumbnail"
+            onUploadComplete={setThumbnailURL}
+            accept="image/*"
+            type={AttachmentType.VIDEO_THUMBNAIL}
           />
           <SelectField
             placeholder="Select Category"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, SelectField } from '@skillfuze/ui-components';
-import { User, Course } from '@skillfuze/types';
+import { User, Course, AttachmentType } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 import Layout from '../../../../components/Layout';
 import MultiStepForm, { Step } from '../../../../components/MultiStepForm';
@@ -10,6 +10,7 @@ import { CoursesService } from '../../../../services/courses.service';
 import withAuth from '../../../../utils/withAuth';
 import CourseContentEditor from '../../../../components/CourseContentEditor/CourseContentEditor';
 import { UsersService } from '../../../../services/users.service';
+import UploadButton from '../../../../components/UploadButton';
 
 interface Props {
   user: User;
@@ -21,8 +22,7 @@ const EditCourse = ({ user, course }: Props) => {
   const [description, setDescription] = useState(course.description ?? '');
   const [tags, setTags] = useState(course.tags ?? []);
   const [thumbnailURL, setThumbnailURL] = useState(course.thumbnailURL ?? undefined);
-  // TODO
-  const [trailerURL] = useState(course.trailerURL ?? undefined);
+  const [trailerURL, setTrailerURL] = useState(course.trailerURL ?? undefined);
   const [price, setPrice] = useState(course.price ? course.price.toString() : '0');
   const [category, setCategory] = useState<any>(
     course.category ? { value: course.category, label: course.category.name } : undefined,
@@ -119,8 +119,18 @@ const EditCourse = ({ user, course }: Props) => {
             description="Upload a promotional video and add a thumbnail to your course,
     also don’t forget to choose your pricing."
           >
-            <Input placeholder="Thumbnail URL" value={thumbnailURL} onChange={setThumbnailURL} label="Thumbnail" />
-            <Input placeholder="Promotional Video" label="Promotional Video" />
+            <UploadButton
+              label="Thumbnail"
+              onUploadComplete={setThumbnailURL}
+              accept="image/*"
+              type={AttachmentType.COURSE_THUMBNAIL}
+            />
+            <UploadButton
+              label="Promotional Video"
+              onUploadComplete={setTrailerURL}
+              accept="video/*"
+              type={AttachmentType.COURSE_TRAILER}
+            />
             <Input placeholder="Price" value={price} onChange={setPrice} label="Price" error={errors.price} />
           </Step>
 

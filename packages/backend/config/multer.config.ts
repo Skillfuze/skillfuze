@@ -1,4 +1,3 @@
-import { AttachmentType } from '@skillfuze/types';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -15,30 +14,34 @@ AWS.config.update({
   region: process.env.S3_REGION,
 });
 
-const s3Storage = multerS3({
-  s3,
-  bucket: S3_BUCKET_NAME,
-  acl: 'public-read',
-  contentType: multerS3.AUTO_CONTENT_TYPE,
-  key(request, file, cb) {
-    const uniqueSuffix = `${Date.now()}-${shortid()}`;
-    cb(null, `${AttachmentType[request.query.type]}/${uniqueSuffix}${path.extname(file.originalname)}`);
-  },
-});
+let storage;
 
-const diskStorage = multer.diskStorage({
-  destination(req, file, cb) {
-    const dest = path.join(process.env.HOME, `.skillfuze/uploads/${AttachmentType[req.query.type]}`);
-    if (!fs.existsSync(dest)) {
-      fs.mkdirSync(dest, { recursive: true });
-    }
+if (process.env.NODE_ENV === 'production') {
+  storage = multerS3({
+    s3,
+    bucket: S3_BUCKET_NAME,
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key(request, file, cb) {
+      const uniqueSuffix = `${Date.now()}-${shortid()}`;
+      cb(null, `${request.query.type}/${uniqueSuffix}${path.extname(file.originalname)}`);
+    },
+  });
+} else {
+  storage = multer.diskStorage({
+    destination(req, file, cb) {
+      const dest = path.join(process.env.HOME, `.skillfuze/uploads/${req.query.type}`);
+      if (!fs.existsSync(dest)) {
+        fs.mkdirSync(dest, { recursive: true });
+      }
 
-    cb(null, dest);
-  },
-  filename(req, file, cb) {
-    const uniqueSuffix = `${Date.now()}-${shortid()}`;
-    cb(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
-  },
-});
+      cb(null, dest);
+    },
+    filename(req, file, cb) {
+      const uniqueSuffix = `${Date.now()}-${shortid()}`;
+      cb(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
+    },
+  });
+}
 
-export const multerConfig = { storage: process.env.NODE_ENV === 'production' ? s3Storage : diskStorage };
+export const multerConfig = { storage };

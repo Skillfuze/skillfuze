@@ -6,7 +6,7 @@ import { AttachmentType } from '@skillfuze/types';
 export class FileTypeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
-    if (!(request.query.type in AttachmentType)) {
+    if (!Object.values(AttachmentType).includes(request.query.type)) {
       throw new BadRequestException('Invalid Attachment Type');
     }
     return next.handle();
