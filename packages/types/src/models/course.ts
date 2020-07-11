@@ -15,4 +15,6 @@ export interface Course {
   lessons: CourseLesson[];
   creator: User;
   enrolled: User[];
+  createdAt: Date;
+  updatedAt: Date;
 }
