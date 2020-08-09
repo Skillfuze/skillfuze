@@ -82,11 +82,17 @@ jobs:
       - image: circleci/mysql:8.0.12
         environment:
           MYSQL_ROOT_HOST: 127.0.0.1
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
-          MYSQL_USER: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-          MYSQL_PASSWORD: root
     steps:
+      - run:
+          name: Prepare database
+          command: |
+            mysql -u root -p root <<EOF
+              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
+              FLUSH PRIVILEGES;
+              quit
+            EOF
       - attach_workspace:
           at: ~/skillfuze
       - run:
