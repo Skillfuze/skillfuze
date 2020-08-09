@@ -90,6 +90,7 @@ jobs:
       - run:
           name: Prepare database
           command: |
+            sudo apt-get install default-mysql-client
             mysql -u root -p root \<<EOF
               ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
               FLUSH PRIVILEGES;
