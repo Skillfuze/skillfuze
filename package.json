@@ -24,7 +24,7 @@
     "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
     "build": "lerna run build",
     "bootstrap": "lerna bootstrap",
-    "lint": "eslint . --ext .js.jsx.tsx,.ts",
+    "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
     "format": "prettier 'packages/**/*.{ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",

@@ -1,13 +1,13 @@
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import * as slugify from 'slugify';
 import * as shortid from 'shortid';
+import { Blog } from '../blog.entity';
 
 import { BlogService } from '../blog.service';
 import { BlogRepository } from '../blog.repository';
 import { BlogsEventEmitter } from '../blogs.eventemitter';
 import config from '../../../../config';
-import { Blog } from '../blog.entity';
 
 jest.mock('../blog.repository');
 jest.mock('@nestjsx/crud-typeorm');
@@ -66,6 +66,45 @@ describe('BlogService', () => {
     });
   });
 
+  describe('delete', () => {
+    const userId = 1;
+    const blogId = '1';
+    const blog = {
+      title: 'blog Title',
+      user: {
+        id: userId,
+      },
+    };
+    let res: HttpStatus;
+    let repoFindOneSpy: jest.SpyInstance;
+    let repoSoftDeleteSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      repoSoftDeleteSpy = jest.spyOn(repository, 'softDelete');
+      repoFindOneSpy = jest.spyOn(repository, 'findOne');
+      repoFindOneSpy.mockReturnValue(blog);
+
+      res = await service.delete(userId, blogId);
+    });
+
+    it('should call repo.findOne once', async () => {
+      expect(repoFindOneSpy).toBeCalledTimes(1);
+    });
+
+    it('should call repo.softDelete once', async () => {
+      expect(repoSoftDeleteSpy).toBeCalledTimes(1);
+    });
+
+    it('should return 200 ', async () => {
+      expect(res).toBe(200);
+    });
+
+    it('should throw forbiddenException when userId not equal stream.streamer.id', async () => {
+      await expect(service.delete(2, blogId)).rejects.toThrow(ForbiddenException);
+    });
+  });
+
   describe('buildGatsby', () => {
     let buildGatsbySpy: jest.SpyInstance;
 
@@ -115,13 +154,13 @@ describe('BlogService', () => {
     const username = 'USERNAME';
 
     beforeAll(() => {
-      jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve([new Blog()]));
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Blog()], 1]));
     });
 
-    it('should return blogs array', async () => {
-      const videos = await service.getUserBlogs(username);
-      expect(videos.length).toBe(1);
-      expect(videos[0]).toBeInstanceOf(Blog);
+    it('should return blogs array and count = 1', async () => {
+      const res = await service.getUserBlogs(username);
+      expect(res.count).toBe(1);
+      expect(res.data[0]).toBeInstanceOf(Blog);
     });
   });
 });

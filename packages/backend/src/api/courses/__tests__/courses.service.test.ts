@@ -75,6 +75,34 @@ describe('CoursesService', () => {
     });
   });
 
+  describe('getUserCourses', () => {
+    const username = 'USERNAME';
+
+    beforeAll(() => {
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Course()], 1]));
+    });
+
+    it('should return courses array and count = 1', async () => {
+      const res = await service.getUserCourses(username);
+      expect(res.count).toBe(1);
+      expect(res.data[0]).toBeInstanceOf(Course);
+    });
+  });
+
+  describe('getUserEnrolledCourses', () => {
+    const username = 'USERNAME';
+
+    beforeAll(() => {
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Course()], 1]));
+    });
+
+    it('should return courses array and count = 1', async () => {
+      const res = await service.getUserCourses(username);
+      expect(res.count).toBe(1);
+      expect(res.data[0]).toBeInstanceOf(Course);
+    });
+  });
+
   describe('delete', () => {
     let repositorySoftDeleteSpy: jest.SpyInstance;
     const validId = 'VALID_ID';

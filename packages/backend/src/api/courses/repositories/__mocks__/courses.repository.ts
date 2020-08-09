@@ -19,6 +19,10 @@ export class CoursesRepository {
     return undefined;
   }
 
+  public findAndCount() {
+    return undefined;
+  }
+
   public findOne(payload: any, options: any): Course {
     if (payload.slug === 'VALID_SLUG' || payload.id === 'VALID_ID' || payload === 'VALID_ID') {
       const course = new Course();

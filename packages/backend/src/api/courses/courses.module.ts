@@ -11,5 +11,6 @@ import { CourseLessonsRepository } from './repositories/lessons.repository';
   imports: [TypeOrmModule.forFeature([CoursesRepository, MaterialViewsRepository, CourseLessonsRepository])],
   providers: [CoursesService],
   controllers: [CoursesController],
+  exports: [CoursesService],
 })
 export class CoursesModule {}

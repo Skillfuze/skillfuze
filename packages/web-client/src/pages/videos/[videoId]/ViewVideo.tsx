@@ -1,6 +1,7 @@
 import React from 'react';
 import { Video, User } from '@skillfuze/types';
 
+import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import VideoLayout from '../../../components/VideoLayout';
 import { VideosService } from '../../../services/videos.service';
@@ -12,9 +13,22 @@ interface Props {
 }
 
 const ViewVideo = ({ video, user }: Props) => {
+  const router = useRouter();
+  const onDelete = async () => {
+    await VideosService.delete(video.id);
+    router.push(`/`);
+  };
+
   return (
     <Layout title={video.title} user={user}>
-      <VideoLayout isLive={false} user={video.uploader} video={video} url={video.url} videoType="video/mp4" />
+      <VideoLayout
+        isLive={false}
+        user={video.uploader}
+        content={video}
+        url={video.url}
+        videoType="video/mp4"
+        onDelete={onDelete}
+      />
     </Layout>
   );
 };

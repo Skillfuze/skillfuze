@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { User } from '../../users/user.entity';
 import { Video } from '../video.entity';
 
@@ -18,6 +19,10 @@ export class VideosRepository {
     return undefined;
   }
 
+  public async findAndCount() {
+    return undefined;
+  }
+
   public async findOne(id: string, options: any) {
     if (id !== '1') {
       return undefined;
@@ -30,6 +35,10 @@ export class VideosRepository {
     }
 
     return video;
+  }
+
+  public async softDelete(payload: any) {
+    return payload;
   }
 
   public async update(payload: any) {

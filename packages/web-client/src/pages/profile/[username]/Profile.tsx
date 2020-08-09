@@ -1,29 +1,66 @@
-import React from 'react';
-import { User } from '@skillfuze/types';
-import { Avatar, Button } from '@skillfuze/ui-components';
+import React, { useState } from 'react';
+import { User, Blog, Video, Course, PaginatedResponse } from '@skillfuze/types';
+import { Avatar, Button, MoreActions, ContentTabs, Tab } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import Layout from '../../../components/Layout';
 import { UsersService } from '../../../services/users.service';
-import More from '../../../../assets/icons/More.svg';
+import InDevelopment from '../../../components/InDevelopment';
+import { VideosList, BlogsList, CoursesList } from '../../../components/MaterialsLists';
 
 interface Props {
   user: User;
+  initialBlogs: PaginatedResponse<Blog>;
+  initialVideos: PaginatedResponse<Video>;
+  initialCourses: PaginatedResponse<Course>;
+  initialEnrolledCourses: PaginatedResponse<Course>;
 }
-const ProfilePage: NextPage<Props> = ({ user }: Props) => {
+const ProfilePage: NextPage<Props> = ({
+  user,
+  initialBlogs,
+  initialVideos,
+  initialCourses,
+  initialEnrolledCourses,
+}: Props) => {
+  const pageURL = typeof window === 'object' ? window.location.href : undefined;
   const router = useRouter();
+
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [videos, setVideos] = useState(initialVideos);
+  const [courses, setCourses] = useState(initialCourses);
+  const [enrolledCourses, setEnrolledCourses] = useState(initialEnrolledCourses);
 
   const handleLiveClick = (): void => {
     router.push(`/livestreams/${user.livestreams[0].id}`);
   };
 
-  const onClickMore = (): void => {
-    console.log('More');
+  const onEdit = (): void => {
+    console.log('Edit');
+  };
+
+  const videosLoadMore = async (): Promise<void> => {
+    const res = await UsersService.getVideos(user.username, { skip: videos.data.length });
+    setVideos((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
+  };
+
+  const blogsLoadMore = async (): Promise<void> => {
+    const res = await UsersService.getBlogs(user.username, { skip: blogs.data.length });
+    setBlogs((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
+  };
+
+  const coursesLoadMore = async (): Promise<void> => {
+    const res = await UsersService.getCourses(user.username, { skip: courses.data.length });
+    setCourses((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
+  };
+
+  const enrolledCoursesLoadMore = async (): Promise<void> => {
+    const res = await UsersService.getEnrolledCourses(user.username, { skip: enrolledCourses.data.length });
+    setEnrolledCourses((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
 
   return (
     <Layout title="Profile">
-      <div className="container flex flex-grow p-4 max-w-screen-xl mx-auto">
+      <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto space-y-16">
         <div className="flex lg:flex-no-wrap flex-wrap w-full lg:justify-between content-start">
           <div className="flex flex-col space-y-4 w-full lg:w-auto items-center mb-4">
             <Avatar className="w-32 h-32" URL={user.avatarURL} alt="userAvatar" />
@@ -44,20 +81,55 @@ const ProfilePage: NextPage<Props> = ({ user }: Props) => {
                   Follow
                 </Button>
               </div>
-              <More className="mt-1 cursor-pointer" onClick={onClickMore} />
+              <MoreActions URL={pageURL} enableControls onEdit={onEdit} />
             </div>
             <h5 className="font-bold text-black-light">{`${0} followers  ${0} following`}</h5>
             <p className="text-xl text-black-light">{user.bio}</p>
           </div>
         </div>
+        <ContentTabs className="py-4" tabs={['Courses', 'Videos', 'Blogs', 'Enrolled Courses', 'Bookmarks']}>
+          <Tab enableMore={courses.data.length < courses.count} loadMore={coursesLoadMore} title="Courses">
+            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
+              <CoursesList courses={courses.data} />
+            </div>
+          </Tab>
+          <Tab enableMore={videos.data.length < videos.count} loadMore={videosLoadMore} title="Videos">
+            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
+              <VideosList videos={videos.data} />
+            </div>
+          </Tab>
+          <Tab enableMore={blogs.data.length < blogs.count} loadMore={blogsLoadMore} title="Blogs">
+            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
+              <BlogsList blogs={blogs.data} />
+            </div>
+          </Tab>
+          <Tab
+            enableMore={enrolledCourses.data.length < enrolledCourses.count}
+            loadMore={enrolledCoursesLoadMore}
+            title="Enrolled Courses"
+          >
+            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
+              <CoursesList enrolled courses={courses.data} />
+            </div>
+          </Tab>
+          <Tab title="Bookmarks">
+            <InDevelopment inDevelopmentItem="feature" />
+          </Tab>
+        </ContentTabs>
       </div>
     </Layout>
   );
 };
 
 ProfilePage.getInitialProps = async (ctx) => {
-  const user = await UsersService.getProfileInfo(ctx.query.username.toString());
-  return { user };
+  const [user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses] = await Promise.all([
+    UsersService.getProfileInfo(ctx.query.username.toString()),
+    UsersService.getBlogs(ctx.query.username.toString()),
+    UsersService.getVideos(ctx.query.username.toString()),
+    UsersService.getCourses(ctx.query.username.toString()),
+    UsersService.getEnrolledCourses(ctx.query.username.toString()),
+  ]);
+  return { user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses };
 };
 
 export default ProfilePage;

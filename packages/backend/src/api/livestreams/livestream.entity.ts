@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
   OneToOne,
   getManager,
   BeforeInsert,
@@ -46,6 +47,9 @@ export class Livestream implements ILivestream {
   @ApiProperty()
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  public deletedAt: Date;
 
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ 'User', { nullable: false, onDelete: 'CASCADE' })

@@ -46,8 +46,8 @@ const EditCourse = ({ user, course }: Props) => {
       ]);
 
       setCategories(loadedCategories.map((cat) => ({ value: cat, label: cat.name })));
-      setBlogs(loadedBlogs);
-      setVideos(loadedVideos);
+      setBlogs(loadedBlogs.data);
+      setVideos(loadedVideos.data);
     };
     loadData();
   }, []);

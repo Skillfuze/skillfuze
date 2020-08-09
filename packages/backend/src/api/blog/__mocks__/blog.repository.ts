@@ -1,3 +1,4 @@
+/* eslint-disable */
 export class BlogRepository {
   public async update(criteria: any, updatePayload: any): Promise<any> {
     if (criteria.id === '1') {
@@ -13,7 +14,15 @@ export class BlogRepository {
     return undefined;
   }
 
+  public async softDelete(payload: any) {
+    return payload;
+  }
+
   public async find() {
+    return undefined;
+  }
+
+  public async findAndCount() {
     return undefined;
   }
 }

@@ -111,6 +111,51 @@ describe('Livestreams (e2e)', () => {
     });
   });
 
+  describe('DELETE /api/v1/livestreams/:id', () => {
+    let stream: Livestream;
+    let newToken: string;
+
+    beforeAll(async () => {
+      const payload = {
+        firstName: 'Karim',
+        lastName: 'Elsayed',
+        email: 'Karim@skillfuze.com',
+        password: '123456789',
+        confirmPassword: '123456789',
+      };
+      const newUser = await userService.register(payload);
+      const authService = module.get<AuthService>(AuthService);
+      newToken = `Bearer ${authService.generateToken(newUser)}`;
+    });
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Livestream Title',
+        url: 'http://a.com',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
+
+      stream = res.body;
+    });
+
+    it('should delete stream successfully on valid data', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', token).expect(200);
+    });
+
+    it('should return Unauthorized on invalid token', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', '').expect(401);
+    });
+
+    it('should return 403 when token.Id doesnot match the streamer.Id', async () => {
+      await request(app.getHttpServer()).delete(`${url}/${stream.id}`).set('Authorization', newToken).expect(403);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer()).delete(`${url}/invalid-id`).set('Authorization', token).expect(404);
+    });
+  });
+
   describe('PATCH /api/v1/livestreams/:id', () => {
     let stream: Livestream;
     let newToken: string;
