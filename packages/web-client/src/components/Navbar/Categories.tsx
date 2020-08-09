@@ -55,7 +55,7 @@ const Categories = () => {
           {...attributes.popper}
         >
           {categories.map((category) => (
-            <Link href="/categories/[slug]" as="/categories/slug">
+            <Link href={`/categories/${category.slug}`} as={`/categories/${category.slug}`}>
               <a className="outline-none text-grey-dark text-sm">{`${category.name}`}</a>
             </Link>
           ))}

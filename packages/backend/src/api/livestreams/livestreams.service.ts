@@ -1,3 +1,4 @@
+import { PaginatedResponse } from '@skillfuze/types';
 import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { LivestreamsRepository } from './livestreams.repository';
 import { UpdateLivestreamDTO } from './dtos/update-livestream.dto';
@@ -23,6 +24,23 @@ export class LivestreamsService {
     if (!stream) throw new NotFoundException();
 
     return stream;
+  }
+
+  public async getCategoryLivestreams(slug: string, skip = 0, take = 10): Promise<PaginatedResponse<Livestream>> {
+    const [livestreams, count] = await this.repository.findAndCount({
+      join: { alias: 'livestreams', innerJoin: { categories: 'livestreams.category' } },
+      where: (qb) => {
+        qb.where('categories.slug = :slug', { slug });
+      },
+      relations: ['streamer', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+    return {
+      data: livestreams,
+      count,
+    };
   }
 
   public async isValidKey(streamKey: string): Promise<boolean> {
