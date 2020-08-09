@@ -93,7 +93,7 @@ jobs:
       - run:
           name: Prepare database
           command: |
-            mysql -u root -proot \<<EOF
+            mysql -u root -proot -h127.0.0.1 \<<EOF
               ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
               FLUSH PRIVILEGES;
               quit
