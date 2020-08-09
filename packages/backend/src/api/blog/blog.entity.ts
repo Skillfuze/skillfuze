@@ -37,9 +37,6 @@ export class Blog implements IBlog {
   @Column({ type: 'text', nullable: true })
   public title: string = undefined;
 
-  @Column({ default: 0 })
-  public views: number;
-
   @ApiProperty()
   @Column({ type: 'text', nullable: true })
   public description: string = undefined;

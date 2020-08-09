@@ -21,7 +21,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
 
   const LoadLivestreams = (
     <Carousel className="">
-      {recommendations.livestreams.map(livestream => (
+      {recommendations.livestreams.map((livestream) => (
         <ContentCard
           key={livestream.id}
           className=""
@@ -41,7 +41,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
 
   const LoadCourses = (
     <Carousel className="">
-      {recommendations.courses.map(course => (
+      {recommendations.courses.map((course) => (
         <ContentCard
           className=""
           key={course.id}
@@ -63,7 +63,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
 
   const LoadVideos = (
     <Carousel className="">
-      {recommendations.videos.map(video => (
+      {recommendations.videos.map((video) => (
         <ContentCard
           key={video.id}
           className=""
@@ -84,7 +84,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
 
   const LoadBlogs = (
     <Carousel className="">
-      {recommendations.blogs.map(blog => (
+      {recommendations.blogs.map((blog) => (
         <ContentCard
           key={blog.id}
           className=""

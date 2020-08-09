@@ -20,7 +20,7 @@ import { CoursesModule } from './courses/courses.module';
     CategoriesModule,
     HomeModule,
     MaterialsModule,
-    CoursesModule،
+    CoursesModule,
   ],
   controllers: [],
   providers: [],

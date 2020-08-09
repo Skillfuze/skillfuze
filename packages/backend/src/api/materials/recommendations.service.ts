@@ -29,7 +29,7 @@ export class RecommendationsService {
   public async getRecommendedVideos(limit = 10): Promise<Video[]> {
     const videos = await getConnection()
       .createQueryBuilder()
-      .from(qb => {
+      .from((qb) => {
         return qb
           .from(Video, 'video')
           .where('views >= (SELECT AVG(views) FROM video)')
@@ -47,7 +47,7 @@ export class RecommendationsService {
   public async getRecommendedBlogs(limit = 10): Promise<Blog[]> {
     const blogs = await getConnection()
       .createQueryBuilder()
-      .from(qb => {
+      .from((qb) => {
         return qb
           .from(Blog, 'blog')
           .where('views >= (SELECT AVG(views) FROM blog) AND publishedAt IS NOT NULL')
@@ -63,9 +63,9 @@ export class RecommendationsService {
   }
 
   private mapToEntity<T extends Video | Blog | Livestream>(Entity: new () => T, data: any[]): T[] {
-    return data.map(item => {
+    return data.map((item) => {
       const entity = new Entity();
-      Object.keys(item).forEach(key => {
+      Object.keys(item).forEach((key) => {
         if (key in entity) {
           entity[key] = item[key];
         }
