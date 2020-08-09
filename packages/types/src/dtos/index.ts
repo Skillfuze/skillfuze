@@ -6,6 +6,7 @@ export * from './update-livestream.dto';
 export * from './create-blog.dto';
 export * from './update-blog.dto';
 export * from './create-video.dto';
+export * from './home-response.dto';
 export * from './course-payload.dto';
 export * from './update-video-dto';
 export * from './user-token-payload';
