@@ -79,7 +79,8 @@ jobs:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
-      - image: circleci/mysql:5.7
+      - image: circleci/mysql:8.0.12
+        command: [--default-authentication-plugin=mysql_native_password]
         environment:
           MYSQL_ROOT_HOST: 127.0.0.1
           MYSQL_ROOT_PASSWORD: root

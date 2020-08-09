@@ -1,12 +1,16 @@
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import shortid from 'shortid';
 
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { User } from '../../users/user.entity';
 import { CoursesService } from '../courses.service';
-import { CoursesRepository } from '../courses.repository';
+import { CoursesRepository } from '../repositories/courses.repository';
 import { Course } from '../entities/course.entity';
+import { CourseLessonsRepository } from '../repositories/lessons.repository';
+import { MaterialViewsRepository } from '../../materials/material-views.repository';
 
-jest.mock('../courses.repository');
+jest.mock('../repositories/courses.repository');
+jest.mock('../../materials/material-views.repository');
+jest.mock('../repositories/lessons.repository');
 jest.mock('shortid');
 
 describe('CoursesService', () => {
@@ -18,7 +22,8 @@ describe('CoursesService', () => {
   beforeAll(async () => {
     jest.spyOn(shortid, 'generate').mockReturnValue(shortidValue);
     repository = new CoursesRepository();
-    service = new CoursesService(repository);
+
+    service = new CoursesService(repository, new MaterialViewsRepository(), new CourseLessonsRepository());
     user = new User();
     user.id = 1;
   });
@@ -181,6 +186,10 @@ describe('CoursesService', () => {
     it('should throw Forbidden exception on invalid user', async () => {
       await expect(service.update(2, courseId, payload)).rejects.toThrowError(ForbiddenException);
     });
+
+    afterAll(() => {
+      repoFindOneSpy.mockRestore();
+    });
   });
 
   describe('publish', () => {
@@ -212,6 +221,33 @@ describe('CoursesService', () => {
 
     it('should throw Forbidden exception on invalid user', async () => {
       await expect(service.publish(courseId, 2)).rejects.toThrowError(ForbiddenException);
+    });
+  });
+
+  describe('getLesson', () => {
+    const courseSlug = 'VALID_SLUG';
+    const lessonId = 'LESSON_ID';
+    const userId = 1;
+
+    it('should return a GetCourseLessonResponseDTO on valid input', async () => {
+      const res = await service.getLesson(courseSlug, lessonId, userId);
+      expect(res).toMatchObject({
+        id: 'ID',
+        url: 'URL',
+        content: undefined,
+      });
+    });
+
+    it('should throw NotFound Exception on invalid courseId', async () => {
+      await expect(service.getLesson('INVALID_ID', lessonId, userId)).rejects.toThrowError(NotFoundException);
+    });
+
+    it('should throw NotFound Exception on invalid lessonId', async () => {
+      await expect(service.getLesson(courseSlug, 'INVALID_ID', userId)).rejects.toThrowError(NotFoundException);
+    });
+
+    it('should throw Forbidden Exception on un-enrolled user', async () => {
+      await expect(service.getLesson(courseSlug, lessonId, 2)).rejects.toThrowError(ForbiddenException);
     });
   });
 });

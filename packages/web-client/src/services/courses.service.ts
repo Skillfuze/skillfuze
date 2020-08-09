@@ -1,5 +1,6 @@
-import { Course, CoursePayloadDTO } from '@skillfuze/types';
+import { Course, CoursePayloadDTO, GetCourseLessonResponseDTO } from '@skillfuze/types';
 import axios from 'axios';
+
 import { parseError } from '../utils/parseError';
 
 export class CoursesService {
@@ -25,5 +26,10 @@ export class CoursesService {
   public static async publish(id: string): Promise<Course> {
     const { data: course } = await axios.post<Course>(`/api/v1/courses/${id}/publish`);
     return course;
+  }
+
+  public static async getCourseLesson(courseId: string, lessonId: string): Promise<GetCourseLessonResponseDTO> {
+    const { data } = await axios.get<GetCourseLessonResponseDTO>(`/api/v1/courses/${courseId}/lessons/${lessonId}`);
+    return data;
   }
 }

@@ -38,13 +38,15 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
     return () => player.current.dispose();
   }, []);
   return (
-    <div data-vjs-player>
-      <video
-        ref={(node) => {
-          videoNode.current = node;
-        }}
-        className="video-js vjs-big-play-centered"
-      />
+    <div className="w-full">
+      <div data-vjs-player>
+        <video
+          ref={(node) => {
+            videoNode.current = node;
+          }}
+          className="video-js vjs-big-play-centered"
+        />
+      </div>
     </div>
   );
 };

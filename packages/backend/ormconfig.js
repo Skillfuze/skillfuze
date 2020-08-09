@@ -4,7 +4,7 @@ module.exports = {
   "database": process.env.MYSQL_DB || 'skillfuze-dev',
   "synchronize": process.env.NODE_ENV !== 'production',
   "logging": process.env.NODE_ENV !== 'production',
-  "entities": [`${__dirname}/dist/**/*.entity.js`],
+  "entities": [`${__dirname}/dist/**/*.entity.js`, `${__dirname}/dist/**/*.view.js`],
   "migrations": [`${__dirname}/dist/db/migrations/*.js`],
   "cli": {
     "migrationsDir": "db/migrations"

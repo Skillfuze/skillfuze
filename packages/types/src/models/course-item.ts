@@ -1,5 +1,5 @@
 export interface CourseLesson {
-  id: number;
+  id: string;
   title: string;
   order: number;
   type: 'Blog' | 'Video';

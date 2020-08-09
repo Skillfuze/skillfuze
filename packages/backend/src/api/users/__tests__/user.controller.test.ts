@@ -10,7 +10,7 @@ import { BlogService } from '../../blog/blog.service';
 import { BlogRepository } from '../../blog/blog.repository';
 import { BlogsEventEmitter } from '../../blog/blogs.eventemitter';
 import { CoursesService } from '../../courses/courses.service';
-import { CoursesRepository } from '../../courses/courses.repository';
+import { CoursesRepository } from '../../courses/repositories/courses.repository';
 
 jest.mock('../user.repository');
 jest.mock('../user.service');
@@ -31,7 +31,7 @@ describe('User Controller', () => {
       userService,
       new VideosService(new VideosRepository()),
       new BlogService(new BlogRepository(), new BlogsEventEmitter()),
-      new CoursesService(new CoursesRepository()),
+      new CoursesService(new CoursesRepository(), undefined, undefined),
     );
   });
 

@@ -9,7 +9,7 @@ import { AuthModule } from '../src/api/auth/auth.module';
 import { CategoriesModule } from '../src/api/categories/categories.module';
 import { CoursesModule } from '../src/api/courses/courses.module';
 
-import { CoursesRepository } from '../src/api/courses/courses.repository';
+import { CoursesRepository } from '../src/api/courses/repositories/courses.repository';
 import { Course } from '../src/api/courses/entities/course.entity';
 
 describe('Course (e2e)', () => {
@@ -224,6 +224,15 @@ describe('Course (e2e)', () => {
 
       const course = await module.get(CoursesRepository).findOne(createdCourse.id);
       expect(course.title).toBe(payload.title);
+    });
+  });
+
+  describe('GET /api/v1/course/:id/lessons/:lessonId', () => {
+    it('should return 401 Unauthorized on invalid user token', async () => {
+      await request(app.getHttpServer())
+        .get(`${url}/courseId/lessons/lessonId`)
+        .set('Authorization', 'INVALID_TOKEN')
+        .expect(401);
     });
   });
 
