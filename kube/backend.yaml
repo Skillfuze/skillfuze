@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sf-backend-dep
+spec:
+  selector:
+    matchLabels:
+      app: sf-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sf-backend
+    spec:
+      containers:
+      - name: sf-backend
+        image: khaledhamam/skillfuze-backend:latest
+        resources:
+          limits:
+            memory: "500M"
+            cpu: "600m"
+        ports:
+        - containerPort: 3000
+        - containerPort: 1935
+        - containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: backend-secret
+        - configMapRef:
+            name: backend-config
