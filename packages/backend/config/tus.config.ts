@@ -14,7 +14,7 @@ const dataStore =
   process.env.NODE_ENV === 'production'
     ? new tus.S3Store({
         path: '/api/v1/videos/upload',
-        bucket: 'skillfuze-s3',
+        bucket: process.env.S3_BUCKET_NAME,
         accessKeyId: process.env.S3_ACCESS_KEY_ID,
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
         region: 'me-south-1',

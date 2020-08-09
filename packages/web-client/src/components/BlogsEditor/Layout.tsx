@@ -6,13 +6,14 @@ import { useAlert, types } from 'react-alert';
 import { stateFromHTML } from 'draft-js-import-html';
 
 import { useRouter } from 'next/router';
-import { CreateBlogDTO, User } from '@skillfuze/types';
+import { CreateBlogDTO, User, AttachmentType } from '@skillfuze/types';
 import Editor from './Editor';
 import PageLayout from '../Layout';
 import { BlogService, BlogState } from '../../services/blogs.service';
 import { CategoriesService } from '../../services/categories.service';
 import { useInterval } from '../../utils/hooks/useInterval';
 import config from '../../../config';
+import UploadButton from '../UploadButton';
 
 interface Props {
   user: User;
@@ -119,13 +120,12 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
           className="mb-2 text-2xl text-grey-dark"
           borderless
         />
-        <Input
-          error={error.thumbnailURL}
-          value={thumbnailURL}
-          onChange={setThumbnailURL}
-          placeholder="Thumbnail URL"
+        <UploadButton
+          placeholder="Thumbnail"
+          onUploadComplete={setThumbnailURL}
+          accept="image/*"
           className="mb-4"
-          type="url"
+          type={AttachmentType.BLOG_THUMBNAIL}
         />
         <SelectField
           className="z-50"

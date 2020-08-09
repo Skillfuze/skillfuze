@@ -37,6 +37,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
     'react/destructuring-assignment': 'off',
     'react/button-has-type': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',

@@ -15,4 +15,5 @@ export interface Blog {
   user: User;
   tags: string[];
   category: Category;
+  views: number;
 }

@@ -31,38 +31,38 @@ export class Blog implements IBlog {
 
   @ApiProperty()
   @Column({ unique: true, nullable: true })
-  public url: string;
+  public url: string = undefined;
 
   @ApiProperty()
   @Column({ type: 'text', nullable: true })
-  public title: string;
-
-  @Column({ default: 0 })
-  public views: number;
+  public title: string = undefined;
 
   @ApiProperty()
   @Column({ type: 'text', nullable: true })
-  public description: string;
+  public description: string = undefined;
 
   @ApiProperty()
   @Column({ type: 'longtext', nullable: true })
-  public content: string;
+  public content: string = undefined;
 
   @ApiProperty()
   @Column({ nullable: true })
-  public thumbnailURL: string;
+  public thumbnailURL: string = undefined;
 
   @ApiProperty()
   @CreateDateColumn({ type: 'timestamp' })
-  public createdAt: Date;
+  public createdAt: Date = undefined;
 
   @ApiProperty()
   @UpdateDateColumn({ type: 'timestamp' })
-  public updatedAt: Date;
+  public updatedAt: Date = undefined;
 
   @ApiProperty()
   @Column({ type: 'timestamp', nullable: true })
-  public publishedAt: Date;
+  public publishedAt: Date = undefined;
+
+  @Column({ default: 0 })
+  public views: number = undefined;
 
   @ApiProperty()
   @DeleteDateColumn({ type: 'timestamp' })
@@ -71,7 +71,7 @@ export class Blog implements IBlog {
   @ApiProperty()
   @ManyToOne(/* istanbul ignore next */ () => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ referencedColumnName: 'id' })
-  public user: User;
+  public user: User = undefined;
 
   @ApiProperty()
   @Column({ type: 'simple-array' })
@@ -79,7 +79,7 @@ export class Blog implements IBlog {
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: false })
   @JoinColumn({ referencedColumnName: 'id' })
-  public category: Category;
+  public category: Category = undefined;
 
   public constructor() {
     this.id = shortid.generate();

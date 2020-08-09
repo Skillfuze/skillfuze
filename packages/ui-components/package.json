@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "styleguidist server",
+    "build:styleguidist": "styleguidist build",
     "build": "rollup -c"
   },
   "bugs": {
@@ -48,6 +49,7 @@
     "react-styleguidist": "^10.6.2",
     "rollup": "^1.32.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
     "rollup-plugin-postcss": "^3.1.1",
