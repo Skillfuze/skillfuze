@@ -85,6 +85,8 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: skillfuze-test
     steps:
+      - attach_workspace:
+          at: ~/skillfuze
       - run:
           name: Prepare database
           command: |
@@ -93,8 +95,6 @@ jobs:
               FLUSH PRIVILEGES;
               quit
             EOF
-      - attach_workspace:
-          at: ~/skillfuze
       - run:
           name: Test Backend E2E
           command: cd packages/backend && yarn test:e2e --ci --reporters=default --reporters=jest-junit --runInBand
