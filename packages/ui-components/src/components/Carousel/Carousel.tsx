@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
-import ReactCarousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { cx } from 'emotion';
 import { carouselChild, arrowBtnStyle } from './styles';
 import NextIcon from '../../assets/icons/next.svg';
 import BackIcon from '../../assets/icons/back.svg';
+
+const ReactCarousel = require('react-multi-carousel').default;
 
 interface Props {
   children: React.ReactNode;

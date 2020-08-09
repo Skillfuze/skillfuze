@@ -1,4 +1,5 @@
 /* eslint-disable import/first */
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
 
 import { JwtModuleOptions } from '@nestjs/jwt';
@@ -9,6 +10,7 @@ import { winstonOptions as winston } from './winston.config';
 import { tusConfig } from './tus.config';
 import { streamingServer } from './streaming.config';
 import { oauth } from './oauth.config';
+import { multerConfig } from './multer.config';
 
 type Config = {
   api: {
@@ -24,6 +26,7 @@ type Config = {
   tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
   oauth: typeof oauth;
+  multer: typeof multerConfig;
 };
 
 const config: Config = {
@@ -32,8 +35,8 @@ const config: Config = {
   },
   db: {
     type: 'mysql',
-    url: 'mysql://root:root@localhost/skillfuze-dev',
-    database: 'skillfuze-dev',
+    url: process.env.MYSQL_URL || 'mysql://root:root@localhost/skillfuze-dev',
+    database: process.env.MYSQL_DB || 'skillfuze-dev',
     synchronize: process.env.NODE_ENV !== 'production',
     logging: process.env.NODE_ENV !== 'production',
     entities: [`${__dirname}/../src/api/**/*.entity.{ts,js}`],
@@ -43,7 +46,7 @@ const config: Config = {
     signOptions: { expiresIn: '86400s' },
   },
   corsOptions: {
-    origin: ['http://localhost:3001', 'http://localhost:8000', 'http://localhost:9000'],
+    origin: [process.env.CLIENT_URL, 'http://localhost:3001', 'http://localhost:8000', 'http://localhost:9000'],
     allowedHeaders: [
       'Authorization',
       'Content-Type',
@@ -65,6 +68,7 @@ const config: Config = {
   tus: tusConfig,
   streamingServer,
   oauth,
+  multer: multerConfig,
 };
 
 export default config;

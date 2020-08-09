@@ -22,7 +22,7 @@ export class CreateBlogDTO implements ICreateBlogDTO {
 
   @ApiProperty()
   @IsOptional()
-  @IsUrl({}, { message: 'Thumbnail URL should be valid URL' })
+  @IsUrl({ require_tld: false }, { message: 'Thumbnail URL should be valid URL' })
   public thumbnailURL?: string;
 
   @ApiProperty()

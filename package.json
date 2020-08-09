@@ -28,8 +28,10 @@
     "format": "prettier 'packages/**/*.{ts,tsx}' --write",
     "clean": "./scripts/clean.sh",
     "commit": "git-cz",
-    "postinstall": "patch-package --use-yarn && lerna link",
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "deploy": "./scripts/deploy.sh",
+    "roll-update": "./scripts/roll-update.sh",
+    "postinstall": "patch-package --use-yarn && lerna link"
   },
   "husky": {
     "hooks": {

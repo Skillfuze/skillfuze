@@ -12,15 +12,15 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-cache-{{ checksum "yarn.lock" }}
-            - dependencies-cache-
+            - dependencies-cache-v1-{{ checksum "yarn.lock" }}
+            - dependencies-cache-v1-
       - run:
           name: Install Dependencies
           command: |
             yarn install --frozen-lockfile
             yarn bootstrap
       - save_cache:
-          key: dependencies-cache-{{ checksum "yarn.lock" }}
+          key: dependencies-cache-v1-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
             - ~/.cache/yarn
@@ -96,6 +96,23 @@ jobs:
       - store_test_results:
           path: packages/backend/test-results
 
+  deploy:
+    working_directory: ~/skillfuze
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - 'fe:5b:b8:54:10:ed:67:d6:7e:23:a7:d4:45:0f:98:43'
+      - run: ssh-keyscan $EC2_HOST >> ~/.ssh/known_hosts
+      - run:
+          name: Deploying Changes
+          command: |
+            set -e
+            yarn deploy
+
 workflows:
   build-and-test:
     jobs:
@@ -112,3 +129,10 @@ workflows:
       - test-e2e:
           requires:
             - test
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master

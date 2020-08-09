@@ -16,7 +16,7 @@ export class CreateLivestreamDTO implements ICreateLivestreamDTO {
   public description?: string;
 
   @ApiProperty()
-  @IsUrl({}, { message: 'Thumbnail URL should be valid URL' })
+  @IsUrl({ require_tld: false }, { message: 'Thumbnail URL should be valid URL' })
   @IsOptional()
   public thumbnailURL?: string;
 

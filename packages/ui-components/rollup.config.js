@@ -6,6 +6,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import postcss from "rollup-plugin-postcss"
 import pkg from './package.json'
 import svgr from '@svgr/rollup';
+import copy from 'rollup-plugin-copy';
 
 export default {
   input: 'src/index.ts',
@@ -54,5 +55,17 @@ export default {
       minimize: true,
     }),
     svgr(),
+    copy({
+            targets: [
+              {
+                src: [
+                  'node_modules/react-multi-carousel/lib/revicons.woff',
+                  'node_modules/react-multi-carousel/lib/revicons.eot',
+                  'node_modules/react-multi-carousel/lib/revicons.ttf',
+                ],
+                dest: 'build'
+              }
+            ]
+          }),
   ]
 }

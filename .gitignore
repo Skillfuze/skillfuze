@@ -112,5 +112,9 @@ thumb
 sketch
 
 package-lock.json
+styleguide
 
 # End of https://www.gitignore.io/api/node,react
+
+# Kubernetes
+kube/*-secret.yaml
