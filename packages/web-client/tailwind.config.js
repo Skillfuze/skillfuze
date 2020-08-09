@@ -4,8 +4,8 @@ const theme = require('@skillfuze/ui-components/tailwind.config').theme;
 module.exports = {
   important: true,
   purge: [
-    './pages/**/*.tsx',
-    './components/**/*.tsx'
+    './src/pages/**/*.tsx',
+    './src/components/**/*.tsx'
   ],
   theme,
   plugins: [
