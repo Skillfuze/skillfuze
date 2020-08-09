@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
-import { Category, Livestream } from '@skillfuze/types';
+import { Category, Livestream, AttachmentType } from '@skillfuze/types';
 
 import { LivestreamService } from '../../services/livestreams.service';
 import { CategoriesService } from '../../services/categories.service';
 import config from '../../../config/index';
+import UploadButton from '../UploadButton';
 
 const LivestreamData = ({ livestream }: { livestream?: Livestream }) => {
   const editMode = Boolean(livestream);
@@ -82,13 +83,11 @@ const LivestreamData = ({ livestream }: { livestream?: Livestream }) => {
               multiline
               rows={6}
             />
-            <Input
-              error={error.thumbnailURL}
-              className="w-full"
-              value={thumbnailURL}
-              type="url"
-              placeholder="Thumbnail URL"
-              onChange={setThumbnailURL}
+            <UploadButton
+              placeholder="Thumbnail"
+              onUploadComplete={setThumbnailURL}
+              accept="image/*"
+              type={AttachmentType.LIVESTREAM_THUMBNAIL}
             />
             <SelectField
               placeholder="Select Category"

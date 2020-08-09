@@ -10,5 +10,6 @@ export * from './home-response.dto';
 export * from './course-payload.dto';
 export * from './update-video-dto';
 export * from './user-token-payload';
+export * from './attachment-response.dto';
 export * from './paginated-response.dto';
 export * from './pagination-options.dto';

@@ -9,6 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { HomeModule } from './home/home.module';
 import { MaterialsModule } from './materials/materials.module';
 import { CoursesModule } from './courses/courses.module';
+import { AttachmentsModule } from './attachments/attachments.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CoursesModule } from './courses/courses.module';
     LivestreamsModule,
     VideosModule,
     CategoriesModule,
+    AttachmentsModule,
     HomeModule,
     MaterialsModule,
     CoursesModule,
