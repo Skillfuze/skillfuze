@@ -27,6 +27,14 @@ export class CoursesController {
     return this.service.create(userId, payload);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('/:id/enroll')
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  public async(@Param('id') courseId: string, @UserId() userId: number): Promise<void> {
+    return this.service.enroll(courseId, userId);
+  }
+
   @Get('/:id')
   @ApiNotFoundResponse()
   public async getOne(@Param('id') id: string): Promise<Course> {

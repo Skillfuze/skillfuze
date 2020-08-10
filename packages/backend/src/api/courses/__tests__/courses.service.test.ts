@@ -1,4 +1,4 @@
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import shortid from 'shortid';
 
 import { User } from '../../users/user.entity';
@@ -248,6 +248,33 @@ describe('CoursesService', () => {
 
     it('should throw Forbidden Exception on un-enrolled user', async () => {
       await expect(service.getLesson(courseSlug, lessonId, 2)).rejects.toThrowError(ForbiddenException);
+    });
+  });
+
+  describe('enroll', () => {
+    const userId = 1;
+    const courseId = 'VALID_ID';
+
+    beforeAll(() => {
+      const resolvedCourse = new Course();
+      resolvedCourse.enrolled = [];
+
+      jest.spyOn(repository, 'findOne').mockReturnValue(Promise.resolve(resolvedCourse));
+    });
+
+    it('should enroll the user successfully', async () => {
+      await expect(service.enroll(courseId, userId)).resolves.not.toThrowError();
+    });
+
+    it('should throw bad request on duplicate users', async () => {
+      const resolvedCourse = new Course();
+      const enrolledUser = new User();
+      enrolledUser.id = userId;
+      resolvedCourse.enrolled = [enrolledUser];
+
+      jest.spyOn(repository, 'findOne').mockReturnValue(Promise.resolve(resolvedCourse));
+
+      await expect(service.enroll(courseId, userId)).rejects.toThrow(BadRequestException);
     });
   });
 });
