@@ -49,13 +49,13 @@ const Categories = () => {
       </button>
       {showPopper && (
         <div
-          className="bg-white shadow rounded-sm p-4 pb-0 space-y-4 flex flex-col items-start"
+          className="bg-white shadow rounded-sm p-4 pb-0 space-y-4 flex flex-col items-start z-50"
           style={styles.popper}
           ref={categoriesPopperRef}
           {...attributes.popper}
         >
           {categories.map((category) => (
-            <Link href="/categories/[slug]" as="/categories/slug">
+            <Link href="/categories/[slug]" as={`/categories/${category.slug}`}>
               <a className="outline-none text-grey-dark text-sm">{`${category.name}`}</a>
             </Link>
           ))}

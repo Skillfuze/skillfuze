@@ -89,28 +89,20 @@ const ProfilePage: NextPage<Props> = ({
         </div>
         <ContentTabs className="py-4" tabs={['Courses', 'Videos', 'Blogs', 'Enrolled Courses', 'Bookmarks']}>
           <Tab enableMore={courses.data.length < courses.count} loadMore={coursesLoadMore} title="Courses">
-            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
-              <CoursesList courses={courses.data} />
-            </div>
+            <CoursesList courses={courses.data} />
           </Tab>
           <Tab enableMore={videos.data.length < videos.count} loadMore={videosLoadMore} title="Videos">
-            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
-              <VideosList videos={videos.data} />
-            </div>
+            <VideosList videos={videos.data} />
           </Tab>
           <Tab enableMore={blogs.data.length < blogs.count} loadMore={blogsLoadMore} title="Blogs">
-            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
-              <BlogsList blogs={blogs.data} />
-            </div>
+            <BlogsList blogs={blogs.data} />
           </Tab>
           <Tab
             enableMore={enrolledCourses.data.length < enrolledCourses.count}
             loadMore={enrolledCoursesLoadMore}
             title="Enrolled Courses"
           >
-            <div className="grid grid-flow-row md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4">
-              <CoursesList enrolled courses={courses.data} />
-            </div>
+            <CoursesList enrolled courses={courses.data} />
           </Tab>
           <Tab title="Bookmarks">
             <InDevelopment inDevelopmentItem="feature" />

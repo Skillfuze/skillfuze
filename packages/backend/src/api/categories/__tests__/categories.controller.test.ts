@@ -1,21 +1,35 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { LivestreamsService } from '../../livestreams/livestreams.service';
+import { LivestreamsRepository } from '../../livestreams/livestreams.repository';
+import { CoursesRepository } from '../../courses/courses.repository';
+import { BlogService } from '../../blog/blog.service';
+import { VideosService } from '../../videos/videos.service';
+import { VideosRepository } from '../../videos/videos.repository';
+import { BlogsEventEmitter } from '../../blog/blogs.eventemitter';
+import { BlogRepository } from '../../blog/blog.repository';
+import { CoursesService } from '../../courses/courses.service';
 import { CategoriesController } from '../categories.controller';
 import { CategoriesService } from '../categories.service';
+import { CategoriesRepository } from '../categories.repository';
 
 jest.mock('../categories.service.ts');
+jest.mock('../../blog/blog.service');
+jest.mock('../../videos/videos.service');
+jest.mock('../../courses/courses.service');
+jest.mock('../../livestreams/livestreams.service');
 
 describe('Categories Controller', () => {
   let controller: CategoriesController;
   let service: CategoriesService;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoriesController],
-      providers: [CategoriesService],
-    }).compile();
-
-    controller = module.get<CategoriesController>(CategoriesController);
-    service = module.get(CategoriesService);
+    service = new CategoriesService(new CategoriesRepository());
+    controller = new CategoriesController(
+      service,
+      new VideosService(new VideosRepository()),
+      new BlogService(new BlogRepository(), new BlogsEventEmitter()),
+      new CoursesService(new CoursesRepository()),
+      new LivestreamsService(new LivestreamsRepository()),
+    );
   });
 
   describe('getAll', () => {

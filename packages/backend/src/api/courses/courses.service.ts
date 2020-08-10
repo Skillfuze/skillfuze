@@ -42,13 +42,31 @@ export class CoursesService {
     return course;
   }
 
+  public async getCategoryCourses(slug: string, skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
+    const [courses, count] = await this.repository.findAndCount({
+      join: { alias: 'courses', innerJoin: { categories: 'courses.category' } },
+      where: (qb) => {
+        qb.where('categories.slug = :slug', { slug });
+      },
+      relations: ['creator', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: courses,
+      count,
+    };
+  }
+
   public async getUserCourses(username: string, skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
     const [courses, count] = await this.repository.findAndCount({
       join: { alias: 'courses', innerJoin: { users: 'courses.creator' } },
       where: (qb) => {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
-      relations: ['creator'],
+      relations: ['creator', 'category'],
       order: { createdAt: 'DESC' },
       skip,
       take,
