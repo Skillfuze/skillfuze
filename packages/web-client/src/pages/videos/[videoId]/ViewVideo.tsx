@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Video, User } from '@skillfuze/types';
 
 import { useRouter } from 'next/router';
@@ -18,6 +18,13 @@ const ViewVideo = ({ video, user }: Props) => {
     await VideosService.delete(video.id);
     router.push(`/`);
   };
+
+  useEffect(() => {
+    async function addView() {
+      await VideosService.addView(video.id);
+    }
+    addView();
+  }, []);
 
   return (
     <Layout title={video.title} user={user}>

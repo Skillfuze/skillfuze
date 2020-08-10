@@ -233,6 +233,31 @@ describe('Videos (e2e)', () => {
     });
   });
 
+  describe('POST /api/v1/videos/:id/view', () => {
+    let video: Video;
+
+    beforeEach(async () => {
+      const payload = {
+        title: 'Video Title',
+        url: 'http://a.com',
+        category: { id: 1 },
+      };
+      const res = await request(app.getHttpServer()).post(url).send(payload).set('Authorization', token);
+
+      video = res.body;
+    });
+
+    it('should return 201 on first request then 429', async () => {
+      await request(app.getHttpServer()).post(`${url}/${video.id}/view`).expect(201);
+
+      await request(app.getHttpServer()).post(`${url}/${video.id}/view`).expect(429);
+    });
+
+    it('should return 404 on invalid id', async () => {
+      await request(app.getHttpServer()).post(`${url}/invalid-id/view`).expect(404);
+    });
+  });
+
   afterEach(async () => {
     await videoRepository.delete({});
   });

@@ -80,4 +80,11 @@ export class VideosService {
     await this.repository.update({ id: videoId }, payload);
     return this.repository.findOne(videoId, { relations: ['uploader', 'category'] });
   }
+
+  public async addView(videoId: string): Promise<HttpStatus> {
+    const video = await this.getOne(videoId);
+    video.views += 1;
+    await this.repository.update({ id: videoId }, video);
+    return HttpStatus.CREATED;
+  }
 }

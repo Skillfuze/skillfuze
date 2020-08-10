@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Avatar, MoreActions } from '@skillfuze/ui-components';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
@@ -17,6 +17,14 @@ interface Props {
 
 const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
   const pageURL = typeof window !== 'undefined' ? window.location.href : '';
+
+  useEffect(() => {
+    async function addView() {
+      await axios.post(`${config.API_URL}/api/v1/blogs/${blog.id}/view`);
+    }
+    addView();
+  }, []);
+
   const onClickBookmark = () => {
     console.log('Bookmarked');
   };
