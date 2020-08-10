@@ -1,6 +1,8 @@
+import { MaterialViewsRepository } from '../../materials/material-views.repository';
+import { CourseLessonsRepository } from '../../courses/repositories/lessons.repository';
 import { LivestreamsService } from '../../livestreams/livestreams.service';
 import { LivestreamsRepository } from '../../livestreams/livestreams.repository';
-import { CoursesRepository } from '../../courses/courses.repository';
+import { CoursesRepository } from '../../courses/repositories/courses.repository';
 import { BlogService } from '../../blog/blog.service';
 import { VideosService } from '../../videos/videos.service';
 import { VideosRepository } from '../../videos/videos.repository';
@@ -27,7 +29,7 @@ describe('Categories Controller', () => {
       service,
       new VideosService(new VideosRepository()),
       new BlogService(new BlogRepository(), new BlogsEventEmitter()),
-      new CoursesService(new CoursesRepository()),
+      new CoursesService(new CoursesRepository(), new MaterialViewsRepository(), new CourseLessonsRepository()),
       new LivestreamsService(new LivestreamsRepository()),
     );
   });
