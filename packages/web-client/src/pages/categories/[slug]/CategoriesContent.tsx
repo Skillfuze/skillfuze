@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Livestream, PaginatedResponse, Blog, Video, Course } from '@skillfuze/types';
 import { ContentTabs, Tab } from '@skillfuze/ui-components';
 import { CategoriesService } from '../../../services/categories.service';
@@ -20,6 +20,13 @@ const CategoriesContent = ({ slug, initialBlogs, initialVideos, initialCourses, 
   const [videos, setVideos] = useState(initialVideos);
   const [courses, setCourses] = useState(initialCourses);
   const [livestreams, setLivestreams] = useState(initialLivestreams);
+
+  useEffect(() => {
+    setBlogs(initialBlogs);
+    setVideos(initialVideos);
+    setCourses(initialCourses);
+    setLivestreams(initialLivestreams);
+  }, [initialBlogs, initialVideos, initialCourses, initialLivestreams]);
 
   const videosLoadMore = async (): Promise<void> => {
     const res = await CategoriesService.getVideos(slug, { skip: videos.data.length });
