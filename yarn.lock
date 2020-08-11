@@ -8218,6 +8218,11 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
+disqus-react@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/disqus-react/-/disqus-react-1.0.9.tgz#ae66a3582e80dc22a493d53be5910143af9b7d5f"
+  integrity sha512-UoWAt0dJGsxQ/4SBYkTnNLqNzpDfAk9a/xTirkCKU5qFy9YbVN6JdZ4lUy9Mf7mz1B7eHkLtRXqVvY1KhpM4Hg==
+
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
@@ -10190,6 +10195,11 @@ gatsby-page-utils@^0.1.0:
     glob "^7.1.6"
     lodash "^4.17.15"
     micromatch "^3.1.10"
+
+gatsby-plugin-disqus@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-disqus/-/gatsby-plugin-disqus-1.2.2.tgz#d10e72c2ac0f7205abd7dda2e8cb4ecc0743a824"
+  integrity sha512-RWiU8Jtg94kVphjBnxqnF+0txyJ3eZN/9vw/VlMgz0mor1FwULkiiiOyNXAJxbX6tFqYmypnmfa+edQWX/rMpQ==
 
 gatsby-plugin-page-creator@^2.2.0:
   version "2.2.0"

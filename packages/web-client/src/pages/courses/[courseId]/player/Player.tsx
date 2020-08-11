@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import { UserTokenPayload, GetCourseLessonResponseDTO, Course } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { DiscussionEmbed } from 'disqus-react';
 
 import withAuth from '../../../../utils/withAuth';
 import Layout from '../../../../components/Layout';
@@ -88,11 +89,20 @@ const CoursePlayer: NextPage<CoursePlayerProps> = ({ user }: CoursePlayerProps) 
       <Layout title={course.title} user={user}>
         <div className="flex w-full flex-grow flex-wrap">
           <div
-            className={`md:w-3/4 w-full ${
-              lesson.type === 'Video' ? 'bg-black flex items-center' : 'p-4 container max-w-screen-lg mx-auto'
+            className={`md:w-3/4 w-full flex-col ${
+              lesson.type === 'Video' ? 'bg-white flex' : 'p-4 container max-w-screen-lg mx-auto'
             }`}
           >
             {content}
+            <div className="p-6">
+              <DiscussionEmbed
+                shortname="skillfuze"
+                config={{
+                  identifier: lesson.id,
+                  title: lesson.title,
+                }}
+              />
+            </div>
           </div>
           <div className="md:w-1/4 w-full shadow">
             <div className="p-4 bg-primary">

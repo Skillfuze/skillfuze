@@ -7,8 +7,14 @@ module.exports = {
       develop: false,
       content: ['./src/**/*.tsx', 'node_modules/@skillfuze/ui-components/**/*.tsx'],
       ignore: ['openSans.css', 'typography.css']
-    }
-  }, {
+    }},
+    {
+      resolve: `gatsby-plugin-disqus`,
+      options: {
+        shortname: `skillfuze`
+      }
+    },
+  {
     resolve: "gatsby-plugin-react-svg",
     options: {
       rule: {
