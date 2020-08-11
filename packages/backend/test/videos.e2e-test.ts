@@ -247,8 +247,8 @@ describe('Videos (e2e)', () => {
       video = res.body;
     });
 
-    it('should return 201 on first request then 429', async () => {
-      await request(app.getHttpServer()).post(`${url}/${video.id}/view`).expect(201);
+    it('should return 429 on second request with same video id', async () => {
+      await request(app.getHttpServer()).post(`${url}/${video.id}/view`);
 
       await request(app.getHttpServer()).post(`${url}/${video.id}/view`).expect(429);
     });

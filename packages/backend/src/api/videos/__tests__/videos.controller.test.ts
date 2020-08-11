@@ -112,21 +112,15 @@ describe('Videos Controller', () => {
 
   describe('view', () => {
     const videoId = '1';
-    let res: HttpStatus;
 
     let serviceAddViewSpy: jest.SpyInstance;
     beforeEach(async () => {
       serviceAddViewSpy = jest.spyOn(service, 'addView');
-      serviceAddViewSpy.mockReturnValue('ADDED');
-      res = await controller.view(videoId);
+      await controller.view(videoId);
     });
 
     it('should call service.addView once', () => {
       expect(serviceAddViewSpy).toBeCalledTimes(1);
-    });
-
-    it('should return service.addView', () => {
-      expect(res).toBe('ADDED');
     });
   });
 });

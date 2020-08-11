@@ -109,7 +109,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     }
   }
 
-  public async addView(blogId: string): Promise<HttpStatus> {
+  public async addView(blogId: string): Promise<void> {
     const blog = await this.repository.findOne(blogId);
     if (!blog) {
       throw new NotFoundException();
@@ -117,6 +117,5 @@ export class BlogService extends TypeOrmCrudService<Blog> {
 
     blog.views += 1;
     await this.repository.save(blog);
-    return HttpStatus.CREATED;
   }
 }

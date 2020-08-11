@@ -143,7 +143,7 @@ export class BlogController implements CrudController<Blog> {
   }
 
   @Post('/:id/view')
-  public async view(@Param('id') id: string): Promise<HttpStatus> {
-    return this.service.addView(id);
+  public async view(@Param('id') id: string): Promise<void> {
+    await this.service.addView(id);
   }
 }

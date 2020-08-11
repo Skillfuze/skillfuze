@@ -180,7 +180,6 @@ describe('VideosService', () => {
   describe('addView', () => {
     const videoId = '1';
     const userId = 1;
-    let res: HttpStatus;
     let getOneSpy: jest.SpyInstance;
     const video = {
       title: 'Video Title',
@@ -195,15 +194,11 @@ describe('VideosService', () => {
       getOneSpy = jest.spyOn(service, 'getOne');
       getOneSpy.mockReturnValue(video);
 
-      res = await service.addView(videoId);
+      await service.addView(videoId);
     });
 
     it('should call getOne once', async () => {
       expect(getOneSpy).toBeCalledTimes(1);
-    });
-
-    it('should return 201 on valid request', async () => {
-      expect(res).toBe(201);
     });
   });
 });
