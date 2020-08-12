@@ -20,7 +20,7 @@ interface Props {
 
 const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.HOMEPAGE);
   }, []);
   const router = useRouter();

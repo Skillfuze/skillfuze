@@ -61,7 +61,7 @@ const ProfilePage: NextPage<Props> = ({
   };
 
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.VIEW_PROFILE);
   }, []);
 

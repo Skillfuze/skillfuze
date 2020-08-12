@@ -14,7 +14,7 @@ interface Props {
 
 const EditVideo = ({ user, video }: Props) => {
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.EDIT_VIDEO);
   }, []);
 

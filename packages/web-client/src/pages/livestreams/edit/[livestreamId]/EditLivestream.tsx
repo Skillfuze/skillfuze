@@ -14,7 +14,7 @@ interface Props {
 
 const EditLivestream = ({ user, stream }: Props) => {
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.EDIT_LIVESTREAM);
   }, []);
 

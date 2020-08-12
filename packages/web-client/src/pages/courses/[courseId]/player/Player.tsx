@@ -64,7 +64,7 @@ const CoursePlayer: NextPage<CoursePlayerProps> = ({ user }: CoursePlayerProps) 
   }, [router.query.lesson]);
 
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.VIEW_COURSE_PLAYER);
   }, []);
 

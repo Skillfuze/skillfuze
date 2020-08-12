@@ -14,7 +14,7 @@ interface Props {
 
 const EditBlog = (props: Props) => {
   useEffect(() => {
-    mixpanel.identify(props.user.id || 'GUEST');
+    mixpanel.identify(props.user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.EDIT_BLOG);
   }, []);
 

@@ -47,7 +47,7 @@ const EditCourse = ({ user, course }: Props) => {
         UsersService.getVideos(user.username),
       ]);
 
-      mixpanel.identify(user.id || 'GUEST');
+      mixpanel.identify(user?.id || 'GUEST');
       mixpanel.track(mixpanelEvents.EDIT_COURSE);
 
       setCategories(loadedCategories.map((cat) => ({ value: cat, label: cat.name })));

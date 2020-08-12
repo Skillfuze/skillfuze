@@ -8,7 +8,7 @@ import { mixpanelEvents } from '../../../../config/mixpanel.events';
 
 const NewVideo = ({ user }: { user: User }) => {
   useEffect(() => {
-    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.NEW_VIDEO);
   }, []);
 
