@@ -108,4 +108,14 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       axios.post(config.gatsby.buildHookURL);
     }
   }
+
+  public async addView(blogId: string): Promise<void> {
+    const blog = await this.repository.findOne(blogId);
+    if (!blog) {
+      throw new NotFoundException();
+    }
+
+    blog.views += 1;
+    await this.repository.save(blog);
+  }
 }

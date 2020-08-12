@@ -24,8 +24,7 @@ const VideosList: React.FC<Props> = (props: Props) => {
               userName={`${video.uploader.firstName} ${video.uploader.lastName}`}
               userAvatar={video.uploader.avatarURL}
               createdAt={video.createdAt}
-              // TODO: Video.views
-              topBar={<VideosTopBar isLive={false} views={102} />}
+              topBar={<VideosTopBar isLive={false} views={video.views} />}
               onClick={() => {
                 router.push(`/videos/[videoId]`, `/videos/${video.id}`);
               }}
