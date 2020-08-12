@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Video, User } from '@skillfuze/types';
 
 import { useRouter } from 'next/router';
+import mixpanel from 'mixpanel-browser';
 import Layout from '../../../components/Layout';
 import VideoLayout from '../../../components/VideoLayout';
 import { VideosService } from '../../../services/videos.service';
 import withAuth from '../../../utils/withAuth';
+import { mixpanelEvents } from '../../../../config/mixpanel.events';
 
 interface Props {
   video: Video;
@@ -18,6 +20,11 @@ const ViewVideo = ({ video, user }: Props) => {
     await VideosService.delete(video.id);
     router.push(`/`);
   };
+
+  useEffect(() => {
+    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.VIEW_VIDEO);
+  }, []);
 
   return (
     <Layout title={video.title} user={user}>

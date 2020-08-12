@@ -1,15 +1,23 @@
-import React from 'react';
-import { Video } from '@skillfuze/types';
+import React, { useEffect } from 'react';
+import { Video, UserTokenPayload } from '@skillfuze/types';
+import mixpanel from 'mixpanel-browser';
 import Layout from '../../../../components/Layout';
 import withAuth from '../../../../utils/withAuth';
 import VideoData from '../../../../components/VideoData';
 import { VideosService } from '../../../../services/videos.service';
+import { mixpanelEvents } from '../../../../../config/mixpanel.events';
 
 interface Props {
   video: Video;
+  user?: UserTokenPayload;
 }
 
-const EditVideo = ({ video }: Props) => {
+const EditVideo = ({ user, video }: Props) => {
+  useEffect(() => {
+    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.EDIT_VIDEO);
+  }, []);
+
   return (
     <Layout title="Edit Video">
       <VideoData video={video} />

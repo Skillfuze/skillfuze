@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NextPage } from 'next';
 import { Button, Carousel, ContentCard, VideosTopBar, CourseInfoBar } from '@skillfuze/ui-components';
 import { HomeResponseDTO, User } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import mixpanel from 'mixpanel-browser';
 import HomeSVG from '../../assets/illustrations/home.svg';
 import Layout from '../components/Layout';
 import { HomeService } from '../services/home.service';
 import RecommendationCarousel from '../components/RecommendationCarousel';
 import config from '../../config';
 import withAuth from '../utils/withAuth';
+import { mixpanelEvents } from '../../config/mixpanel.events';
 
 interface Props {
   recommendations: HomeResponseDTO;
@@ -17,6 +19,10 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
+  useEffect(() => {
+    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.HOMEPAGE);
+  }, []);
   const router = useRouter();
   const LoadLivestreams = (
     <Carousel className="">

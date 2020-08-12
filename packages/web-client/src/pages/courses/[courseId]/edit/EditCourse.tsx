@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, SelectField } from '@skillfuze/ui-components';
 import { User, Course, AttachmentType } from '@skillfuze/types';
 import { useRouter } from 'next/router';
+import mixpanel from 'mixpanel-browser';
 import Layout from '../../../../components/Layout';
 import MultiStepForm, { Step } from '../../../../components/MultiStepForm';
 import { CategoriesService } from '../../../../services/categories.service';
@@ -11,6 +12,7 @@ import withAuth from '../../../../utils/withAuth';
 import CourseContentEditor from '../../../../components/CourseContentEditor/CourseContentEditor';
 import { UsersService } from '../../../../services/users.service';
 import UploadButton from '../../../../components/UploadButton';
+import { mixpanelEvents } from '../../../../../config/mixpanel.events';
 
 interface Props {
   user: User;
@@ -44,6 +46,9 @@ const EditCourse = ({ user, course }: Props) => {
         UsersService.getBlogs(user.username),
         UsersService.getVideos(user.username),
       ]);
+
+      mixpanel.identify(user.id || 'GUEST');
+      mixpanel.track(mixpanelEvents.EDIT_COURSE);
 
       setCategories(loadedCategories.map((cat) => ({ value: cat, label: cat.name })));
       setBlogs(loadedBlogs.data);

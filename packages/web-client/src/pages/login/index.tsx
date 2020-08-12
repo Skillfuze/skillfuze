@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Input } from '@skillfuze/ui-components';
 import { GoogleLogin, GoogleLoginResponseOffline } from 'react-google-login';
 import Link from 'next/link';
 import { useAlert } from 'react-alert';
+import mixpanel from 'mixpanel-browser';
 import LoginSVG from '../../../assets/icons/login.svg';
 import AuthService from '../../services/auth.service';
 import withAuth from '../../utils/withAuth/withAuth';
 import Layout from '../../components/Layout';
 import config from '../../../config';
+import { mixpanelEvents } from '../../../config/mixpanel.events';
 
 const LoginPage = () => {
   const authService = new AuthService();
@@ -25,6 +27,10 @@ const LoginPage = () => {
       alert.show('Welcome to Skillfuze');
     }
   };
+  useEffect(() => {
+    mixpanel.identify('GUEST');
+    mixpanel.track(mixpanelEvents.LOGIN);
+  }, []);
 
   const handleSubmit = async (event): Promise<void> => {
     event.preventDefault();

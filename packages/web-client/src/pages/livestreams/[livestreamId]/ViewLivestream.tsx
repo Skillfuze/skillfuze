@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Livestream, User } from '@skillfuze/types';
 import { SocketIOProvider } from '@khaled-hamam/use-socketio';
 import { useRouter } from 'next/router';
+import mixpanel from 'mixpanel-browser';
 
 import Layout from '../../../components/Layout';
 import { LivestreamService } from '../../../services/livestreams.service';
 import VideoLayout from '../../../components/VideoLayout';
 import config from '../../../../config';
 import withAuth from '../../../utils/withAuth';
+import { mixpanelEvents } from '../../../../config/mixpanel.events';
 
 interface Props {
   stream: Livestream;
@@ -20,6 +22,11 @@ const ViewLivestream = ({ stream, user }: Props) => {
     await LivestreamService.delete(stream.id);
     router.push(`/`);
   };
+
+  useEffect(() => {
+    mixpanel.identify(user.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.VIEW_LIVESTREAM);
+  }, []);
 
   return (
     <SocketIOProvider

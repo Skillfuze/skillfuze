@@ -10,7 +10,7 @@ import '@uppy/dashboard/dist/style.min.css';
 import '@uppy/screen-capture/dist/style.min.css';
 import '@uppy/webcam/dist/style.min.css';
 import '@skillfuze/ui-components/build/index.css';
-
+import mixpanel from 'mixpanel-browser';
 import React, { useEffect } from 'react';
 import { transitions, positions, Provider as AlertProvider, useAlert } from 'react-alert';
 import { Alert } from '@skillfuze/ui-components';
@@ -52,6 +52,7 @@ const App = ({ Component, pageProps }) => {
         />
         <title>Skillfuze</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <script>{mixpanel.init('1e5658f85c76974fac9afb86889ed6f2')}</script>
       </Head>
       <AlertProvider template={Alert} {...options}>
         <AlertInterceptor>

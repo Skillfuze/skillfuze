@@ -24,7 +24,7 @@ export const winstonOptions = {
     ),
   },
   logdna: {
-    key: '',
+    key: process.env.LOGDNA_KEY,
     hostname: 'skillfuze.com',
     ip: os.networkInterfaces().lo0[0].address,
     mac: os.networkInterfaces().lo0[0].mac,
