@@ -39,8 +39,9 @@ export const errorType = css`
 `;
 
 export const labelType = css`
-  color: var(--color-grey-dark);
+  color: var(--color-black);
   font-size: 14px;
+  font-weight: 600;
 `;
 
 export const borderless = css`
