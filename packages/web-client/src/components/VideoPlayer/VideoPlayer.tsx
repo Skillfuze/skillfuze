@@ -7,6 +7,7 @@ import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js';
 interface Props {
   url: string;
   videoType: string;
+  thumbnail?: string;
 }
 const VideoPlayer: React.FC<Props> = (props: Props) => {
   const alert = useAlert();
@@ -44,6 +45,7 @@ const VideoPlayer: React.FC<Props> = (props: Props) => {
           ref={(node) => {
             videoNode.current = node;
           }}
+          poster={props.thumbnail}
           className="video-js vjs-big-play-centered"
         />
       </div>
