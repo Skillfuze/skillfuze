@@ -123,4 +123,16 @@ describe('Videos Controller', () => {
       expect(serviceAddViewSpy).toBeCalledTimes(1);
     });
   });
+
+  describe('getAll', () => {
+    let serviceGetAllSpy: jest.SpyInstance;
+    beforeEach(async () => {
+      serviceGetAllSpy = jest.spyOn(service, 'getAllVideos');
+      await controller.getAll(0, 10);
+    });
+
+    it('should call service.getAll once', () => {
+      expect(serviceGetAllSpy).toBeCalledTimes(1);
+    });
+  });
 });

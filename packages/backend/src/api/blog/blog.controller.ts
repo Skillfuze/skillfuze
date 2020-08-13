@@ -1,3 +1,4 @@
+import { PaginatedResponse } from '@skillfuze/types';
 import {
   Controller,
   UseGuards,
@@ -8,6 +9,7 @@ import {
   Get,
   Param,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
@@ -145,5 +147,10 @@ export class BlogController implements CrudController<Blog> {
   @Post('/:id/view')
   public async view(@Param('id') id: string): Promise<void> {
     await this.service.addView(id);
+  }
+
+  @Get('/')
+  public async getAll(@Query('skip') skip: number, @Query('take') take: number): Promise<PaginatedResponse<Blog>> {
+    return this.service.getAllBlogs(skip, take);
   }
 }

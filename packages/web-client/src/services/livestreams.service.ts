@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { UpdateLivestreamDTO, CreateLivestreamDTO, Livestream } from '@skillfuze/types';
+import {
+  UpdateLivestreamDTO,
+  CreateLivestreamDTO,
+  Livestream,
+  PaginationOptions,
+  PaginatedResponse,
+} from '@skillfuze/types';
+import qs from 'qs';
 import { parseError } from '../utils/parseError';
 
 export class LivestreamService {
@@ -36,5 +43,10 @@ export class LivestreamService {
     } catch (error) {
       throw parseError(error.response.data);
     }
+  }
+
+  public static async getAllLivestreams(options?: PaginationOptions): Promise<PaginatedResponse<Livestream>> {
+    const res = await axios.get(`/api/v1/livestreams?${qs.stringify(options)}`);
+    return res.data;
   }
 }

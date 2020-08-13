@@ -75,8 +75,8 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
           crossOrigin="anonymous"
         />
       </Helmet>
+      <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
       <article className="flex flex-col max-w-screen-md mx-auto h-full">
-        <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
         <h1 className="flex text-left mt-8 font-bold" style={{ fontSize: '2.5rem' }}>
           {blog.title}
         </h1>

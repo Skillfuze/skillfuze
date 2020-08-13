@@ -1,4 +1,17 @@
-import { Controller, Body, Request, Post, UseGuards, Get, Param, Delete, HttpStatus, Patch } from '@nestjs/common';
+import { PaginatedResponse } from '@skillfuze/types';
+import {
+  Controller,
+  Body,
+  Request,
+  Post,
+  UseGuards,
+  Get,
+  Param,
+  Delete,
+  HttpStatus,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
@@ -55,5 +68,10 @@ export class VideosController {
   @Post('/:id/view')
   public async view(@Param('id') id: string): Promise<void> {
     await this.service.addView(id);
+  }
+
+  @Get('/')
+  public async getAll(@Query('skip') skip: number, @Query('take') take: number): Promise<PaginatedResponse<Video>> {
+    return this.service.getAllVideos(skip, take);
   }
 }

@@ -1,4 +1,17 @@
-import { Controller, Post, UseGuards, Request, Body, Param, Get, Delete, HttpStatus, Patch } from '@nestjs/common';
+import { PaginatedResponse } from '@skillfuze/types';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Body,
+  Param,
+  Get,
+  Delete,
+  HttpStatus,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
@@ -59,5 +72,13 @@ export class LivestreamsController {
     @Body() payload: UpdateLivestreamDTO,
   ): Promise<Livestream> {
     return this.service.update(req.user.id, id, payload);
+  }
+
+  @Get('/')
+  public async getAll(
+    @Query('skip') skip: number,
+    @Query('take') take: number,
+  ): Promise<PaginatedResponse<Livestream>> {
+    return this.service.getAllLivestreams(skip, take);
   }
 }

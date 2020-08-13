@@ -201,4 +201,16 @@ describe('VideosService', () => {
       expect(getOneSpy).toBeCalledTimes(1);
     });
   });
+
+  describe('getAllVideos', () => {
+    beforeAll(() => {
+      jest.spyOn(repository, 'findAndCount').mockReturnValue(Promise.resolve([[new Video()], 1]));
+    });
+
+    it('should return videos array and count = 1', async () => {
+      const res = await service.getAllVideos();
+      expect(res.data[0]).toBeInstanceOf(Video);
+      expect(res.count).toBe(1);
+    });
+  });
 });

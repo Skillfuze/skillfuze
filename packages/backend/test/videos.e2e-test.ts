@@ -258,6 +258,15 @@ describe('Videos (e2e)', () => {
     });
   });
 
+  describe('GET /api/v1/videos', () => {
+    it('should get the All videos and their count successfully', async () => {
+      const res = await request(app.getHttpServer()).get(`${url}`).send().expect(200);
+
+      expect(res.body.data.length).toBe(0);
+      expect(res.body.count).toBe(0);
+    });
+  });
+
   afterEach(async () => {
     await videoRepository.delete({});
   });

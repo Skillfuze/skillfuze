@@ -81,14 +81,15 @@ describe('Blogs (e2e)', () => {
     const url = '/api/v1/blogs';
 
     it('should get all blogs successfully', async () => {
-      await request(app.getHttpServer())
+      const res = await request(app.getHttpServer())
         .post(url)
         .send({ title: 'Test Blog', content: 'test content.', category: { id: 1 } })
         .set('Authorization', token);
 
-      const res = await request(app.getHttpServer()).get(url).query({ limit: 0 }).expect(200);
+      await request(app.getHttpServer()).post(`${url}/${res.body.id}/publish`).set('Authorization', token).expect(200);
+      const getAllRes = await request(app.getHttpServer()).get(url).query({ limit: 0 }).expect(200);
 
-      expect(res.body.data.length).toBe(1);
+      expect(getAllRes.body.data.length).toBe(1);
     });
   });
 
