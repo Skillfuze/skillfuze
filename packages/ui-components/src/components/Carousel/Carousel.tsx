@@ -21,7 +21,11 @@ const CustomArrow = ({ onClick, direction }: any) => {
       )}
       onClick={onClick}
     >
-      {direction === 'left' ? <BackIcon fill="white" width={15} /> : <NextIcon fill="white" width={15} />}
+      {direction === 'left' ? (
+        <BackIcon className="self-center" fill="white" width={15} />
+      ) : (
+        <NextIcon className="self-center" fill="white" width={15} />
+      )}
     </button>
   );
 };

@@ -18,7 +18,6 @@ interface Props {
 
 const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
   const router = useRouter();
-
   const LoadLivestreams = (
     <Carousel className="">
       {recommendations.livestreams.map((livestream) => (
@@ -29,7 +28,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           category={livestream.category.name}
           title={livestream.title}
           userName={`${livestream.streamer.firstName} ${livestream.streamer.lastName}`}
-          userAvatar="https://www.w3schools.com/w3images/avatar2.png"
+          userAvatar={user.avatarURL}
           topBar={<VideosTopBar isLive views={livestream.watchingNow} />}
           onClick={() => {
             router.push(`/livestreams/[livestreamId]`, `/livestreams/${livestream.id}`);
@@ -49,7 +48,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           category={course.category.name}
           title={course.title}
           userName={course.creator.username}
-          userAvatar="https://www.w3schools.com/w3images/avatar2.png"
+          userAvatar={course.creator.avatarURL}
           createdAt={course.createdAt}
           infoBar={<CourseInfoBar rate={4.5} price={course.price} />}
           callToActionButton={<Button>ENROLL</Button>}
@@ -71,7 +70,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           category={video.category.name}
           title={video.title}
           userName={`${video.uploader.firstName} ${video.uploader.lastName}`}
-          userAvatar="https://www.w3schools.com/w3images/avatar2.png"
+          userAvatar={video.uploader.avatarURL}
           createdAt={video.createdAt}
           topBar={<VideosTopBar isLive={false} views={video.views} />}
           onClick={() => {
@@ -92,7 +91,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           category={blog.category.name}
           title={blog.title}
           userName={`${blog.user.firstName} ${blog.user.lastName}`}
-          userAvatar="https://www.w3schools.com/w3images/avatar2.png"
+          userAvatar={blog.user.avatarURL}
           createdAt={blog.publishedAt}
           onClick={() => {
             // eslint-disable-next-line no-restricted-globals

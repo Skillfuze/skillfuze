@@ -3,6 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { Avatar, Button, TagsView, MoreActions } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
+import { DiscussionEmbed } from 'disqus-react';
 
 import { User, Video, Livestream } from '@skillfuze/types';
 import VideoPlayer from '../VideoPlayer';
@@ -56,6 +57,18 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, v
         </div>
         {isLive && <LiveChat user={viewer} />}
       </div>
+      {!isLive && (
+        <div className="my-10">
+          <DiscussionEmbed
+            shortname="skillfuze"
+            config={{
+              url,
+              identifier: content.id,
+              title: content.title,
+            }}
+          />
+        </div>
+      )}
 
       <style jsx>
         {`

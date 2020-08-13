@@ -58,7 +58,24 @@ export class BlogService extends TypeOrmCrudService<Blog> {
       where: (qb) => {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
-      relations: ['user'],
+      relations: ['user', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+    return {
+      data: blogs,
+      count,
+    };
+  }
+
+  public async getCategoryBlogs(slug: string, skip = 0, take = 10): Promise<PaginatedResponse<Blog>> {
+    const [blogs, count] = await this.repository.findAndCount({
+      join: { alias: 'blogs', innerJoin: { categories: 'blogs.category' } },
+      where: (qb) => {
+        qb.where('categories.slug = :slug', { slug }).andWhere('publishedAt IS NOT NULL');
+      },
+      relations: ['user', 'category'],
       order: { createdAt: 'DESC' },
       skip,
       take,
@@ -90,5 +107,15 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     if (config.gatsby.buildHookURL) {
       axios.post(config.gatsby.buildHookURL);
     }
+  }
+
+  public async addView(blogId: string): Promise<void> {
+    const blog = await this.repository.findOne(blogId);
+    if (!blog) {
+      throw new NotFoundException();
+    }
+
+    blog.views += 1;
+    await this.repository.save(blog);
   }
 }

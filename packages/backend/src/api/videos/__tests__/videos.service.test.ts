@@ -154,8 +154,8 @@ describe('VideosService', () => {
       repoUpdateSpy = jest.spyOn(repository, 'update');
       repoFindOneSpy = jest.spyOn(repository, 'findOne');
       repoFindOneSpy.mockReturnValue(payload);
-
       getOneSpy.mockReturnValue(video);
+
       res = await service.update(userId, videoId, payload);
     });
 
@@ -174,6 +174,31 @@ describe('VideosService', () => {
     it('should call repo.findOne and return the updated video', async () => {
       expect(repoFindOneSpy).toBeCalledTimes(1);
       expect(res).toBe(payload);
+    });
+  });
+
+  describe('addView', () => {
+    const videoId = '1';
+    const userId = 1;
+    let getOneSpy: jest.SpyInstance;
+    const video = {
+      title: 'Video Title',
+      views: 0,
+      uploader: {
+        id: userId,
+      },
+    };
+
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      getOneSpy = jest.spyOn(service, 'getOne');
+      getOneSpy.mockReturnValue(video);
+
+      await service.addView(videoId);
+    });
+
+    it('should call getOne once', async () => {
+      expect(getOneSpy).toBeCalledTimes(1);
     });
   });
 });

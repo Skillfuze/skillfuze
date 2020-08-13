@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Avatar, MoreActions } from '@skillfuze/ui-components';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 import { navigate } from '@reach/router';
 import cookie from 'react-cookies';
+import { Disqus } from 'gatsby-plugin-disqus';
 
 import axios from 'axios';
 import Bookmark from '../../../assets/icons/bookmark.svg';
@@ -17,6 +18,14 @@ interface Props {
 
 const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
   const pageURL = typeof window !== 'undefined' ? window.location.href : '';
+
+  useEffect(() => {
+    async function addView() {
+      await axios.post(`${config.API_URL}/api/v1/blogs/${blog.id}/view`);
+    }
+    addView();
+  }, []);
+
   const onClickBookmark = () => {
     console.log('Bookmarked');
   };
@@ -34,6 +43,11 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
     } finally {
       navigate(`${config.webClientUrl}/`);
     }
+  };
+
+  const disqusConfig = {
+    identifier: blog.id,
+    title: blog.title,
   };
 
   return (
@@ -61,14 +75,14 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
           crossOrigin="anonymous"
         />
       </Helmet>
-      <article className="flex flex-col w-full h-full items-center">
+      <article className="flex flex-col max-w-screen-md mx-auto h-full">
         <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
-        <h1 className="flex text-left mt-8 w-1/2 font-bold" style={{ fontSize: '2.5rem' }}>
+        <h1 className="flex text-left mt-8 font-bold" style={{ fontSize: '2.5rem' }}>
           {blog.title}
         </h1>
-        <h4 className="flex text-left mt-6 w-1/2 text-grey-dark">{blog.description}</h4>
-        <div className="flex flex-row mt-6 w-1/2 h-16 items-center ">
-          <Avatar URL={blog.user.avatar} alt="user photo" />
+        <h4 className="flex text-left mt-6 text-grey-dark">{blog.description}</h4>
+        <div className="flex flex-row mt-6 h-16 items-center ">
+          <Avatar URL={blog.user.avatarURL} alt="user photo" />
           <div className="ml-4 flex-col flex-auto">
             <div className="flex flex-row items-center">
               <div className="flex flex-row flex-grow">
@@ -86,10 +100,12 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
           </div>
         </div>
         <article
-          className="text-left mt-8 w-1/2"
+          className="text-left mt-8"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
+        <hr className="opacity-50 mt-20" />
+        <Disqus className="mt-6 mb-6" config={disqusConfig} />
       </article>
     </>
   );

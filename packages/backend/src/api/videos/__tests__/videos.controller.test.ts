@@ -109,4 +109,18 @@ describe('Videos Controller', () => {
       expect(res).toBe(update);
     });
   });
+
+  describe('view', () => {
+    const videoId = '1';
+
+    let serviceAddViewSpy: jest.SpyInstance;
+    beforeEach(async () => {
+      serviceAddViewSpy = jest.spyOn(service, 'addView');
+      await controller.view(videoId);
+    });
+
+    it('should call service.addView once', () => {
+      expect(serviceAddViewSpy).toBeCalledTimes(1);
+    });
+  });
 });

@@ -53,6 +53,24 @@ export class VideosService {
     };
   }
 
+  public async getCategoryVideos(slug: string, skip = 0, take = 10): Promise<PaginatedResponse<Video>> {
+    const [videos, count] = await this.repository.findAndCount({
+      join: { alias: 'videos', innerJoin: { categories: 'videos.category' } },
+      where: (qb) => {
+        qb.where('categories.slug = :slug', { slug });
+      },
+      relations: ['uploader', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: videos,
+      count,
+    };
+  }
+
   public async update(userId: number, videoId: string, payload: UpdateVideoDTO): Promise<Video> {
     const video = await this.getOne(videoId);
     if (video.uploader.id !== userId) {
@@ -61,5 +79,11 @@ export class VideosService {
 
     await this.repository.update({ id: videoId }, payload);
     return this.repository.findOne(videoId, { relations: ['uploader', 'category'] });
+  }
+
+  public async addView(videoId: string): Promise<void> {
+    const video = await this.getOne(videoId);
+    video.views += 1;
+    await this.repository.save(video);
   }
 }
