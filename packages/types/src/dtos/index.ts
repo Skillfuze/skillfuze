@@ -14,3 +14,4 @@ export * from './get-course-lesson-response.dto';
 export * from './attachment-response.dto';
 export * from './paginated-response.dto';
 export * from './pagination-options.dto';
+export * from './update-profile.dto';
