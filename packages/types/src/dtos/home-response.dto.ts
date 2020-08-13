@@ -1,8 +1,8 @@
-import { Livestream, Blog, Video } from '../models';
+import { Livestream, Blog, Video, Course } from '../models';
 
 export interface HomeResponseDTO {
   livestreams: Livestream[];
   blogs: Blog[];
   videos: Video[];
-  courses: any[];
+  courses: Course[];
 }

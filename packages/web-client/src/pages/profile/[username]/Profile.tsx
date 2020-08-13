@@ -115,7 +115,7 @@ const ProfilePage: NextPage<Props> = ({
             loadMore={enrolledCoursesLoadMore}
             title="Enrolled Courses"
           >
-            <CoursesList enrolled courses={courses.data} />
+            <CoursesList enrolled courses={enrolledCourses.data} />
           </Tab>
           <Tab title="Bookmarks">
             <InDevelopment inDevelopmentItem="feature" />
