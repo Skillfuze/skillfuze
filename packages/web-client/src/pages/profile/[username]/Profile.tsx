@@ -35,7 +35,7 @@ const ProfilePage: NextPage<Props> = ({
   };
 
   const onEdit = (): void => {
-    console.log('Edit');
+    router.push('/profile/edit');
   };
 
   const videosLoadMore = async (): Promise<void> => {
