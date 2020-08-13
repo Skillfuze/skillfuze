@@ -1,6 +1,6 @@
 import { PaginatedResponse, GetCourseLessonResponseDTO } from '@skillfuze/types';
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { IsNull, Not } from 'typeorm';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import slugify from 'slugify';
 import shortid from 'shortid';
 
@@ -31,9 +31,9 @@ export class CoursesService {
   }
 
   public async getByIdOrSlug(idOrSlug: string): Promise<Course> {
-    let course = await this.repository.findOne({ slug: idOrSlug }, { relations: ['lessons'] });
+    let course = await this.repository.findOne({ slug: idOrSlug }, { relations: ['lessons', 'enrolled'] });
     if (!course) {
-      course = await this.repository.findOne(idOrSlug, { relations: ['lessons'] });
+      course = await this.repository.findOne(idOrSlug, { relations: ['lessons', 'enrolled'] });
     }
 
     if (!course) {
@@ -170,6 +170,20 @@ export class CoursesService {
       url: materialView.url,
       content: materialView.content,
     };
+  }
+
+  public async enroll(courseId: string, userId: number): Promise<void> {
+    const course = await this.getByIdOrSlug(courseId);
+
+    if (course.enrolled.filter((enrolled) => enrolled.id === userId).length === 1) {
+      throw new BadRequestException('User already enrolled.');
+    }
+
+    const newEnrolledUser = new User();
+    newEnrolledUser.id = userId;
+    course.enrolled.push(newEnrolledUser);
+
+    await this.repository.save(course);
   }
 
   private async generateSlug(course: Course): Promise<string> {

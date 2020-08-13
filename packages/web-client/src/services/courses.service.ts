@@ -30,6 +30,11 @@ export class CoursesService {
     return course;
   }
 
+  public static async enroll(id: string): Promise<Course> {
+    const { data: course } = await axios.post<Course>(`/api/v1/courses/${id}/enroll`);
+    return course;
+  }
+
   public static async getCourseLesson(courseId: string, lessonId: string): Promise<GetCourseLessonResponseDTO> {
     const { data } = await axios.get<GetCourseLessonResponseDTO>(`/api/v1/courses/${courseId}/lessons/${lessonId}`);
     return data;
