@@ -1,5 +1,6 @@
 export const mixpanelEvents = {
   VIEW_PROFILE: 'View Profile',
+  EDIT_PROFILE: 'Edit Profile',
   EDIT_COURSE: 'Edit Course',
   VIEW_COURSE_PLAYER: 'View Course Player',
   VIEW_COURSE_PAGE: 'View Course Page',

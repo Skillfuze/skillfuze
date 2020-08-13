@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserTokenPayload, CourseLesson, Course } from '@skillfuze/types';
 import { NextPage } from 'next';
 import { Button, TagsView, Avatar } from '@skillfuze/ui-components';
@@ -6,11 +6,13 @@ import { useAlert } from 'react-alert';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import mixpanel from 'mixpanel-browser';
 import Layout from '../../../../components/Layout';
 import withAuth from '../../../../utils/withAuth';
 import VideoPlayer from '../../../../components/VideoPlayer';
 import { CoursesService } from '../../../../services/courses.service';
 import { UsersService } from '../../../../services/users.service';
+import { mixpanelEvents } from '../../../../../config/mixpanel.events';
 
 interface LessonItemProps {
   courseSlug: string;
@@ -37,6 +39,11 @@ interface CourseViewProps {
 }
 
 const CourseView: NextPage<CourseViewProps> = ({ user, course, creatorCoursesCount }: CourseViewProps) => {
+  useEffect(() => {
+    mixpanel.identify(user?.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.VIEW_COURSE_PAGE);
+  }, []);
+
   const router = useRouter();
   const alert = useAlert();
   const [isEnrolled] = useState(() => {
