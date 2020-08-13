@@ -28,7 +28,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
           category={livestream.category.name}
           title={livestream.title}
           userName={`${livestream.streamer.firstName} ${livestream.streamer.lastName}`}
-          userAvatar={user.avatarURL}
+          userAvatar={livestream.streamer.avatarURL}
           topBar={<VideosTopBar isLive views={livestream.watchingNow} />}
           onClick={() => {
             router.push(`/livestreams/[livestreamId]`, `/livestreams/${livestream.id}`);

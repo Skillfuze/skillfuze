@@ -1,5 +1,6 @@
 import { PaginatedResponse, GetCourseLessonResponseDTO } from '@skillfuze/types';
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { IsNull, Not } from 'typeorm';
 import slugify from 'slugify';
 import shortid from 'shortid';
 
@@ -186,5 +187,20 @@ export class CoursesService {
     }
 
     return slug;
+  }
+
+  public async getAllCourses(skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
+    const [courses, count] = await this.repository.findAndCount({
+      where: { publishedAt: Not(IsNull()) },
+      relations: ['creator', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: courses,
+      count,
+    };
   }
 }

@@ -30,7 +30,7 @@ export class LivestreamsService {
     const [livestreams, count] = await this.repository.findAndCount({
       join: { alias: 'livestreams', innerJoin: { categories: 'livestreams.category' } },
       where: (qb) => {
-        qb.where('categories.slug = :slug', { slug });
+        qb.where('categories.slug = :slug AND islive = 1', { slug });
       },
       relations: ['streamer', 'category'],
       order: { createdAt: 'DESC' },
@@ -98,5 +98,20 @@ export class LivestreamsService {
 
     await this.repository.update({ id: streamId }, payload);
     return this.repository.findOne(streamId, { relations: ['streamer', 'category'] });
+  }
+
+  public async getAllLivestreams(skip = 0, take = 10): Promise<PaginatedResponse<Livestream>> {
+    const [livestreams, count] = await this.repository.findAndCount({
+      where: { isLive: true },
+      relations: ['streamer', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: livestreams,
+      count,
+    };
   }
 }
