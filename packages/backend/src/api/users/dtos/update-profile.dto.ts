@@ -16,6 +16,7 @@ export class UpdateProfileDTO implements IUpdateProfileDTO {
 
   @ApiProperty()
   @IsOptional()
+  @IsNotEmpty({ message: 'username should not be empty' })
   public username: string;
 
   @ApiProperty()
