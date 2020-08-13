@@ -31,7 +31,7 @@ export class CoursesController {
   @Post('/:id/enroll')
   @ApiBearerAuth()
   @ApiUnauthorizedResponse()
-  public async(@Param('id') courseId: string, @UserId() userId: number): Promise<void> {
+  public async enroll(@Param('id') courseId: string, @UserId() userId: number): Promise<void> {
     return this.service.enroll(courseId, userId);
   }
 
