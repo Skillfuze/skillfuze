@@ -23,12 +23,12 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       {recommendations.livestreams.map((livestream) => (
         <ContentCard
           key={livestream.id}
-          className=""
+          className="h-full"
           thumbnail={livestream.thumbnailURL}
           category={livestream.category.name}
           title={livestream.title}
           userName={`${livestream.streamer.firstName} ${livestream.streamer.lastName}`}
-          userAvatar={user.avatarURL}
+          userAvatar={livestream.streamer.avatarURL}
           topBar={<VideosTopBar isLive views={livestream.watchingNow} />}
           onClick={() => {
             router.push(`/livestreams/[livestreamId]`, `/livestreams/${livestream.id}`);
@@ -42,12 +42,12 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
     <Carousel className="">
       {recommendations.courses.map((course) => (
         <ContentCard
-          className=""
+          className="h-full"
           key={course.id}
           thumbnail={course.thumbnailURL}
-          category={course.category.name}
+          category={course.category?.name || ''}
           title={course.title}
-          userName={course.creator.username}
+          userName={`${course.creator.firstName} ${course.creator.lastName}`}
           userAvatar={course.creator.avatarURL}
           createdAt={course.createdAt}
           infoBar={<CourseInfoBar rate={4.5} price={course.price} />}
@@ -65,7 +65,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       {recommendations.videos.map((video) => (
         <ContentCard
           key={video.id}
-          className=""
+          className="h-full"
           thumbnail={video.thumbnailURL}
           category={video.category.name}
           title={video.title}
@@ -86,7 +86,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       {recommendations.blogs.map((blog) => (
         <ContentCard
           key={blog.id}
-          className=""
+          className="h-full"
           thumbnail={blog.thumbnailURL}
           category={blog.category.name}
           title={blog.title}

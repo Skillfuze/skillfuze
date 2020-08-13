@@ -25,29 +25,29 @@ export class Course implements ICourse {
   public id: string;
 
   @Column({ nullable: true })
-  public title: string;
+  public title: string = undefined;
 
   @Column({ unique: true, nullable: true })
-  public slug: string;
+  public slug: string = undefined;
 
   @Column({ nullable: true })
-  public description: string;
+  public description: string = undefined;
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: true, eager: true })
   @JoinColumn({ referencedColumnName: 'id' })
   public category: Category;
 
   @Column({ type: 'simple-array', nullable: true })
-  public tags: string[];
+  public tags: string[] = undefined;
 
   @Column({ nullable: true })
-  public thumbnailURL: string;
+  public thumbnailURL: string = undefined;
 
   @Column({ nullable: true })
-  public trailerURL: string;
+  public trailerURL: string = undefined;
 
   @Column({ default: 0 })
-  public price: number;
+  public price: number = undefined;
 
   @OneToMany(() => CourseLesson, (lesson) => lesson.course, { cascade: true, eager: true })
   public lessons: CourseLesson[];
@@ -61,16 +61,16 @@ export class Course implements ICourse {
   public enrolled: User[];
 
   @CreateDateColumn({ type: 'timestamp' })
-  public createdAt: Date;
+  public createdAt: Date = undefined;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  public updatedAt: Date;
+  public updatedAt: Date = undefined;
 
   @DeleteDateColumn({ type: 'timestamp' })
-  public deletedAt: Date;
+  public deletedAt: Date = undefined;
 
   @Column({ type: 'timestamp', nullable: true })
-  public publishedAt: Date;
+  public publishedAt: Date = undefined;
 
   public constructor() {
     this.id = shortid.generate();

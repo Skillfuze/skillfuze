@@ -20,7 +20,7 @@ const CoursesList: React.FC<Props> = (props: Props) => {
               className=""
               key={course.id}
               thumbnail={course.thumbnailURL}
-              category={course.category.name}
+              category={course.category?.name || ''}
               title={course.title}
               userName={`${course.creator.firstName} ${course.creator.lastName}`}
               userAvatar={course.creator.avatarURL}
