@@ -141,4 +141,9 @@ export class BlogController implements CrudController<Blog> {
     this.emitter.emit('publish', res);
     return res;
   }
+
+  @Post('/:id/view')
+  public async view(@Param('id') id: string): Promise<void> {
+    await this.service.addView(id);
+  }
 }

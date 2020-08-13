@@ -24,6 +24,11 @@ const ViewVideo = ({ video, user }: Props) => {
   useEffect(() => {
     mixpanel.identify(user?.id || 'GUEST');
     mixpanel.track(mixpanelEvents.VIEW_VIDEO);
+
+    async function addView() {
+      await VideosService.addView(video.id);
+    }
+    addView();
   }, []);
 
   return (

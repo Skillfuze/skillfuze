@@ -24,8 +24,7 @@ const LivestreamsList: React.FC<Props> = (props: Props) => {
               userName={`${livestream.streamer.firstName} ${livestream.streamer.lastName}`}
               userAvatar={livestream.streamer.avatarURL}
               createdAt={livestream.createdAt}
-              // TODO: views
-              topBar={<VideosTopBar isLive views={0} />}
+              topBar={<VideosTopBar isLive views={livestream.watchingNow} />}
               onClick={() => {
                 router.push(`/livestreams/[livestreamId]`, `/livestreams/${livestream.id}`);
               }}

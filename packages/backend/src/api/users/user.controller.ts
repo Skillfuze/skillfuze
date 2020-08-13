@@ -1,6 +1,8 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { ApiNotFoundResponse } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, UseGuards, Patch, Body } from '@nestjs/common';
+import { ApiNotFoundResponse, ApiBearerAuth, ApiUnauthorizedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 import { PaginatedResponse } from '@skillfuze/types';
+import { UserId } from '../common/decorators/user-id.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Course } from '../courses/entities/course.entity';
 import { CoursesService } from '../courses/courses.service';
 import { Blog } from '../blog/blog.entity';
@@ -9,6 +11,7 @@ import { UserService } from './user.service';
 import { Video } from '../videos/video.entity';
 import { VideosService } from '../videos/videos.service';
 import { BlogService } from '../blog/blog.service';
+import { UpdateProfileDTO } from './dtos/update-profile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -59,5 +62,15 @@ export class UsersController {
     @Query('take') take: number,
   ): Promise<PaginatedResponse<Course>> {
     return this.courseService.getUserEnrolledCourses(username, skip, take);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Patch('/me')
+  public async update(@UserId() userId: number, @Body() payload: UpdateProfileDTO): Promise<void> {
+    await this.userService.update(userId, payload);
   }
 }

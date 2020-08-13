@@ -34,4 +34,12 @@ export class VideosService {
       throw parseError(error.response.data);
     }
   }
+
+  public static async addView(id: string): Promise<void> {
+    try {
+      await axios.post<Video>(`api/v1/videos/${id}/view`);
+    } catch (error) {
+      throw parseError(error.response.data);
+    }
+  }
 }

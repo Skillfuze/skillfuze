@@ -13,6 +13,7 @@ interface InputProps extends React.HTMLAttributes<HTMLInputElement | HTMLTextAre
   disabled?: boolean;
   multiline?: boolean;
   rows?: number;
+  containerClassName?: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
@@ -37,7 +38,7 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { borderless: _borderless, multiline, ...restInputProps } = props;
   return (
-    <div className="flex flex-col">
+    <div className={cx(props.containerClassName, 'flex flex-col')}>
       {Boolean(props.label?.length) && <p className={cx(labelType, 'mb-1')}>{props.label}</p>}
       {!props.multiline ? (
         <input {...restInputProps} value={props.value} className={className} onChange={onChange} />

@@ -4,13 +4,14 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
+import { NestExpressApplication } from '@nestjs/platform-express';
 import config from '../config';
 import { stream, logger } from './utils/logger';
 import { AppModule } from './app.module';
 import { morganJsonFormatter } from './utils/morgan';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const isProd = process.env.NODE_ENV === 'production';
 
   app.useGlobalPipes(
@@ -25,6 +26,7 @@ async function bootstrap() {
   app.use(morgan(morganJsonFormatter, { stream }));
   app.enableCors(config.corsOptions);
   app.use(helmet());
+  app.set('trust proxy', 1);
 
   const options = new DocumentBuilder()
     .setTitle('Skillfuze API')

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Blog, Video, Course, PaginatedResponse } from '@skillfuze/types';
+import { User, Blog, Video, Course, PaginatedResponse, UserTokenPayload } from '@skillfuze/types';
 import { Avatar, Button, MoreActions, ContentTabs, Tab } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
@@ -9,15 +9,18 @@ import { UsersService } from '../../../services/users.service';
 import InDevelopment from '../../../components/InDevelopment';
 import { VideosList, BlogsList, CoursesList } from '../../../components/MaterialsLists';
 import { mixpanelEvents } from '../../../../config/mixpanel.events';
+import withAuth from '../../../utils/withAuth';
 
 interface Props {
-  user: User;
+  profile: User;
+  user?: UserTokenPayload;
   initialBlogs: PaginatedResponse<Blog>;
   initialVideos: PaginatedResponse<Video>;
   initialCourses: PaginatedResponse<Course>;
   initialEnrolledCourses: PaginatedResponse<Course>;
 }
 const ProfilePage: NextPage<Props> = ({
+  profile,
   user,
   initialBlogs,
   initialVideos,
@@ -33,30 +36,30 @@ const ProfilePage: NextPage<Props> = ({
   const [enrolledCourses, setEnrolledCourses] = useState(initialEnrolledCourses);
 
   const handleLiveClick = (): void => {
-    router.push(`/livestreams/${user.livestreams[0].id}`);
+    router.push(`/livestreams/${profile.livestreams[0].id}`);
   };
 
   const onEdit = (): void => {
-    console.log('Edit');
+    router.push('/profile/edit');
   };
 
   const videosLoadMore = async (): Promise<void> => {
-    const res = await UsersService.getVideos(user.username, { skip: videos.data.length });
+    const res = await UsersService.getVideos(profile.username, { skip: videos.data.length });
     setVideos((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
 
   const blogsLoadMore = async (): Promise<void> => {
-    const res = await UsersService.getBlogs(user.username, { skip: blogs.data.length });
+    const res = await UsersService.getBlogs(profile.username, { skip: blogs.data.length });
     setBlogs((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
 
   const coursesLoadMore = async (): Promise<void> => {
-    const res = await UsersService.getCourses(user.username, { skip: courses.data.length });
+    const res = await UsersService.getCourses(profile.username, { skip: courses.data.length });
     setCourses((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
 
   const enrolledCoursesLoadMore = async (): Promise<void> => {
-    const res = await UsersService.getEnrolledCourses(user.username, { skip: enrolledCourses.data.length });
+    const res = await UsersService.getEnrolledCourses(profile.username, { skip: enrolledCourses.data.length });
     setEnrolledCourses((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
 
@@ -66,12 +69,12 @@ const ProfilePage: NextPage<Props> = ({
   }, []);
 
   return (
-    <Layout title="Profile">
-      <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto space-y-16">
+    <Layout title="Profile" user={user}>
+      <div className="container flex flex-col flex-grow p-4 pt-8 max-w-screen-xl mx-auto space-y-16">
         <div className="flex lg:flex-no-wrap flex-wrap w-full lg:justify-between content-start">
           <div className="flex flex-col space-y-4 w-full lg:w-auto items-center mb-4">
-            <Avatar className="w-32 h-32" URL={user.avatarURL} alt="userAvatar" />
-            {user.livestreams && (
+            <Avatar className="w-32 h-32 mr-4" URL={profile.avatarURL} alt="userAvatar" />
+            {profile.livestreams && (
               <Button onClick={handleLiveClick} color="warning">
                 Live
               </Button>
@@ -79,19 +82,22 @@ const ProfilePage: NextPage<Props> = ({
           </div>
           <div className="flex flex-1 flex-col space-y-8 max-w-screen-lg">
             <div className="flex flex-wrap">
-              <div>
-                <h1 className="font-bold">{`${user.firstName} ${user.lastName}`}</h1>
-                <h5 className="text-grey-dark">{user.email}</h5>
+              <div className="space-y-2">
+                <h1 className="font-bold">{`${profile.firstName} ${profile.lastName}`}</h1>
+                <h5 className="text-grey-dark">{profile.email}</h5>
               </div>
-              <div className="mt-1 flex-grow md:ml-12">
+              <div className="mt-1 flex-grow md:ml-20">
                 <Button className="w-48" variant="outlined">
                   Follow
                 </Button>
               </div>
               <MoreActions URL={pageURL} enableControls onEdit={onEdit} />
             </div>
-            <h5 className="font-bold text-black-light">{`${0} followers  ${0} following`}</h5>
-            <p className="text-xl text-black-light">{user.bio}</p>
+            <div className="flex">
+              <p className="font-bold text-black-light">{`${0} followers`}</p>
+              <p className="font-bold text-black-light ml-4">{`${0} following`}</p>
+            </div>
+            <p className="text-lg text-black-light">{profile.bio}</p>
           </div>
         </div>
         <ContentTabs className="py-4" tabs={['Courses', 'Videos', 'Blogs', 'Enrolled Courses', 'Bookmarks']}>
@@ -121,14 +127,14 @@ const ProfilePage: NextPage<Props> = ({
 };
 
 ProfilePage.getInitialProps = async (ctx) => {
-  const [user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses] = await Promise.all([
+  const [profile, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses] = await Promise.all([
     UsersService.getProfileInfo(ctx.query.username.toString()),
     UsersService.getBlogs(ctx.query.username.toString()),
     UsersService.getVideos(ctx.query.username.toString()),
     UsersService.getCourses(ctx.query.username.toString()),
     UsersService.getEnrolledCourses(ctx.query.username.toString()),
   ]);
-  return { user, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses };
+  return { profile, initialBlogs, initialVideos, initialCourses, initialEnrolledCourses };
 };
 
-export default ProfilePage;
+export default withAuth({})(ProfilePage);

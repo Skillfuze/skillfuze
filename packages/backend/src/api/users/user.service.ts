@@ -4,6 +4,7 @@ import { HashingService } from '../auth/services/hashing.service';
 import { UserRepository } from './user.repository';
 import { UserRegisterDTO } from './dtos';
 import { User } from './user.entity';
+import { UpdateProfileDTO } from './dtos/update-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -42,5 +43,18 @@ export class UserService {
       user.livestreams = [livestream];
     }
     return user;
+  }
+
+  public async update(userId: number, payload: UpdateProfileDTO): Promise<void> {
+    let hashedPayload: UpdateProfileDTO = payload;
+    if (payload.password) {
+      hashedPayload = {
+        ...payload,
+        password: await this.hashing.hashPassword(payload.password),
+      };
+      delete hashedPayload.confirmPassword;
+    }
+
+    await this.userRepository.save({ ...hashedPayload, id: userId });
   }
 }
