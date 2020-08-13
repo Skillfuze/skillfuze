@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { AttachmentType, UserTokenPayload } from '@skillfuze/types';
 import { Input, Avatar, Button } from '@skillfuze/ui-components';
 import { useAlert } from 'react-alert';
+import mixpanel from 'mixpanel-browser';
 import { UsersService } from '../../../services/users.service';
 import Layout from '../../../components/Layout';
 import withAuth from '../../../utils/withAuth';
 import { AttachmentsService } from '../../../services/attachments.service';
+import { mixpanelEvents } from '../../../../config/mixpanel.events';
 
 interface Props {
   user: UserTokenPayload;
@@ -22,6 +24,11 @@ const EditProfile = ({ user }: Props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<any>({});
   const alert = useAlert();
+
+  useEffect(() => {
+    mixpanel.identify(user?.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.EDIT_PROFILE);
+  }, []);
 
   useEffect(() => {
     const getProfile = async () => {

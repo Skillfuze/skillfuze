@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Input, Button } from '@skillfuze/ui-components';
 import { useAlert } from 'react-alert';
+import mixpanel from 'mixpanel-browser';
 
 import RegisterSVG from '../../../assets/illustrations/register.svg';
 import Layout from '../../components/Layout';
 import AuthService from '../../services/auth.service';
+import { mixpanelEvents } from '../../../config/mixpanel.events';
 
 const RegisterPage = () => {
   const alert = useAlert();
@@ -47,6 +49,11 @@ const RegisterPage = () => {
       LOGIN
     </Button>
   );
+
+  useEffect(() => {
+    mixpanel.identify('GUEST');
+    mixpanel.track(mixpanelEvents.REGISTER);
+  }, []);
 
   return (
     <Layout navControls={navControls} title="Register" showProfileControls={false}>

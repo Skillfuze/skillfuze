@@ -8,6 +8,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import config from '../config';
 import { stream, logger } from './utils/logger';
 import { AppModule } from './app.module';
+import { morganJsonFormatter } from './utils/morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,7 +23,7 @@ async function bootstrap() {
   );
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.use(morgan(isProd ? 'combined' : 'dev', { stream }));
+  app.use(morgan(morganJsonFormatter, { stream }));
   app.enableCors(config.corsOptions);
   app.use(helmet());
   app.set('trust proxy', 1);

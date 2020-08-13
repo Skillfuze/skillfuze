@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Blog, Video, Course, PaginatedResponse, UserTokenPayload } from '@skillfuze/types';
 import { Avatar, Button, MoreActions, ContentTabs, Tab } from '@skillfuze/ui-components';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+import mixpanel from 'mixpanel-browser';
 import Layout from '../../../components/Layout';
 import { UsersService } from '../../../services/users.service';
 import InDevelopment from '../../../components/InDevelopment';
 import { VideosList, BlogsList, CoursesList } from '../../../components/MaterialsLists';
+import { mixpanelEvents } from '../../../../config/mixpanel.events';
 import withAuth from '../../../utils/withAuth';
 
 interface Props {
@@ -60,6 +62,11 @@ const ProfilePage: NextPage<Props> = ({
     const res = await UsersService.getEnrolledCourses(profile.username, { skip: enrolledCourses.data.length });
     setEnrolledCourses((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
+
+  useEffect(() => {
+    mixpanel.identify(user?.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.VIEW_PROFILE);
+  }, []);
 
   return (
     <Layout title="Profile" user={user}>
