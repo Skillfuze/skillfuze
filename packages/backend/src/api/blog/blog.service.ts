@@ -60,7 +60,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['user', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -77,7 +77,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
         qb.where('categories.slug = :slug', { slug }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['user', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -124,7 +124,7 @@ export class BlogService extends TypeOrmCrudService<Blog> {
     const [blogs, count] = await this.repository.findAndCount({
       where: { publishedAt: Not(IsNull()) },
       relations: ['user', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });

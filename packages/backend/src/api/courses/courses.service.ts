@@ -50,7 +50,7 @@ export class CoursesService {
         qb.where('categories.slug = :slug', { slug });
       },
       relations: ['creator', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -68,7 +68,7 @@ export class CoursesService {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['creator', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -86,7 +86,7 @@ export class CoursesService {
         qb.where('enrolled.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['creator'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -207,7 +207,7 @@ export class CoursesService {
     const [courses, count] = await this.repository.findAndCount({
       where: { publishedAt: Not(IsNull()) },
       relations: ['creator', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
