@@ -30,7 +30,7 @@ export class Course implements ICourse {
   @Column({ unique: true, nullable: true })
   public slug: string = undefined;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   public description: string = undefined;
 
   @ManyToOne(/* istanbul ignore next */ () => Category, { nullable: true, eager: true })
