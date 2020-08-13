@@ -28,8 +28,7 @@ const VideosPage = ({ initialVideos, user }: Props) => {
   return (
     <Layout user={user} title="All Videos">
       <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto">
-        <h1>All Videos</h1>
-        <hr className="opacity-50 text-grey-dark mt-2" />
+        <h1 className="mb-4 font-bold">All Videos</h1>
         <VideosList videos={videos.data} />
         {videos.data.length < videos.count && (
           <Button className="self-center" variant="outlined" onClick={videosLoadMore} disabled={isLoading}>

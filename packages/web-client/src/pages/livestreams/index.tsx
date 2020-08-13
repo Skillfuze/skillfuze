@@ -28,8 +28,7 @@ const LivestreamsPage = ({ initialLivestreams, user }: Props) => {
   return (
     <Layout user={user} title="All Livestreams">
       <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto">
-        <h1>All Livestreams</h1>
-        <hr className="opacity-50 text-grey-dark mt-2" />
+        <h1 className="mb-4 font-bold">All Livestreams</h1>
         <LivestreamsList livestreams={livestreams.data} />
         {livestreams.data.length < livestreams.count && (
           <Button className="self-center" variant="outlined" onClick={livestreamsLoadMore} disabled={isLoading}>
