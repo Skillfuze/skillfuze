@@ -16,7 +16,7 @@ import config from '../config';
       store: redisStore,
       host: config.redis.host,
       port: config.redis.port,
-      ttl: 100,
+      ttl: 10,
     }),
   ],
   controllers: [],
