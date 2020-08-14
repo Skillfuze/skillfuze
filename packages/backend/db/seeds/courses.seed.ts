@@ -12,7 +12,7 @@ function generateCourseLessons(count: number, courseId: string, videos: any[], b
     lessons.push({
       id: faker.random.uuid(),
       title: `Lesson ${i}: ${faker.lorem.sentence()}`,
-      order: 1,
+      order: i,
       type: isBlog ? 'Blog' : 'Video',
       materialId: materialOptions[faker.random.number(materialOptions.length - 1)].id,
       course: { id: courseId },
@@ -49,7 +49,7 @@ export function generateSeedCourses(videos: any[], blogs: any[]) {
         id: idTemplate(i),
         title: faker.lorem.sentence(),
         slug: idTemplate(i),
-        description: faker.lorem.sentences(2),
+        description: faker.lorem.sentences(5),
         category: { id: faker.random.number({ min: 1, max: 13 }) },
         tags: faker.lorem.words(faker.random.number({ min: 1, max: 5 })).split(' '),
         thumbnailURL: fakeImage(),

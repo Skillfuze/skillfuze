@@ -40,6 +40,8 @@ export class CoursesService {
       throw new NotFoundException();
     }
 
+    course.lessons = course.lessons.sort((a, b) => a.order - b.order);
+
     return course;
   }
 
