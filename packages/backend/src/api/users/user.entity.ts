@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { User as IUser, Livestream } from '@skillfuze/types';
 import { Exclude } from 'class-transformer';
 import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
@@ -46,6 +46,22 @@ export class User implements IUser {
 
   @OneToMany('Livestream', 'streamer')
   public livestreams?: Livestream[];
+
+  @ManyToMany(() => User, (user) => user.following)
+  @JoinTable({
+    joinColumn: { name: 'followedId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'followerId', referencedColumnName: 'id' },
+    name: 'user_followers',
+  })
+  public followers: User[];
+
+  @ManyToMany(() => User)
+  @JoinTable({
+    joinColumn: { name: 'followerId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'followedId', referencedColumnName: 'id' },
+    name: 'user_followers',
+  })
+  public following: User[];
 
   public constructor() {
     this.username = `user-${shortid.generate()}`;

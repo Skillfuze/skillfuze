@@ -29,6 +29,14 @@ export class UsersService {
     return res.data;
   }
 
+  static async follow(userId: number): Promise<void> {
+    await axios.post(`/api/v1/users/${userId}/follow`);
+  }
+
+  static async unfollow(userId: number): Promise<void> {
+    await axios.post(`/api/v1/users/${userId}/unfollow`);
+  }
+
   public static async update(updatetdUser: UpdateProfileDTO): Promise<User> {
     try {
       const { data: user } = await axios.patch<User>(`api/v1/users/me`, updatetdUser);

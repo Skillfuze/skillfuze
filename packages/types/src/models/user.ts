@@ -10,4 +10,6 @@ export interface User {
   bio: string;
   avatarURL: string;
   livestreams?: Livestream[];
+  followers?: User[];
+  following?: User[];
 }

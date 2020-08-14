@@ -1,5 +1,11 @@
-import { Controller, Get, Param, Query, UseGuards, Patch, Body } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiBearerAuth, ApiUnauthorizedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, UseGuards, Patch, Body, Post } from '@nestjs/common';
+import {
+  ApiNotFoundResponse,
+  ApiBearerAuth,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 import { PaginatedResponse } from '@skillfuze/types';
 import { UserId } from '../common/decorators/user-id.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -72,5 +78,25 @@ export class UsersController {
   @Patch('/me')
   public async update(@UserId() userId: number, @Body() payload: UpdateProfileDTO): Promise<void> {
     await this.userService.update(userId, payload);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @Post('/:id/follow')
+  public async follow(@UserId() requestOwnerId: number, @Param('id') followedUserId: number): Promise<void> {
+    await this.userService.follow(followedUserId, requestOwnerId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @Post('/:id/unfollow')
+  public async unfollow(@UserId() requestOwnerId: number, @Param('id') followedUserId: number): Promise<void> {
+    await this.userService.unfollow(followedUserId, requestOwnerId);
   }
 }
