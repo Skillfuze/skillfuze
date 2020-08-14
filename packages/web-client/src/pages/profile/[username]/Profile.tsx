@@ -91,7 +91,7 @@ const ProfilePage: NextPage<Props> = ({
                   Follow
                 </Button>
               </div>
-              <MoreActions URL={pageURL} enableControls onEdit={onEdit} />
+              <MoreActions URL={pageURL} enableControls={user?.id === profile.id} onEdit={onEdit} />
             </div>
             <div className="flex">
               <p className="font-bold text-black-light">{`${0} followers`}</p>

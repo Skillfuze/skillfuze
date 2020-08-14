@@ -17,10 +17,20 @@ interface Props {
   url: string;
   videoType: string;
   viewer?: User;
+  enableControls?: boolean;
   onDelete: any;
 }
 
-const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, viewer, onDelete }: Props) => {
+const VideoLayout: React.FC<Props> = ({
+  isLive,
+  user,
+  content,
+  url,
+  videoType,
+  viewer,
+  onDelete,
+  enableControls,
+}: Props) => {
   const router = useRouter();
   const pageURL = typeof window === 'object' ? window.location.href : undefined;
 
@@ -48,7 +58,7 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, v
             <Button size="small" variant="outlined">
               Follow
             </Button>
-            <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
+            <MoreActions URL={pageURL} enableControls={enableControls} onEdit={onEdit} onDelete={onDelete} />
           </div>
           <div className="ml-12 pl-3 space-y-4">
             <h2 className="text-grey-dark text-sm leading-normal">{content.description}</h2>
