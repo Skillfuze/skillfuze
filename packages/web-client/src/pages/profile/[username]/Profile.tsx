@@ -34,6 +34,9 @@ const ProfilePage: NextPage<Props> = ({
   const [videos, setVideos] = useState(initialVideos);
   const [courses, setCourses] = useState(initialCourses);
   const [enrolledCourses, setEnrolledCourses] = useState(initialEnrolledCourses);
+  const [isFollowing, setIsFollowing] = useState(
+    () => profile.followers.filter((following) => following.id === user.id).length !== 0,
+  );
 
   const handleLiveClick = (): void => {
     router.push(`/livestreams/${profile.livestreams[0].id}`);
@@ -68,6 +71,16 @@ const ProfilePage: NextPage<Props> = ({
     mixpanel.track(mixpanelEvents.VIEW_PROFILE);
   }, []);
 
+  const handleFollow = async () => {
+    await UsersService.follow(profile.id);
+    setIsFollowing(true);
+  };
+
+  const handleUnfollow = async () => {
+    await UsersService.unfollow(profile.id);
+    setIsFollowing(false);
+  };
+
   return (
     <Layout title="Profile" user={user}>
       <div className="container flex flex-col flex-grow p-4 pt-8 max-w-screen-xl mx-auto space-y-16">
@@ -88,16 +101,21 @@ const ProfilePage: NextPage<Props> = ({
               </div>
               <div className="mt-1 flex-grow md:ml-20">
                 {user?.id !== profile.id && (
-                  <Button className="w-48" variant="outlined">
-                    Follow
+                  <Button
+                    className="w-48"
+                    variant="outlined"
+                    color={isFollowing ? 'warning' : 'primary'}
+                    onClick={isFollowing ? handleUnfollow : handleFollow}
+                  >
+                    {isFollowing ? 'Unfollow' : 'Follow'}
                   </Button>
                 )}
               </div>
               <MoreActions URL={pageURL} enableControls={user?.id === profile.id} onEdit={onEdit} />
             </div>
             <div className="flex">
-              <p className="font-bold text-black-light">{`${0} followers`}</p>
-              <p className="font-bold text-black-light ml-4">{`${0} following`}</p>
+              <p className="font-bold text-black-light">{`${profile.followers.length} followers`}</p>
+              <p className="font-bold text-black-light ml-4">{`${profile.following.length} following`}</p>
             </div>
             <p className="text-lg text-black-light">{profile.bio}</p>
           </div>
