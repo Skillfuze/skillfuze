@@ -75,7 +75,7 @@ const CoursePlayer: NextPage<CoursePlayerProps> = ({ user }: CoursePlayerProps) 
           <VideoPlayer key={lesson.id} url={lesson.url} videoType="video/mp4" />
         ) : (
           // eslint-disable-next-line react/no-danger
-          <div key={lesson.id} dangerouslySetInnerHTML={{ __html: lesson.content }} />
+          <div key={lesson.id} className="leading-normal" dangerouslySetInnerHTML={{ __html: lesson.content }} />
         );
       setContent(newContent);
     }
