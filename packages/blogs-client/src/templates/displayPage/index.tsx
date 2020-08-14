@@ -90,9 +90,11 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
               <div className="flex flex-row items-center">
                 <div className="flex flex-row flex-grow">
                   <p className="text-sm self-center inline-block ">{`${blog.user.firstName} ${blog.user.lastName}`}</p>
-                  <Button className="ml-4" size="small" variant="outlined">
-                    Follow
-                  </Button>
+                  {AuthService.getUser()?.id !== blog.user.id && (
+                    <Button className="ml-4" size="small" variant="outlined">
+                      Follow
+                    </Button>
+                  )}
                 </div>
                 <div className="mr-4">
                   <Bookmark onClick={onClickBookmark} style={{ cursor: 'pointer' }} />

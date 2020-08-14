@@ -55,9 +55,11 @@ const VideoLayout: React.FC<Props> = ({
           <div className="sub-container flex items-center space-x-3">
             <Avatar URL={user.avatarURL} alt="Profile Picture" />
             <p className="font-semibold flex-grow text-sm">{`${user.firstName} ${user.lastName}`}</p>
-            <Button size="small" variant="outlined">
-              Follow
-            </Button>
+            {!enableControls && (
+              <Button size="small" variant="outlined">
+                Follow
+              </Button>
+            )}
             <MoreActions URL={pageURL} enableControls={enableControls} onEdit={onEdit} onDelete={onDelete} />
           </div>
           <div className="ml-12 pl-3 space-y-4">

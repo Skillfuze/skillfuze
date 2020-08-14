@@ -87,9 +87,11 @@ const ProfilePage: NextPage<Props> = ({
                 <h5 className="text-grey-dark">{profile.email}</h5>
               </div>
               <div className="mt-1 flex-grow md:ml-20">
-                <Button className="w-48" variant="outlined">
-                  Follow
-                </Button>
+                {user?.id !== profile.id && (
+                  <Button className="w-48" variant="outlined">
+                    Follow
+                  </Button>
+                )}
               </div>
               <MoreActions URL={pageURL} enableControls={user?.id === profile.id} onEdit={onEdit} />
             </div>
