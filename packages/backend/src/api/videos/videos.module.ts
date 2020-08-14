@@ -1,5 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import rateLimit from 'express-rate-limit';
+import RedisStore from 'rate-limit-redis';
 import * as tus from 'tus-node-server';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -24,6 +25,10 @@ export class VideosModule implements NestModule {
     consumer
       .apply(
         rateLimit({
+          store: new RedisStore({
+            expiry: 15 * 60 * 1000,
+            redisURL: config.redis.url,
+          }),
           windowMs: 15 * 60 * 1000,
           max: 1,
           keyGenerator: (request) => `${request.ip}-${request.params.id}`,

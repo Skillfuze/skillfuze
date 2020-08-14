@@ -22,6 +22,11 @@ type Config = {
   gatsby: {
     buildHookURL: string;
   };
+  redis: {
+    url: string;
+    host: string;
+    port: number;
+  };
   winston: typeof winston;
   tus: typeof tusConfig;
   streamingServer: typeof streamingServer;
@@ -63,6 +68,11 @@ const config: Config = {
   },
   gatsby: {
     buildHookURL: process.env.GATSBY_BUILD_HOOK_URL,
+  },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+    url: process.env.REDIS_URL || `redis://localhost:6379`,
   },
   winston,
   tus: tusConfig,
