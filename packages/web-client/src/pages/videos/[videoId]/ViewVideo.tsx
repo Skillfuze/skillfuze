@@ -39,6 +39,7 @@ const ViewVideo = ({ video, user }: Props) => {
         content={video}
         url={video.url}
         videoType="video/mp4"
+        enableControls={user?.id === video.uploader.id}
         onDelete={onDelete}
       />
     </Layout>
