@@ -5,8 +5,10 @@ import { Helmet } from 'react-helmet';
 import { navigate } from '@reach/router';
 import cookie from 'react-cookies';
 import { Disqus } from 'gatsby-plugin-disqus';
-
 import axios from 'axios';
+
+import AuthService from '../../services/auth.service';
+import Layout from '../../components/Layout';
 import Bookmark from '../../../assets/icons/bookmark.svg';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -75,38 +77,40 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
           crossOrigin="anonymous"
         />
       </Helmet>
-      <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
-      <article className="flex flex-col max-w-screen-md mx-auto h-full">
-        <h1 className="flex text-left mt-8 font-bold" style={{ fontSize: '2.5rem' }}>
-          {blog.title}
-        </h1>
-        <h4 className="flex text-left mt-6 text-grey-dark">{blog.description}</h4>
-        <div className="flex flex-row mt-6 h-16 items-center ">
-          <Avatar URL={blog.user.avatarURL} alt="user photo" />
-          <div className="ml-4 flex-col flex-auto">
-            <div className="flex flex-row items-center">
-              <div className="flex flex-row flex-grow">
-                <p className="text-sm self-center inline-block ">{`${blog.user.firstName} ${blog.user.lastName}`}</p>
-                <Button className="ml-4" size="small" variant="outlined">
-                  Follow
-                </Button>
+      <Layout user={AuthService.getUser()}>
+        <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
+        <article className="flex flex-col max-w-screen-sm mx-auto h-full">
+          <h1 className="flex text-left mt-8 font-bold" style={{ fontSize: '2.5rem' }}>
+            {blog.title}
+          </h1>
+          <h4 className="flex text-left mt-6 text-grey-dark">{blog.description}</h4>
+          <div className="flex flex-row mt-6 h-16 items-center ">
+            <Avatar URL={blog.user.avatarURL} alt="user photo" />
+            <div className="ml-4 flex-col flex-auto">
+              <div className="flex flex-row items-center">
+                <div className="flex flex-row flex-grow">
+                  <p className="text-sm self-center inline-block ">{`${blog.user.firstName} ${blog.user.lastName}`}</p>
+                  <Button className="ml-4" size="small" variant="outlined">
+                    Follow
+                  </Button>
+                </div>
+                <div className="mr-4">
+                  <Bookmark onClick={onClickBookmark} style={{ cursor: 'pointer' }} />
+                </div>
+                <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
               </div>
-              <div className="mr-4">
-                <Bookmark onClick={onClickBookmark} style={{ cursor: 'pointer' }} />
-              </div>
-              <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
+              <p className="text-left text-xs text-grey-dark">{moment(blog.publishedAt).format('ll')}</p>
             </div>
-            <p className="text-left text-xs text-grey-dark">{moment(blog.publishedAt).format('ll')}</p>
           </div>
-        </div>
-        <article
-          className="text-left mt-8"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        />
-        <hr className="opacity-50 mt-20" />
-        <Disqus className="mt-6 mb-6" config={disqusConfig} />
-      </article>
+          <article
+            className="text-left mt-8 leading-normal"
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          />
+          <hr className="opacity-50 mt-20" />
+          <Disqus className="mt-6 mb-6" config={disqusConfig} />
+        </article>
+      </Layout>
     </>
   );
 };
