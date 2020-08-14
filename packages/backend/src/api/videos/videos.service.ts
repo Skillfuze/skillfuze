@@ -86,4 +86,18 @@ export class VideosService {
     video.views += 1;
     await this.repository.save(video);
   }
+
+  public async getAllVideos(skip = 0, take = 10): Promise<PaginatedResponse<Video>> {
+    const [videos, count] = await this.repository.findAndCount({
+      relations: ['uploader', 'category'],
+      order: { createdAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: videos,
+      count,
+    };
+  }
 }

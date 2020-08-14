@@ -5,6 +5,7 @@ import { Video } from '../videos/video.entity';
 import { Category } from '../categories/category.entity';
 import { User } from '../users/user.entity';
 import { Blog } from '../blog/blog.entity';
+import { Course } from '../courses/entities/course.entity';
 
 @Injectable()
 export class RecommendationsService {
@@ -17,13 +18,32 @@ export class RecommendationsService {
       .limit(limit)
       .leftJoin('livestream.streamer', 'user')
       .leftJoin('livestream.category', 'category')
+      .select('category.*, user.*, livestream.*')
       .getRawMany();
     return this.mapToEntity(Livestream, livestreams);
   }
 
-  public async getRecommendedCourses(): Promise<any[]> {
-    // TODO
-    return [];
+  public async getRecommendedCourses(limit = 10): Promise<Course[]> {
+    const courses = await getConnection()
+      .createQueryBuilder()
+      .from((qb) => {
+        return qb
+          .from(Course, 'course')
+          .leftJoin('course_enrolled_user', 'enrolled', 'course.id = enrolled.courseId')
+          .groupBy('course.id')
+          .select('course.*, COUNT(enrolled.userId) AS enrolledCount')
+          .having('enrolledCount >= AVG(enrolledCount) AND course.publishedAt IS NOT NULL')
+          .orderBy('createdAt', 'DESC')
+          .limit(1000);
+      }, 'course')
+      .orderBy('enrolledCount', 'DESC')
+      .limit(limit)
+      .leftJoin(Category, 'category', 'category.id = course.categoryId')
+      .leftJoin(User, 'user', 'user.id = course.creatorId')
+      .select('category.*, user.*, course.*')
+      .getRawMany();
+
+    return this.mapToEntity(Course, courses);
   }
 
   public async getRecommendedVideos(limit = 10): Promise<Video[]> {
@@ -40,7 +60,9 @@ export class RecommendationsService {
       .limit(limit)
       .leftJoin(Category, 'category', 'category.id = video.categoryId')
       .leftJoin(User, 'user', 'user.id = video.uploaderId')
+      .select('category.*, user.*, video.*')
       .getRawMany();
+
     return this.mapToEntity(Video, videos);
   }
 
@@ -58,11 +80,12 @@ export class RecommendationsService {
       .limit(limit)
       .leftJoin(Category, 'category', 'category.id = blog.categoryId')
       .leftJoin(User, 'user', 'user.id = blog.userId')
+      .select('category.*, user.*, blog.*')
       .getRawMany();
     return this.mapToEntity(Blog, blogs);
   }
 
-  private mapToEntity<T extends Video | Blog | Livestream>(Entity: new () => T, data: any[]): T[] {
+  private mapToEntity<T extends Video | Blog | Livestream | Course>(Entity: new () => T, data: any[]): T[] {
     return data.map((item) => {
       const entity = new Entity();
       Object.keys(item).forEach((key) => {
@@ -80,6 +103,7 @@ export class RecommendationsService {
       user.firstName = item.firstName;
       user.lastName = item.lastName;
       user.email = item.email;
+      user.avatarURL = item.avatarURL;
 
       if (entity instanceof Video) {
         entity.uploader = user;
@@ -87,6 +111,8 @@ export class RecommendationsService {
         entity.user = user;
       } else if (entity instanceof Livestream) {
         entity.streamer = user;
+      } else if (entity instanceof Course) {
+        entity.creator = user;
       }
 
       return entity;

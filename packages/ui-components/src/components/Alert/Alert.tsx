@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Alert: React.FC<Props> = ({ message, options, style }: Props) => {
-  const className = cx(baseAlertStyle(options.type), 'py-2 px-6 items-center rounded-full flex inline-flex');
+  const className = cx(baseAlertStyle(options.type), 'bg-white py-2 px-6 items-center rounded-full flex inline-flex');
   return (
     <div className={className} role="alert" style={{ ...style }}>
       <span className="text-center flex-auto">{message}</span>

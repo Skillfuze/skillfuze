@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch, HttpCode } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Get, Param, Delete, Patch, HttpCode, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiUnauthorizedResponse,
@@ -7,7 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { GetCourseLessonResponseDTO } from '@skillfuze/types';
+import { GetCourseLessonResponseDTO, PaginatedResponse } from '@skillfuze/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Course } from './entities/course.entity';
 import { CoursesService } from './courses.service';
@@ -25,6 +25,14 @@ export class CoursesController {
   @ApiUnauthorizedResponse()
   public async createOne(@UserId() userId: number, @Body() payload: CoursePayloadDTO): Promise<Course> {
     return this.service.create(userId, payload);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/:id/enroll')
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  public async enroll(@Param('id') courseId: string, @UserId() userId: number): Promise<void> {
+    return this.service.enroll(courseId, userId);
   }
 
   @Get('/:id')
@@ -80,5 +88,10 @@ export class CoursesController {
     @UserId() userId: number,
   ): Promise<GetCourseLessonResponseDTO> {
     return this.service.getLesson(courseSlug, lessonId, userId);
+  }
+
+  @Get('/')
+  public async getAll(@Query('skip') skip: number, @Query('take') take: number): Promise<PaginatedResponse<Course>> {
+    return this.service.getAllCourses(skip, take);
   }
 }

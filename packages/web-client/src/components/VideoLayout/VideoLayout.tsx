@@ -17,10 +17,20 @@ interface Props {
   url: string;
   videoType: string;
   viewer?: User;
+  enableControls?: boolean;
   onDelete: any;
 }
 
-const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, viewer, onDelete }: Props) => {
+const VideoLayout: React.FC<Props> = ({
+  isLive,
+  user,
+  content,
+  url,
+  videoType,
+  viewer,
+  onDelete,
+  enableControls,
+}: Props) => {
   const router = useRouter();
   const pageURL = typeof window === 'object' ? window.location.href : undefined;
 
@@ -33,8 +43,8 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, v
   };
 
   return (
-    <div className="container flex flex-grow mx-auto flex-col max-w-screen-xl p-2 pb-6 space-y-6">
-      <VideoPlayer url={url} videoType={videoType} />
+    <div className="container flex flex-grow mx-auto flex-col max-w-screen-xl p-2 pb-4 space-y-4">
+      <VideoPlayer thumbnail={content.thumbnailURL} url={url} videoType={videoType} />
       <div className="flex lg:flex-no-wrap flex-wrap-reverse lg:space-x-4 lg:space-y-0 space-y-reverse space-y-4">
         <div className="space-y-4 flex-grow">
           <h1 className="sub-container text-lg font-semibold">{content.title}</h1>
@@ -45,10 +55,12 @@ const VideoLayout: React.FC<Props> = ({ isLive, user, content, url, videoType, v
           <div className="sub-container flex items-center space-x-3">
             <Avatar URL={user.avatarURL} alt="Profile Picture" />
             <p className="font-semibold flex-grow text-sm">{`${user.firstName} ${user.lastName}`}</p>
-            <Button size="small" variant="outlined">
-              Follow
-            </Button>
-            <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
+            {!enableControls && (
+              <Button size="small" variant="outlined">
+                Follow
+              </Button>
+            )}
+            <MoreActions URL={pageURL} enableControls={enableControls} onEdit={onEdit} onDelete={onDelete} />
           </div>
           <div className="ml-12 pl-3 space-y-4">
             <h2 className="text-grey-dark text-sm leading-normal">{content.description}</h2>

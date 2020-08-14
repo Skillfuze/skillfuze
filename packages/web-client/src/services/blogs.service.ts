@@ -3,7 +3,8 @@ import deepEqual from 'deep-eql';
 import cloneDeep from 'clone-deep';
 import axios from 'axios';
 import { stateToHTML } from 'draft-js-export-html';
-import { Blog, CreateBlogDTO, UpdateBlogDTO, Category } from '@skillfuze/types';
+import { Blog, CreateBlogDTO, UpdateBlogDTO, Category, PaginationOptions, PaginatedResponse } from '@skillfuze/types';
+import qs from 'qs';
 import { parseError } from '../utils/parseError';
 
 export interface BlogState {
@@ -68,5 +69,10 @@ export class BlogService {
       { ...this.state, editorState: (this.state.editorState as EditorState).getCurrentContent() },
       { ...payload, editorState: (payload.editorState as EditorState).getCurrentContent() },
     );
+  }
+
+  public static async getAllBlogs(options?: PaginationOptions): Promise<PaginatedResponse<Blog>> {
+    const res = await axios.get(`/api/v1/blogs?${qs.stringify(options)}`);
+    return res.data;
   }
 }

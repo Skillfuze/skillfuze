@@ -4,7 +4,6 @@ import { ContentTabs, Tab } from '@skillfuze/ui-components';
 import { CategoriesService } from '../../../services/categories.service';
 import Layout from '../../../components/Layout';
 import { VideosList, BlogsList, CoursesList } from '../../../components/MaterialsLists';
-import InDevelopment from '../../../components/InDevelopment';
 import LivestreamsList from '../../../components/MaterialsLists/LivestreamsList';
 import { slugToTitle } from '../../../utils/slugToTitle';
 
@@ -50,8 +49,8 @@ const CategoriesContent = ({ slug, initialBlogs, initialVideos, initialCourses, 
   return (
     <Layout title="Categories Content">
       <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto">
-        <h1>{slugToTitle(slug)}</h1>
-        <ContentTabs className="py-4" tabs={['Courses', 'Videos', 'Blogs', 'Livestreams', 'Bookmarks']}>
+        <h1 className="font-bold">{slugToTitle(slug)}</h1>
+        <ContentTabs className="py-4 mt-2" tabs={['Courses', 'Videos', 'Blogs', 'Livestreams']}>
           <Tab enableMore={courses.data.length < courses.count} loadMore={coursesLoadMore} title="Courses">
             <CoursesList courses={courses.data} />
           </Tab>
@@ -67,9 +66,6 @@ const CategoriesContent = ({ slug, initialBlogs, initialVideos, initialCourses, 
             title="Livestreams"
           >
             <LivestreamsList livestreams={livestreams.data} />
-          </Tab>
-          <Tab title="Bookmarks">
-            <InDevelopment inDevelopmentItem="feature" />
           </Tab>
         </ContentTabs>
       </div>

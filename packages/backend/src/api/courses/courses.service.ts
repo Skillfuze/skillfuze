@@ -1,5 +1,6 @@
 import { PaginatedResponse, GetCourseLessonResponseDTO } from '@skillfuze/types';
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { IsNull, Not } from 'typeorm';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import slugify from 'slugify';
 import shortid from 'shortid';
 
@@ -30,14 +31,16 @@ export class CoursesService {
   }
 
   public async getByIdOrSlug(idOrSlug: string): Promise<Course> {
-    let course = await this.repository.findOne({ slug: idOrSlug }, { relations: ['lessons'] });
+    let course = await this.repository.findOne({ slug: idOrSlug }, { relations: ['lessons', 'enrolled'] });
     if (!course) {
-      course = await this.repository.findOne(idOrSlug, { relations: ['lessons'] });
+      course = await this.repository.findOne(idOrSlug, { relations: ['lessons', 'enrolled'] });
     }
 
     if (!course) {
       throw new NotFoundException();
     }
+
+    course.lessons = course.lessons.sort((a, b) => a.order - b.order);
 
     return course;
   }
@@ -49,7 +52,7 @@ export class CoursesService {
         qb.where('categories.slug = :slug', { slug });
       },
       relations: ['creator', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -67,7 +70,7 @@ export class CoursesService {
         qb.where('users.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['creator', 'category'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -85,7 +88,7 @@ export class CoursesService {
         qb.where('enrolled.username = :username', { username }).andWhere('publishedAt IS NOT NULL');
       },
       relations: ['creator'],
-      order: { createdAt: 'DESC' },
+      order: { publishedAt: 'DESC' },
       skip,
       take,
     });
@@ -171,6 +174,20 @@ export class CoursesService {
     };
   }
 
+  public async enroll(courseId: string, userId: number): Promise<void> {
+    const course = await this.getByIdOrSlug(courseId);
+
+    if (course.enrolled.filter((enrolled) => enrolled.id === userId).length === 1) {
+      throw new BadRequestException('User already enrolled.');
+    }
+
+    const newEnrolledUser = new User();
+    newEnrolledUser.id = userId;
+    course.enrolled.push(newEnrolledUser);
+
+    await this.repository.save(course);
+  }
+
   private async generateSlug(course: Course): Promise<string> {
     let slug: string;
     if (course.title) {
@@ -186,5 +203,20 @@ export class CoursesService {
     }
 
     return slug;
+  }
+
+  public async getAllCourses(skip = 0, take = 10): Promise<PaginatedResponse<Course>> {
+    const [courses, count] = await this.repository.findAndCount({
+      where: { publishedAt: Not(IsNull()) },
+      relations: ['creator', 'category'],
+      order: { publishedAt: 'DESC' },
+      skip,
+      take,
+    });
+
+    return {
+      data: courses,
+      count,
+    };
   }
 }

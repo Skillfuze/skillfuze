@@ -39,6 +39,7 @@
     "draft-js-video-plugin": "^2.0.2",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
+    "mixpanel-browser": "^2.38.0",
     "moment": "^2.25.3",
     "next": "9.4.2",
     "next-cookies": "^2.0.3",

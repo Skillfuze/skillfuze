@@ -64,12 +64,15 @@ const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
       </button>
       {showPopper && (
         <div
-          className="bg-white shadow rounded-sm p-4 pb-0 space-y-4 flex flex-col items-start"
+          className="bg-white shadow rounded-sm p-4 pb-0 space-y-4 flex flex-col items-start z-50"
           style={styles.popper}
           ref={popperElementRef}
           {...attributes.popper}
         >
-          <button className={`${buttonNoFocusStyle} flex text-left items-center`}>
+          <button
+            className={`${buttonNoFocusStyle} flex text-left items-center`}
+            onClick={() => push(`/profile/${username}`)}
+          >
             <Avatar URL={avatarURL} alt="Profile Picture" />
             <div className="flex flex-col ml-2">
               <p className="text-sm font-semibold">{displayName}</p>

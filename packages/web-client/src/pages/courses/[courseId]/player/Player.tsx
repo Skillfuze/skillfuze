@@ -6,11 +6,13 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { DiscussionEmbed } from 'disqus-react';
 
+import mixpanel from 'mixpanel-browser';
 import withAuth from '../../../../utils/withAuth';
 import Layout from '../../../../components/Layout';
 import { CoursesService } from '../../../../services/courses.service';
 import VideoPlayer from '../../../../components/VideoPlayer';
 import NoSSR from '../../../../components/NoSSR';
+import { mixpanelEvents } from '../../../../../config/mixpanel.events';
 
 interface CoursePlayerProps {
   user?: UserTokenPayload;
@@ -62,13 +64,18 @@ const CoursePlayer: NextPage<CoursePlayerProps> = ({ user }: CoursePlayerProps) 
   }, [router.query.lesson]);
 
   useEffect(() => {
+    mixpanel.identify(user?.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.VIEW_COURSE_PLAYER);
+  }, []);
+
+  useEffect(() => {
     if (lesson) {
       const newContent =
         lesson.type === 'Video' ? (
           <VideoPlayer key={lesson.id} url={lesson.url} videoType="video/mp4" />
         ) : (
           // eslint-disable-next-line react/no-danger
-          <div key={lesson.id} dangerouslySetInnerHTML={{ __html: lesson.content }} />
+          <div key={lesson.id} className="leading-normal" dangerouslySetInnerHTML={{ __html: lesson.content }} />
         );
       setContent(newContent);
     }

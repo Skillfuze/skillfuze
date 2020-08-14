@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { Video, CreateVideoDTO, UpdateVideoDTO } from '@skillfuze/types';
+import { Video, CreateVideoDTO, UpdateVideoDTO, PaginatedResponse, PaginationOptions } from '@skillfuze/types';
+import qs from 'qs';
 
 import { parseError } from '../utils/parseError';
 
@@ -41,5 +42,10 @@ export class VideosService {
     } catch (error) {
       throw parseError(error.response.data);
     }
+  }
+
+  public static async getAllVideos(options?: PaginationOptions): Promise<PaginatedResponse<Video>> {
+    const res = await axios.get(`/api/v1/videos?${qs.stringify(options)}`);
+    return res.data;
   }
 }

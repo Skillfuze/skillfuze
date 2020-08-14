@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NextPage } from 'next';
 import { Button, Carousel, ContentCard, VideosTopBar, CourseInfoBar } from '@skillfuze/ui-components';
 import { HomeResponseDTO, User } from '@skillfuze/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import mixpanel from 'mixpanel-browser';
 import HomeSVG from '../../assets/illustrations/home.svg';
 import Layout from '../components/Layout';
 import { HomeService } from '../services/home.service';
 import RecommendationCarousel from '../components/RecommendationCarousel';
 import config from '../../config';
 import withAuth from '../utils/withAuth';
+import { mixpanelEvents } from '../../config/mixpanel.events';
 
 interface Props {
   recommendations: HomeResponseDTO;
@@ -17,18 +19,22 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
+  useEffect(() => {
+    mixpanel.identify(user?.id || 'GUEST');
+    mixpanel.track(mixpanelEvents.HOMEPAGE);
+  }, []);
   const router = useRouter();
   const LoadLivestreams = (
     <Carousel className="">
       {recommendations.livestreams.map((livestream) => (
         <ContentCard
           key={livestream.id}
-          className=""
+          className="h-full"
           thumbnail={livestream.thumbnailURL}
           category={livestream.category.name}
           title={livestream.title}
           userName={`${livestream.streamer.firstName} ${livestream.streamer.lastName}`}
-          userAvatar={user.avatarURL}
+          userAvatar={livestream.streamer.avatarURL}
           topBar={<VideosTopBar isLive views={livestream.watchingNow} />}
           onClick={() => {
             router.push(`/livestreams/[livestreamId]`, `/livestreams/${livestream.id}`);
@@ -42,12 +48,12 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
     <Carousel className="">
       {recommendations.courses.map((course) => (
         <ContentCard
-          className=""
+          className="h-full"
           key={course.id}
           thumbnail={course.thumbnailURL}
-          category={course.category.name}
+          category={course.category?.name || ''}
           title={course.title}
-          userName={course.creator.username}
+          userName={`${course.creator.firstName} ${course.creator.lastName}`}
           userAvatar={course.creator.avatarURL}
           createdAt={course.createdAt}
           infoBar={<CourseInfoBar rate={4.5} price={course.price} />}
@@ -65,7 +71,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       {recommendations.videos.map((video) => (
         <ContentCard
           key={video.id}
-          className=""
+          className="h-full"
           thumbnail={video.thumbnailURL}
           category={video.category.name}
           title={video.title}
@@ -86,7 +92,7 @@ const Home: NextPage<Props> = ({ recommendations, user }: Props) => {
       {recommendations.blogs.map((blog) => (
         <ContentCard
           key={blog.id}
-          className=""
+          className="h-full"
           thumbnail={blog.thumbnailURL}
           category={blog.category.name}
           title={blog.title}
