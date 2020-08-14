@@ -79,6 +79,7 @@ jobs:
     working_directory: ~/skillfuze
     docker:
       - image: circleci/node:lts
+      - image: circleci/redis
       - image: circleci/mysql:8.0.12
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
@@ -90,7 +91,7 @@ jobs:
           at: ~/skillfuze
       - run:
           name: Test Backend E2E
-          command: cd packages/backend && yarn test:e2e --ci --reporters=default --reporters=jest-junit --runInBand
+          command: cd packages/backend && yarn test:e2e --ci --reporters=default --reporters=jest-junit --runInBand --forceExit
           environment:
             JEST_JUNIT_OUTPUT_DIR: test-results
             JEST_JUNIT_OUTPUT_NAME: e2e-results.xml
