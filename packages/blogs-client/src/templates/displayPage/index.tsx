@@ -97,7 +97,12 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
                 <div className="mr-4">
                   <Bookmark onClick={onClickBookmark} style={{ cursor: 'pointer' }} />
                 </div>
-                <MoreActions URL={pageURL} enableControls onEdit={onEdit} onDelete={onDelete} />
+                <MoreActions
+                  URL={pageURL}
+                  enableControls={AuthService.getUser()?.id === blog.user.id}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
               </div>
               <p className="text-left text-xs text-grey-dark">{moment(blog.publishedAt).format('ll')}</p>
             </div>

@@ -41,6 +41,7 @@ const ViewLivestream = ({ stream, user }: Props) => {
           url={`${config.httpStreamingServerURL}/live/${stream.streamKey}/playlist.m3u8`}
           videoType="application/x-mpegURL"
           viewer={user}
+          enableControls={user?.id === stream.streamer.id}
           onDelete={onDelete}
         />
       </Layout>

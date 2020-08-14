@@ -258,6 +258,7 @@ describe('CoursesService', () => {
     beforeAll(() => {
       const resolvedCourse = new Course();
       resolvedCourse.enrolled = [];
+      resolvedCourse.lessons = [];
 
       jest.spyOn(repository, 'findOne').mockReturnValue(Promise.resolve(resolvedCourse));
     });
@@ -271,6 +272,7 @@ describe('CoursesService', () => {
       const enrolledUser = new User();
       enrolledUser.id = userId;
       resolvedCourse.enrolled = [enrolledUser];
+      resolvedCourse.lessons = [];
 
       jest.spyOn(repository, 'findOne').mockReturnValue(Promise.resolve(resolvedCourse));
 
