@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Livestream, PaginatedResponse, Blog, Video, Course } from '@skillfuze/types';
+import { Livestream, PaginatedResponse, Blog, Video, Course, UserTokenPayload } from '@skillfuze/types';
 import { ContentTabs, Tab } from '@skillfuze/ui-components';
 import { CategoriesService } from '../../../services/categories.service';
 import Layout from '../../../components/Layout';
 import { VideosList, BlogsList, CoursesList } from '../../../components/MaterialsLists';
 import LivestreamsList from '../../../components/MaterialsLists/LivestreamsList';
 import { slugToTitle } from '../../../utils/slugToTitle';
+import withAuth from '../../../utils/withAuth';
 
 interface Props {
   slug: string;
+  user?: UserTokenPayload;
   initialBlogs: PaginatedResponse<Blog>;
   initialVideos: PaginatedResponse<Video>;
   initialCourses: PaginatedResponse<Course>;
   initialLivestreams: PaginatedResponse<Livestream>;
 }
-const CategoriesContent = ({ slug, initialBlogs, initialVideos, initialCourses, initialLivestreams }: Props) => {
+const CategoriesContent = ({ user, slug, initialBlogs, initialVideos, initialCourses, initialLivestreams }: Props) => {
   const [blogs, setBlogs] = useState(initialBlogs);
   const [videos, setVideos] = useState(initialVideos);
   const [courses, setCourses] = useState(initialCourses);
@@ -47,7 +49,7 @@ const CategoriesContent = ({ slug, initialBlogs, initialVideos, initialCourses, 
     setLivestreams((prev) => ({ data: [...prev.data, ...res.data], count: res.count }));
   };
   return (
-    <Layout title="Categories Content">
+    <Layout title="Categories Content" user={user}>
       <div className="container flex flex-col flex-grow p-4 max-w-screen-xl mx-auto">
         <h1 className="font-bold">{slugToTitle(slug)}</h1>
         <ContentTabs className="py-4 mt-2" tabs={['Courses', 'Videos', 'Blogs', 'Livestreams']}>
@@ -83,4 +85,4 @@ CategoriesContent.getInitialProps = async (ctx) => {
   return { slug: ctx.query.slug.toString(), initialBlogs, initialVideos, initialCourses, initialLivestreams };
 };
 
-export default CategoriesContent;
+export default withAuth({})(CategoriesContent);

@@ -3,8 +3,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AttachmentResponseDTO } from '@skillfuze/types';
 import path from 'path';
 
+import { ApiTags } from '@nestjs/swagger';
 import { FileTypeInterceptor } from './file-type.interceptor';
 
+@ApiTags('attachments')
 @Controller('attachments')
 export class AttachmentsController {
   @Post('/')

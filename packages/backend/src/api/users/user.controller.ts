@@ -5,6 +5,7 @@ import {
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
   ApiBadRequestResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { PaginatedResponse } from '@skillfuze/types';
 import { UserId } from '../common/decorators/user-id.decorator';
@@ -19,6 +20,7 @@ import { VideosService } from '../videos/videos.service';
 import { BlogService } from '../blog/blog.service';
 import { UpdateProfileDTO } from './dtos/update-profile.dto';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   public constructor(

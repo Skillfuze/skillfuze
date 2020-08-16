@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, TagsInput, Button, SelectField } from '@skillfuze/ui-components';
 import { EditorState } from 'draft-js';
 import { useAlert, types } from 'react-alert';
@@ -14,6 +14,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { useInterval } from '../../utils/hooks/useInterval';
 import config from '../../../config';
 import UploadButton from '../UploadButton';
+import { useLazyRef } from '../../utils/hooks/useLazyRef';
 
 interface Props {
   user: User;
@@ -55,7 +56,7 @@ const EditorLayout: React.FC<Props> = (props: Props) => {
 
   const alert = useAlert();
   const router = useRouter();
-  const blogsService = useRef(new BlogService(prepareBlogState()));
+  const blogsService = useLazyRef(() => new BlogService(prepareBlogState()));
 
   useInterval(async () => {
     if (blogsService.current.shouldUpdate(prepareBlogState())) {

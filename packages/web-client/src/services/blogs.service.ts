@@ -5,6 +5,7 @@ import axios from 'axios';
 import { stateToHTML } from 'draft-js-export-html';
 import { Blog, CreateBlogDTO, UpdateBlogDTO, Category, PaginationOptions, PaginatedResponse } from '@skillfuze/types';
 import qs from 'qs';
+import { stateFromHTML } from 'draft-js-import-html';
 import { parseError } from '../utils/parseError';
 
 export interface BlogState {
@@ -22,12 +23,13 @@ export class BlogService {
 
   public constructor(state: BlogState) {
     this.state = cloneDeep(state);
+    console.log('Hello Constructor');
   }
 
   public async create(payload: CreateBlogDTO): Promise<Blog> {
     try {
       const { data: blog } = await axios.post<Blog>('/api/v1/blogs', payload);
-      this.state = cloneDeep(payload);
+      this.state = cloneDeep(this.blogPayloadToState(payload));
 
       return blog;
     } catch (err) {
@@ -38,8 +40,9 @@ export class BlogService {
   public async update(blogId: string, payload: UpdateBlogDTO): Promise<Blog> {
     try {
       const { data: blog } = await axios.patch<Blog>(`/api/v1/blogs/${blogId}`, payload);
-      this.state = cloneDeep(payload);
-
+      console.log('OLD STATE', this.state);
+      this.state = cloneDeep(this.blogPayloadToState(payload));
+      console.log('NEW STATE', this.state);
       return blog;
     } catch (err) {
       throw parseError(err.response.data);
@@ -48,6 +51,7 @@ export class BlogService {
 
   public static async get(blogId: string): Promise<Blog> {
     const { data: blog } = await axios.get<Blog>(`/api/v1/blogs/${blogId}`);
+    console.log('DATA', blog);
     return blog;
   }
 
@@ -61,6 +65,13 @@ export class BlogService {
     return {
       ...rest,
       content: stateToHTML((state.editorState as EditorState).getCurrentContent()),
+    };
+  }
+
+  private blogPayloadToState(payload: CreateBlogDTO | UpdateBlogDTO): BlogState {
+    return {
+      ...(payload as BlogState),
+      editorState: EditorState.createWithContent(stateFromHTML(payload.content)),
     };
   }
 

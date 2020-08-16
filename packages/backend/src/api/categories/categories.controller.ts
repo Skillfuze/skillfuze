@@ -1,5 +1,6 @@
 import { PaginatedResponse } from '@skillfuze/types';
 import { Controller, Get, Param, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Blog } from '../blog/blog.entity';
 import { Course } from '../courses/entities/course.entity';
 import { LivestreamsService } from '../livestreams/livestreams.service';
@@ -11,6 +12,7 @@ import { Video } from '../videos/video.entity';
 import { CategoriesService } from './categories.service';
 import { Category } from './category.entity';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
   public constructor(

@@ -10,6 +10,7 @@ import {
   Param,
   HttpStatus,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { Crud, CrudController, ParsedRequest, Override, CrudRequest, ParsedBody } from '@nestjsx/crud';
 
@@ -69,7 +70,16 @@ export class BlogController implements CrudController<Blog> {
 
   @Get('/:url')
   async getOne(@Param('url') url: string): Promise<Blog> {
-    return this.service.findOne({ url }, { relations: ['user'] });
+    let blog = await this.service.findOne(url, { relations: ['user'] });
+    if (!blog) {
+      blog = await this.service.findOne({ url }, { relations: ['user'] });
+    }
+
+    if (!blog) {
+      throw new NotFoundException();
+    }
+
+    return blog;
   }
 
   @UseGuards(JwtAuthGuard)
