@@ -1,12 +1,80 @@
 {
-  "name": "skillfuse",
+  "name": "skillfuze",
   "description": "Online learning platform, learn everything about anything.",
   "private": true,
   "version": "0.0.0",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@nestjs/swagger/**",
+      "**/@nestjs/swagger",
+      "**/@nestjsx/crud/**",
+      "**/@nestjsx/crud",
+      "**/@nestjsx/crud-typeorm/**",
+      "**/@nestjsx/crud-typeorm",
+      "**/typeorm/**",
+      "**/typeorm",
+      "**/react-multi-carousel/**",
+      "**/react-multi-carousel"
+    ]
+  },
+  "scripts": {
+    "start:server": "lerna run start:dev --scope @skillfuze/backend --stream",
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap",
+    "lint": "eslint . --ext .js,.jsx,.tsx,.ts",
+    "format": "prettier 'packages/**/*.{ts,tsx}' --write",
+    "clean": "./scripts/clean.sh",
+    "commit": "git-cz",
+    "lerna": "lerna",
+    "deploy": "./scripts/deploy.sh",
+    "roll-update": "./scripts/roll-update.sh",
+    "postinstall": "patch-package --use-yarn && lerna link"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "lerna run test",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "yarn format",
+      "yarn lint -- --fix",
+      "git add"
+    ]
+  },
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
+    "cz-conventional-changelog": "3.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": "^3.0.9",
+    "lerna": "^3.16.4",
+    "lint-staged": "^9.4.2",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.0.5",
+    "ts-node": "^8.5.0",
+    "typescript": "^3.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

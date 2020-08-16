@@ -1,0 +1,75 @@
+{
+  "name": "@skillfuze/ui-components",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Skillfuze UI Components Library",
+  "author": "Khaled Mohamed <Khal3d.Mohamed@gmail.com>",
+  "homepage": "https://github.com/SkillFuze/skillfuze#readme",
+  "license": "MIT",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "jsnext:main": "build/index.es.js",
+  "types": "build/index.d.ts",
+  "directories": {
+    "build": "build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkillFuze/skillfuze.git"
+  },
+  "scripts": {
+    "start": "styleguidist server",
+    "build:styleguidist": "styleguidist build",
+    "build": "rollup -c"
+  },
+  "bugs": {
+    "url": "https://github.com/SkillFuze/skillfuze/issues"
+  },
+  "peerDependencies": {
+    "@emotion/styled": "^10.x",
+    "emotion": "^10.x",
+    "react": "^16.x",
+    "react-dom": "^16.x"
+  },
+  "devDependencies": {
+    "@emotion/styled": "^10.0.27",
+    "@fullhuman/postcss-purgecss": "^2.2.0",
+    "@svgr/rollup": "^5.4.0",
+    "@svgr/webpack": "^5.4.0",
+    "@types/react": "^16.9.23",
+    "@types/react-select": "^3.0.13",
+    "@types/react-copy-to-clipboard": "^4.3.0",
+    "@types/react-modal": "^3.10.6",
+    "autoprefixer": "^9.7.4",
+    "emotion": "^10.0.27",
+    "postcss-loader": "^3.0.0",
+    "react": "^16.13.1",
+    "react-docgen-typescript": "^1.16.2",
+    "react-dom": "^16.13.1",
+    "react-styleguidist": "^10.6.2",
+    "rollup": "^1.32.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "source-map-loader": "^0.2.4",
+    "tailwind-css-variables": "^2.0.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@popperjs/core": "^2.4.0",
+    "moment": "^2.26.0",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-modal": "^3.11.2",
+    "react-multi-carousel": "^2.5.5",
+    "react-popper": "^2.2.3",
+    "react-select": "^3.1.0",
+    "react-star-ratings": "^2.3.0",
+    "tailwindcss": "^1.4.5"
+  }
+}
