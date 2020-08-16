@@ -19,7 +19,7 @@ const EditVideo = ({ user, video }: Props) => {
   }, []);
 
   return (
-    <Layout title="Edit Video">
+    <Layout title="Edit Video" user={user}>
       <VideoData video={video} />
     </Layout>
   );

@@ -16,9 +16,7 @@ const Layout: React.FC<Props> = (props: Props) => (
   <div className="flex flex-col min-h-screen">
     <Navbar controls={props.navControls} user={props.user} showProfileControls={props.showProfileControls} />
     {props.children}
-    <div className="flex flex-row w-full h-12 bg-primary items-center ">
-      <Footer />
-    </div>
+    <Footer />
   </div>
 );
 

@@ -79,7 +79,7 @@ const DisplayPage: React.FC<Props> = ({ pageContext: { blog } }: Props) => {
       </Helmet>
       <Layout user={AuthService.getUser()}>
         <img className="flex-auto h-64 w-full border-solid" src={blog.thumbnailURL} alt={blog.name} />
-        <article className="flex flex-col max-w-screen-sm mx-auto h-full">
+        <article className="flex flex-col container max-w-screen-sm mx-auto h-full">
           <h1 className="flex text-left mt-8 font-bold" style={{ fontSize: '2.5rem' }}>
             {blog.title}
           </h1>
